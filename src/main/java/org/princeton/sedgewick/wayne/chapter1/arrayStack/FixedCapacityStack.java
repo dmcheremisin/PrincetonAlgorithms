@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.chapter1;
+package org.princeton.sedgewick.wayne.chapter1.arrayStack;
 
 import edu.princeton.cs.algs4.StdOut;
 

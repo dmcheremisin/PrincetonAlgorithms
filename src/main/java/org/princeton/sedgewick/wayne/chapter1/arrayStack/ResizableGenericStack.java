@@ -1,13 +1,11 @@
-package org.princeton.sedgewick.wayne.chapter1;
+package org.princeton.sedgewick.wayne.chapter1.arrayStack;
 
-import java.util.Iterator;
-
-public class IterableResizableGenericStack<Item> implements Iterable<Item> {
+public class ResizableGenericStack<Item> {
 
     private int N;
     private Item[] arr;
 
-    public IterableResizableGenericStack() {
+    public ResizableGenericStack() {
         arr = (Item[]) new Object[4];
     }
 
@@ -19,6 +17,7 @@ public class IterableResizableGenericStack<Item> implements Iterable<Item> {
     }
 
     private void resize(int newLength) {
+        System.out.println("Resize to capacity: " + newLength);
         Item[] temp = (Item[]) new Object[newLength];
         System.arraycopy(arr, 0, temp, 0, N);
         arr = temp;
@@ -41,31 +40,11 @@ public class IterableResizableGenericStack<Item> implements Iterable<Item> {
     public int size() {
         return N;
     }
-
-    @Override
-    public Iterator<Item> iterator() {
-        return new ReverseStackIterator();
-    }
-
-    private class ReverseStackIterator implements Iterator<Item> {
-
-        int i = N;
-
-        @Override
-        public boolean hasNext() {
-            return i > 0;
-        }
-
-        @Override
-        public Item next() {
-            return arr[--i];
-        }
-    }
 }
 
-class TestIterableResizableGenericStack {
+class TestResizableFixedCapacityStack {
     public static void main(String[] args) {
-        IterableResizableGenericStack<Integer> stack = new IterableResizableGenericStack<>();
+        ResizableGenericStack<Integer> stack = new ResizableGenericStack<>();
         stack.push(10);
         stack.push(9);
         stack.push(8);
@@ -76,18 +55,21 @@ class TestIterableResizableGenericStack {
         stack.push(3);
         stack.push(2);
         stack.push(1);
+        //Resize to capacity: 8
+        //Resize to capacity: 16
 
-        for (Integer integer : stack)
-            System.out.println(integer);
-        //1
-        //2
-        //3
-        //4
-        //5
-        //6
-        //7
-        //8
-        //9
-        //10
+        System.out.println(stack.pop()); // 1
+        System.out.println(stack.pop()); // 2
+        System.out.println(stack.pop()); // 3
+        System.out.println(stack.pop()); // 4
+        System.out.println(stack.pop()); // 5
+        //Resize to capacity: 8
+        System.out.println(stack.pop()); // 6
+        System.out.println(stack.pop()); // 7
+        //Resize to capacity: 4
+        System.out.println(stack.pop()); // 8
+        //Resize to capacity: 2
+        System.out.println(stack.pop()); // 9
+        System.out.println(stack.pop()); // 10
     }
 }
