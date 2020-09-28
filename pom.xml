@@ -14,4 +14,15 @@
         <maven.compiler.source>11</maven.compiler.source>
     </properties>
 
+
+    <dependencies>
+        <dependency>
+            <groupId>edu.princeton.cs</groupId>
+            <artifactId>algs4</artifactId>
+            <version>1.0.4</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/algs4.jar</systemPath>
+        </dependency>
+    </dependencies>
+
 </project>
