@@ -18,6 +18,14 @@ public class FixedCapacityStack {
     public String pop() {
         return arr[--N];
     }
+
+    public boolean isEmpty() {
+        return N == 0;
+    }
+
+    public int size() {
+        return N;
+    }
 }
 
 class Test {
