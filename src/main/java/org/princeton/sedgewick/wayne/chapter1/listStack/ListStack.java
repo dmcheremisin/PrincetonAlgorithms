@@ -94,6 +94,7 @@ class TestStack {
         System.out.println(stack.pop()); // 8
         System.out.println(stack.pop()); // 9
         System.out.println(stack.pop()); // 10
+        System.out.println(stack.pop()); // null
 
     }
 }
