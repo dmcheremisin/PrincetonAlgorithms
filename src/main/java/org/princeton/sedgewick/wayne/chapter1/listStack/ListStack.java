@@ -7,6 +7,15 @@ public class ListStack<Item> implements Iterable<Item> {
     private Node head;
     private int size = 0;
 
+    private class Node {
+        Item value;
+        Node next;
+
+        public Node(Item value) {
+            this.value = value;
+        }
+    }
+
     public boolean isEmpty() {
         return head == null;
     }
@@ -36,15 +45,6 @@ public class ListStack<Item> implements Iterable<Item> {
     @Override
     public Iterator<Item> iterator() {
         return new ListStackIterator();
-    }
-
-    private class Node {
-        Item value;
-        Node next;
-
-        public Node(Item value) {
-            this.value = value;
-        }
     }
 
     private class ListStackIterator implements Iterator<Item> {
