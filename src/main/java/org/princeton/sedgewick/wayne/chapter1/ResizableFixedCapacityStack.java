@@ -24,10 +24,13 @@ public class ResizableFixedCapacityStack<Item> {
     }
 
     public Item pop() {
-        if (N == arr.length / 4)
+        Item item = arr[--N];
+        arr[N] = null;
+
+        if (N > 0 && N == arr.length / 4)
             resize(arr.length / 2);
 
-        return arr[--N];
+        return item;
     }
 
     public boolean isEmpty() {
@@ -60,13 +63,13 @@ class TestResizableFixedCapacityStack {
         System.out.println(stack.pop()); // 3
         System.out.println(stack.pop()); // 4
         System.out.println(stack.pop()); // 5
-        System.out.println(stack.pop()); // 6
         //Resize to capacity: 8
+        System.out.println(stack.pop()); // 6
         System.out.println(stack.pop()); // 7
-        System.out.println(stack.pop()); // 8
         //Resize to capacity: 4
-        System.out.println(stack.pop()); // 9
+        System.out.println(stack.pop()); // 8
         //Resize to capacity: 2
+        System.out.println(stack.pop()); // 9
         System.out.println(stack.pop()); // 10
     }
 }
