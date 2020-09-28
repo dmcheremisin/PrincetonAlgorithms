@@ -1,11 +1,11 @@
 package org.princeton.sedgewick.wayne.chapter1;
 
-public class ResizableFixedCapacityStack<Item> {
+public class ResizableGenericStack<Item> {
 
     private int N;
     private Item[] arr;
 
-    public ResizableFixedCapacityStack() {
+    public ResizableGenericStack() {
         arr = (Item[]) new Object[4];
     }
 
@@ -44,7 +44,7 @@ public class ResizableFixedCapacityStack<Item> {
 
 class TestResizableFixedCapacityStack {
     public static void main(String[] args) {
-        ResizableFixedCapacityStack<Integer> stack = new ResizableFixedCapacityStack<>();
+        ResizableGenericStack<Integer> stack = new ResizableGenericStack<>();
         stack.push(10);
         stack.push(9);
         stack.push(8);
