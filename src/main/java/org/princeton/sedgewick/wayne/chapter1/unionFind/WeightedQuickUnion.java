@@ -79,7 +79,7 @@ class WeightedQuickUnionTest {
         //Union p = 16; q = 18
         //Union p = 11; q = 5
 
-        IntStream.range(0, N).forEach(i -> System.out.printf("%1$3s", i));
+        IntStream.range(0, N).forEach(i -> System.out.printf("%1$3d", i));
         System.out.println();
         Arrays.stream(quickUnion.id).forEach(i -> System.out.printf("%1$3d", i));
         System.out.println();
