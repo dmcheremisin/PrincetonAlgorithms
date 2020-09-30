@@ -1,16 +1,15 @@
 package org.princeton.sedgewick.wayne.chapter1.challenge;
 
-import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-    private int N;
-    private int fictiveTop;
-    private int fictiveBottom;
-    private boolean[] openSites;
-    private int openCounter = 0;
-    private WeightedQuickUnionUF uf;
+    private final int N;
+    private final int fictiveTop;
+    private final int fictiveBottom;
+    private final boolean[] openSites;
+    private int openCounter;
+    private final WeightedQuickUnionUF uf;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
@@ -19,7 +18,6 @@ public class Percolation {
 
         N = n;
         int size = n * n;
-        int length = size + 2; // 2 additional elements are fictive
         fictiveTop = size;
         fictiveBottom = size + 1;
 
@@ -27,7 +25,7 @@ public class Percolation {
         for (int i = 0; i < size; i++)
             openSites[i] = false;
 
-        uf = new WeightedQuickUnionUF(length);
+        uf = new WeightedQuickUnionUF(size + 2); // with 2 fictive sites(top & bottom)
 
         for (int i = 0; i < N; i++) // connect fictive top
             uf.union(fictiveTop, i);
@@ -39,23 +37,6 @@ public class Percolation {
 
     // test client (optional)
     public static void main(String[] args) {
-        int N = 7;
-        Percolation percolation = getUntilPercolates(N);
-        System.out.println(percolation.numberOfOpenSites());
-        System.out.println(N * N);
-        System.out.println(percolation.numberOfOpenSites() * 100 / (N * N));
-    }
-
-    public static Percolation getUntilPercolates(int n) {
-        Percolation percolation = new Percolation(n);
-
-        while (!percolation.percolates()) {
-            int row = StdRandom.uniform(n);
-            int col = StdRandom.uniform(n);
-            percolation.open(row, col);
-        }
-
-        return percolation;
     }
 
     // opens the site (row, col) if it is not open already

@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.chapter1.arrayStack;
+package org.princeton.sedgewick.wayne.chapter1.containers.stack.array;
 
 import edu.princeton.cs.algs4.StdOut;
 
@@ -23,7 +23,7 @@ public class GenericFixedCapacityStack<Item> {
         return N == 0;
     }
 
-    public int size() {
+    public int getSize() {
         return N;
     }
 }

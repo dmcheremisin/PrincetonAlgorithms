@@ -1,26 +1,18 @@
-package org.princeton.sedgewick.wayne.chapter1.listStack;
+package org.princeton.sedgewick.wayne.chapter1.containers.stack.list;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ListStack<Item> implements Iterable<Item> {
 
     private Node head;
-    private int size = 0;
-
-    private class Node {
-        Item value;
-        Node next;
-
-        public Node(Item value) {
-            this.value = value;
-        }
-    }
+    private int size;
 
     public boolean isEmpty() {
         return head == null;
     }
 
-    public int size() {
+    public int getSize() {
         return size;
     }
 
@@ -47,6 +39,15 @@ public class ListStack<Item> implements Iterable<Item> {
         return new ListStackIterator();
     }
 
+    private class Node {
+        Item value;
+        Node next;
+
+        Node(Item value) {
+            this.value = value;
+        }
+    }
+
     private class ListStackIterator implements Iterator<Item> {
 
         Node current = head;
@@ -58,6 +59,9 @@ public class ListStack<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
+            if (current == null)
+                throw new NoSuchElementException("No next element");
+
             Item next = current.value;
             current = current.next;
             return next;

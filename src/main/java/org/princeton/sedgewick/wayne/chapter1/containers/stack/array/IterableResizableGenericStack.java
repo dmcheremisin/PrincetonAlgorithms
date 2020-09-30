@@ -1,6 +1,7 @@
-package org.princeton.sedgewick.wayne.chapter1.arrayStack;
+package org.princeton.sedgewick.wayne.chapter1.containers.stack.array;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class IterableResizableGenericStack<Item> implements Iterable<Item> {
 
@@ -38,7 +39,7 @@ public class IterableResizableGenericStack<Item> implements Iterable<Item> {
         return N == 0;
     }
 
-    public int size() {
+    public int getSize() {
         return N;
     }
 
@@ -58,6 +59,9 @@ public class IterableResizableGenericStack<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
+            if (i < 0)
+                throw new NoSuchElementException("No next element");
+
             return arr[--i];
         }
     }

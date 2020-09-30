@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.chapter1.unionFind;
+package org.princeton.sedgewick.wayne.chapter1.unionfind;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -52,9 +52,10 @@ class WeightedQuickUnionTest {
     public static void main(String[] args) {
         int N = 20;
         WeightedQuickUnion quickUnion = new WeightedQuickUnion(N);
+        Random random = new Random();
         for (int i = 0; i < N; i++) {
-            int p = new Random().nextInt(N);
-            int q = new Random().nextInt(N);
+            int p = random.nextInt(N);
+            int q = random.nextInt(N);
             System.out.println("Union p = " + p + "; q = " + q);
             quickUnion.union(p, q);
         }

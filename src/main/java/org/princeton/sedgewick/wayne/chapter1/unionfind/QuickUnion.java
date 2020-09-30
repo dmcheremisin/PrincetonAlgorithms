@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.chapter1.unionFind;
+package org.princeton.sedgewick.wayne.chapter1.unionfind;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -37,9 +37,10 @@ class QuickUnionTest {
     public static void main(String[] args) {
         int N = 10;
         QuickUnion quickUnion = new QuickUnion(N);
+        Random random = new Random();
         for (int i = 0; i < 5; i++) {
-            int p = new Random().nextInt(N);
-            int q = new Random().nextInt(N);
+            int p = random.nextInt(N);
+            int q = random.nextInt(N);
             System.out.println("Union p = " + p + "; q = " + q);
             quickUnion.union(p, q);
         }

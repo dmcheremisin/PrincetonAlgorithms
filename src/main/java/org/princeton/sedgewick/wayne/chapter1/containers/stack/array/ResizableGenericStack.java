@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.chapter1.arrayStack;
+package org.princeton.sedgewick.wayne.chapter1.containers.stack.array;
 
 public class ResizableGenericStack<Item> {
 
@@ -37,7 +37,7 @@ public class ResizableGenericStack<Item> {
         return N == 0;
     }
 
-    public int size() {
+    public int getSize() {
         return N;
     }
 }

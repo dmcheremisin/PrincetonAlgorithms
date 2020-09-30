@@ -1,18 +1,19 @@
-package org.princeton.sedgewick.wayne.chapter1.queue;
+package org.princeton.sedgewick.wayne.chapter1.containers.queue;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ListQueue<Item> implements Iterable<Item> {
 
     private Node first;
     private Node last;
-    private int size = 0;
+    private int size;
 
     public boolean isEmpty() {
         return first == null;
     }
 
-    public int size() {
+    public int getSize() {
         return size;
     }
 
@@ -52,7 +53,7 @@ public class ListQueue<Item> implements Iterable<Item> {
         Item value;
         Node next;
 
-        public Node(Item value) {
+        Node(Item value) {
             this.value = value;
         }
     }
@@ -68,6 +69,9 @@ public class ListQueue<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
+            if (current == null)
+                throw new NoSuchElementException("No next element");
+
             Item next = current.value;
             current = current.next;
             return next;

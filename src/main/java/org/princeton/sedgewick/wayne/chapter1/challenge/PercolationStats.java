@@ -1,11 +1,12 @@
 package org.princeton.sedgewick.wayne.chapter1.challenge;
 
+import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
 
-    private int T;
-    private double[] openSites;
+    private final int T;
+    private final double[] openSites;
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
@@ -16,10 +17,23 @@ public class PercolationStats {
         double size = n * n;
         openSites = new double[T];
         for (int i = 0; i < T; i++) {
-            Percolation percolation = Percolation.getUntilPercolates(n);
+            Percolation percolation = getUntilPercolates(n);
             openSites[i] = percolation.numberOfOpenSites() / size;
         }
     }
+
+    private Percolation getUntilPercolates(int n) {
+        Percolation percolation = new Percolation(n);
+
+        while (!percolation.percolates()) {
+            int row = StdRandom.uniform(n);
+            int col = StdRandom.uniform(n);
+            percolation.open(row, col);
+        }
+
+        return percolation;
+    }
+
 
     // test client (see below)
     public static void main(String[] args) {

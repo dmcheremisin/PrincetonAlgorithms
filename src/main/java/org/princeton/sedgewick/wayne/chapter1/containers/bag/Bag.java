@@ -1,19 +1,11 @@
-package org.princeton.sedgewick.wayne.chapter1.bag;
+package org.princeton.sedgewick.wayne.chapter1.containers.bag;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Bag<Item> implements Iterable<Item> {
 
     private Node first;
-
-    private class Node {
-        Item value;
-        Node next;
-
-        public Node(Item value) {
-            this.value = value;
-        }
-    }
 
     public void add(Item item) {
         Node newFirst = new Node(item);
@@ -24,6 +16,15 @@ public class Bag<Item> implements Iterable<Item> {
     @Override
     public Iterator<Item> iterator() {
         return new ListStackIterator();
+    }
+
+    private class Node {
+        Item value;
+        Node next;
+
+        Node(Item value) {
+            this.value = value;
+        }
     }
 
     private class ListStackIterator implements Iterator<Item> {
@@ -37,6 +38,9 @@ public class Bag<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
+            if (current == null)
+                throw new NoSuchElementException("No next element");
+
             Item next = current.value;
             current = current.next;
             return next;
