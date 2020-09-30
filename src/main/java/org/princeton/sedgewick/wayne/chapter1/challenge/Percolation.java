@@ -36,24 +36,31 @@ public class Percolation {
 
     // test client (optional)
     public static void main(String[] args) {
+        Percolation percolation = new Percolation(5);
+        percolation.open(1, 3);
+        System.out.println(percolation.isFull(1, 3)); // true
+        percolation.open(2, 3);
+        System.out.println(percolation.isFull(2, 3)); // true
+        System.out.println(percolation.isFull(3, 3)); // false
     }
 
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
         if (isOpen(row, col))
             return;
+
         row--;
         col--;
 
         int index = getIndex(row, col);
 
-        if (row - 1 > 0 && getOpen(row - 1, col)) // top
+        if (row - 1 >= 0 && getOpen(row - 1, col)) // top
             uf.union(index, getIndex(row - 1, col));
 
         if (row + 1 < N && getOpen(row + 1, col)) // bottom
             uf.union(index, getIndex(row + 1, col));
 
-        if (col - 1 > 0 && getOpen(row, col - 1)) // left
+        if (col - 1 >= 0 && getOpen(row, col - 1)) // left
             uf.union(index, getIndex(row, col - 1));
 
         if (col + 1 < N && getOpen(row, col + 1)) // right
@@ -80,8 +87,12 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        checkIndex(row - 1, col - 1);
-        return false; // I don't need this method
+        row--;
+        col--;
+        if (!getOpen(row, col))
+            return false;
+
+        return uf.connected(getIndex(row, col), fictiveTop);
     }
 
     // returns the number of open sites
