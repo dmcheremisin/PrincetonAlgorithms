@@ -27,8 +27,8 @@ public class PercolationStats {
         Percolation percolation = new Percolation(n);
 
         while (!percolation.percolates()) {
-            int row = StdRandom.uniform(n);
-            int col = StdRandom.uniform(n);
+            int row = 1 + StdRandom.uniform(n);
+            int col = 1 + StdRandom.uniform(n);
             percolation.open(row, col);
         }
 
