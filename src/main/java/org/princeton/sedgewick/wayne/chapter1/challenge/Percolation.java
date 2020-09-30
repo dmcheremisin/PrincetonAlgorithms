@@ -46,13 +46,16 @@ public class Percolation {
 
         int index = getIndex(row, col);
 
-        if (row - 1 > 0 && isOpen(getIndex(row - 1, col))) // top
+        if (row - 1 > 0 && isOpen(row - 1, col)) // top
             uf.union(index, getIndex(row - 1, col));
-        if (row + 1 < N && isOpen(getIndex(row + 1, col))) // bottom
+
+        if (row + 1 < N && isOpen(row + 1, col)) // bottom
             uf.union(index, getIndex(row + 1, col));
-        if (col - 1 > 0 && isOpen(getIndex(row, col - 1))) // left
+
+        if (col - 1 > 0 && isOpen(row, col - 1)) // left
             uf.union(index, getIndex(row, col - 1));
-        if (col + 1 < N && isOpen(getIndex(row, col + 1))) // right
+
+        if (col + 1 < N && isOpen(row, col + 1)) // right
             uf.union(index, getIndex(row, col + 1));
 
         openSites[index] = true;
@@ -65,16 +68,13 @@ public class Percolation {
 
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
-        return openSites[getIndex(row, col)];
-    }
-
-    private boolean isOpen(int index) {
+        int index = getIndex(row, col);
         return openSites[index];
     }
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        return false;
+        return false; // I don't need this method
     }
 
     // returns the number of open sites
