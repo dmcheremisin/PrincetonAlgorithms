@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.chapter1.containers.stack.list;
+package org.princeton.sedgewick.wayne.week2.containers.stack.list;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

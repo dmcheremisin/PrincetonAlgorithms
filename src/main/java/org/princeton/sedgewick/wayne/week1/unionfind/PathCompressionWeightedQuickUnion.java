@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.chapter1.unionfind;
+package org.princeton.sedgewick.wayne.week1.unionfind;
 
 import java.util.Arrays;
 import java.util.Random;

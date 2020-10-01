@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.chapter1.containers.bag;
+package org.princeton.sedgewick.wayne.week2.containers.bag;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

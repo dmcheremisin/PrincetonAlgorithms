@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.chapter1.challenge;
+package org.princeton.sedgewick.wayne.week1.challenge;
 
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;

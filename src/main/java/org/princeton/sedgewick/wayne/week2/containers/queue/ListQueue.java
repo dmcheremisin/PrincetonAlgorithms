@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.chapter1.containers.queue;
+package org.princeton.sedgewick.wayne.week2.containers.queue;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

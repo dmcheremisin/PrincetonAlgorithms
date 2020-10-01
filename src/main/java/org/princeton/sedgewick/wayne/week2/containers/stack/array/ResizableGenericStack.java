@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.chapter1.containers.stack.array;
+package org.princeton.sedgewick.wayne.week2.containers.stack.array;
 
 public class ResizableGenericStack<Item> {
 
