@@ -93,7 +93,8 @@ public class Deque<Item> implements Iterable<Item> {
         final Item firstValue = first.value;
 
         first = first.next;
-        first.previous = null;
+        if (first != null)
+            first.previous = null;
 
         length--;
 
@@ -105,8 +106,12 @@ public class Deque<Item> implements Iterable<Item> {
         checkSize();
 
         final Item lastValue = last.value;
+
         last = last.previous;
-        last.next = null;
+        if (last == null)
+            first = null;
+        else
+            last.next = null;
 
         length--;
 
