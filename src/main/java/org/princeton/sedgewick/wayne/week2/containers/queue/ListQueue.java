@@ -3,11 +3,21 @@ package org.princeton.sedgewick.wayne.week2.containers.queue;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ListQueue<Item> implements Iterable<Item> {
+public class ListQueue<Item> implements Iterable<Item> { // 16 as object
+     /*
+     Memory usage:
+     ListQueue object = 16
+     Inner references(first,last,size) = 24
+     Inner class Node = 40N
+     Inner class ListStackIterator = 32
+     ------------------------
+     total: 72 + 40N
+     */
 
-    private Node first;
-    private Node last;
-    private int size;
+    private Node first; // 8
+    private Node last; // 8
+    private int size; // 4(int size) + 4(addition to dividable by 8) = 8
+    // total 24
 
     public boolean isEmpty() {
         return first == null;
@@ -49,18 +59,18 @@ public class ListQueue<Item> implements Iterable<Item> {
         return new ListStackIterator();
     }
 
-    private class Node {
-        Item value;
-        Node next;
+    private class Node { // 16(object) + 8(as inner class) + 8 + 8 = 40
+        Item value; // 8
+        Node next; // 8
 
         Node(Item value) {
             this.value = value;
         }
     }
 
-    private class ListStackIterator implements Iterator<Item> {
+    private class ListStackIterator implements Iterator<Item> { // 16(object) + 8(inner class) + 8(ref) = 32
 
-        Node current = first;
+        Node current = first; // 8
 
         @Override
         public boolean hasNext() {

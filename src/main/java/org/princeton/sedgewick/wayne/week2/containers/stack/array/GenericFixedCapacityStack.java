@@ -2,10 +2,18 @@ package org.princeton.sedgewick.wayne.week2.containers.stack.array;
 
 import edu.princeton.cs.algs4.StdOut;
 
-public class GenericFixedCapacityStack<Item> {
+public class GenericFixedCapacityStack<Item> { //  // 16 as object
+    /*
+    Memory usage:
+    GenericFixedCapacityStack = 16
+    Inner structure: 24 + 8N
+    -------------
+    Total: 40 + 8N
+     */
 
-    private int N;
-    private Item[] arr;
+    private int N; // 4(int size) + 4(addition to dividable by 8) = 8
+    private Item[] arr;  // 24(as array) + 8N(references to objects String) = 24 + 8N
+    // total: 24 + 8N
 
     public GenericFixedCapacityStack(int capacity) {
         arr = (Item[]) new Object[capacity];
