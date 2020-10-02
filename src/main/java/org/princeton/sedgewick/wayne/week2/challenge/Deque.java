@@ -7,11 +7,13 @@ public class Deque<Item> implements Iterable<Item> {
 
     private Node first; // 8
     private Node last; // 8
-    private int size; // 4(int size) + 4(addition to dividable by 8) = 8
+    private int length; // 4(int size) + 4(addition to dividable by 8) = 8
     // total 24
 
     // construct an empty deque
     public Deque() {
+        first = last = null;
+        length = 0;
     }
 
     // unit testing (required)
@@ -39,7 +41,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // return the number of items on the deque
     public int size() {
-        return size;
+        return length;
     }
 
     private void checkItem(Item item) {
@@ -65,7 +67,7 @@ public class Deque<Item> implements Iterable<Item> {
             first = newFirst;
         }
 
-        size++;
+        length++;
     }
 
     // add the item to the back
@@ -81,19 +83,19 @@ public class Deque<Item> implements Iterable<Item> {
             last = newLast;
         }
 
-        size++;
+        length++;
     }
 
     // remove and return the item from the front
     public Item removeFirst() {
         checkSize();
 
-        Item firstValue = first.value;
+        final Item firstValue = first.value;
 
         first = first.next;
         first.previous = null;
 
-        size--;
+        length--;
 
         return firstValue;
     }
@@ -102,16 +104,17 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeLast() {
         checkSize();
 
-        Item lastValue = last.value;
+        final Item lastValue = last.value;
         last = last.previous;
         last.next = null;
 
-        size--;
+        length--;
 
         return lastValue;
     }
 
     // return an iterator over items in order from front to back
+    @Override
     public Iterator<Item> iterator() {
         return new DequeIterator();
     }

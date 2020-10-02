@@ -12,7 +12,7 @@ public class GenericFixedCapacityStack<Item> { //  // 16 as object
      */
 
     private int N; // 4(int size) + 4(addition to dividable by 8) = 8
-    private Item[] arr;  // 24(as array) + 8N(references to objects String) = 24 + 8N
+    private Item[] arr; // 24(as array) + 8N(references to objects String) = 24 + 8N
     // total: 24 + 8N
 
     public GenericFixedCapacityStack(int capacity) {

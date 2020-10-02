@@ -137,7 +137,9 @@
         <module name="StringLiteralEquality"/>
         <module name="SuperClone"/>
         <module name="UnnecessaryParentheses"/>
-        <module name="VariableDeclarationUsageDistance"/>
+        <module name="VariableDeclarationUsageDistance">
+            <property name="allowedDistance" value="5"/>
+        </module>
 
         <!--
             Headers
