@@ -12,7 +12,7 @@ public class InsertionSort {
             System.out.println(str);
     }
 
-    public static void sort(Comparable[] arr) {
+    public static void sort(Comparable... arr) {
         int length = arr.length;
         for (int i = 1; i < length; i++) {
             for (int j = i; j > 0 && less(arr[j], arr[j - 1]); j--)
