@@ -17,12 +17,12 @@ public class BottomUpMergeSort {
         //0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
     }
 
-    public static void sort(Comparable[] a) {
-        int length = a.length;
+    public static void sort(Comparable[] arr) {
+        int length = arr.length;
         aux = new Comparable[length];
-        for (int sz = 1; sz < length; sz = sz + sz) // sz: subarray size
-            for (int lo = 0; lo < length - sz; lo += sz + sz) // lo: subarray index
-                merge(a, lo, lo + sz - 1, Math.min(lo + sz + sz - 1, length - 1));
+        for (int sz = 1; sz < length; sz = sz + sz)
+            for (int lo = 0; lo < length - sz; lo += sz * 2)
+                merge(arr, lo, lo + sz - 1, Math.min(lo + sz + sz - 1, length - 1));
     }
 
     private static void merge(Comparable[] arr, int lo, int mid, int hi) {
