@@ -18,11 +18,11 @@ public class BottomUpMergeSort {
     }
 
     public static void sort(Comparable[] a) {
-        int N = a.length;
-        aux = new Comparable[N];
-        for (int sz = 1; sz < N; sz = sz + sz) // sz: subarray size
-            for (int lo = 0; lo < N - sz; lo += sz + sz) // lo: subarray index
-                merge(a, lo, lo + sz - 1, Math.min(lo + sz + sz - 1, N - 1));
+        int length = a.length;
+        aux = new Comparable[length];
+        for (int sz = 1; sz < length; sz = sz + sz) // sz: subarray size
+            for (int lo = 0; lo < length - sz; lo += sz + sz) // lo: subarray index
+                merge(a, lo, lo + sz - 1, Math.min(lo + sz + sz - 1, length - 1));
     }
 
     private static void merge(Comparable[] arr, int lo, int mid, int hi) {
