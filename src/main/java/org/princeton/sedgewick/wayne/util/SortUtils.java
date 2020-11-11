@@ -1,5 +1,7 @@
 package org.princeton.sedgewick.wayne.util;
 
+import java.util.Random;
+
 import static edu.princeton.cs.algs4.StdRandom.shuffle;
 
 public class SortUtils {
@@ -24,11 +26,18 @@ public class SortUtils {
     }
 
     public static Integer[] permutation(int n) {
-        if (n < 0) throw new IllegalArgumentException("argument is negative");
         Integer[] perm = new Integer[n];
         for (int i = 0; i < n; i++)
             perm[i] = i;
         shuffle(perm);
+        return perm;
+    }
+
+    public static int[] randomArr(int number, int bound) {
+        Random random = new Random();
+        int[] perm = new int[number];
+        for (int i = 0; i < number; i++)
+            perm[i] = random.nextInt(bound);
         return perm;
     }
 

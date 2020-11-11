@@ -1,27 +1,28 @@
 package org.princeton.sedgewick.wayne.week3.challenge;
 
-import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
+import org.princeton.sedgewick.wayne.util.SortUtils;
 
 public class TestBruteCollinearPoints {
 
+    public static final int BOUND = 32768;
+
     public static void main(String[] args) {
 
-        // read the n points from a file
-        In in = new In(args[0]);
-        int n = in.readInt();
-        Point[] points = new Point[n];
-        for (int i = 0; i < n; i++) {
-            int x = in.readInt();
-            int y = in.readInt();
-            points[i] = new Point(x, y);
+        int number = 50;
+        int[] pointsCoordinates = SortUtils.randomArr(number, BOUND);
+        Point[] points = new Point[number / 2];
+        for (int i = 0; i < number; i += 2) {
+            int x = pointsCoordinates[i];
+            int y = pointsCoordinates[i + 1];
+            points[i/2] = new Point(x, y);
         }
 
         // draw the points
         StdDraw.enableDoubleBuffering();
-        StdDraw.setXscale(0, 32768);
-        StdDraw.setYscale(0, 32768);
+        StdDraw.setXscale(0, BOUND);
+        StdDraw.setYscale(0, BOUND);
         for (Point p : points) {
             p.draw();
         }
