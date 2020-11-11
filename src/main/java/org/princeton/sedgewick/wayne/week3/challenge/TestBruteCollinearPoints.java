@@ -10,7 +10,7 @@ public class TestBruteCollinearPoints {
 
     public static void main(String[] args) {
 
-        int number = 50;
+        int number = 20000;
         int[] pointsCoordinates = SortUtils.randomArr(number, BOUND);
         Point[] points = new Point[number / 2];
         for (int i = 0; i < number; i += 2) {

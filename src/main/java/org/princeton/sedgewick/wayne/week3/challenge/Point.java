@@ -1,8 +1,8 @@
 package org.princeton.sedgewick.wayne.week3.challenge;
 
-import java.util.Comparator;
-
 import edu.princeton.cs.algs4.StdDraw;
+
+import java.util.Comparator;
 
 public class Point implements Comparable<Point> {
 
@@ -52,7 +52,7 @@ public class Point implements Comparable<Point> {
      * @return the slope between this point and the specified point
      */
     public double slopeTo(Point that) {
-        return (that.y - this.y) / (that.x - this.x);
+        return (that.y - this.y + 0.0) / (that.x - this.x);
     }
 
     /**
