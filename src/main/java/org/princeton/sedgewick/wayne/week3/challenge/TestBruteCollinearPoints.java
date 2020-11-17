@@ -18,10 +18,10 @@ public class TestBruteCollinearPoints {
             int y = pointsCoordinates[i + 1];
             points[i / 2] = new Point(x, y);
         }
-        points[10] = new Point(0, 0);
-        points[15] = new Point(1000, 1000);
-        points[24] = new Point(2000, 2000);
-        points[35] = new Point(3000, 3000);
+        points[10] = new Point(1000, 1000);
+        points[15] = new Point(2000, 2000);
+        points[24] = new Point(3000, 3000);
+        points[35] = new Point(4000, 4000);
         points[6] = new Point(5000, 7000);
         points[18] = new Point(10000, 14000);
         points[29] = new Point(15000, 21000);

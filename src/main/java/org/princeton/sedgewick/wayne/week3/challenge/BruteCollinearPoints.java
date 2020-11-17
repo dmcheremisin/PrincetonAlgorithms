@@ -10,18 +10,43 @@ public class BruteCollinearPoints {
     private final List<LineSegment> segmentsList = new ArrayList<>();
 
     public BruteCollinearPoints(Point[] points) { // finds all line segments containing 4 points
+        checkPoints(points);
+        addLineSegments(points);
+    }
+
+    private void addLineSegments(Point[] points) {
         int length = points.length;
         for (int i = 0; i < length - 3; i++) {
             for (int j = i + 1; j < length - 2; j++) {
                 for (int k = j + 1; k < length - 1; k++) {
                     for (int l = k + 1; l < length; l++) {
-                        if (checkCollinear(points, i, j, k, l)) {
-                            segmentsList.add(new LineSegment(points[i], points[l]));
-                        }
+                        addLineSegment(points, i, j, k, l);
                     }
                 }
             }
         }
+    }
+
+    private void checkPoints(Point[] points) {
+        if (points == null)
+            throw new IllegalArgumentException("Points should not be null");
+        for (Point point : points) {
+            if (point == null)
+                throw new IllegalArgumentException("Point should not be null");
+        }
+        for (int i = 0; i < points.length - 1; i++) {
+            for (int j = i + 1; j < points.length; j++) {
+                Point point1 = points[i];
+                Point point2 = points[j];
+                if (point1.compareTo(point2) == 0)
+                    throw new IllegalArgumentException("Points should be unique");
+            }
+        }
+    }
+
+    private void addLineSegment(Point[] points, int i, int j, int k, int l) {
+        if (checkCollinear(points, i, j, k, l))
+            segmentsList.add(new LineSegment(points[i], points[l]));
     }
 
     private boolean checkCollinear(Point[] points, int i, int j, int k, int l) {
