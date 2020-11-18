@@ -5,7 +5,7 @@ import java.util.List;
 
 public class FastCollinearPoints {
 
-    final double THRESHOLD = .0001;
+    private static final double THRESHOLD = .0001;
 
     private final List<LineSegment> segmentsList = new ArrayList<>();
 

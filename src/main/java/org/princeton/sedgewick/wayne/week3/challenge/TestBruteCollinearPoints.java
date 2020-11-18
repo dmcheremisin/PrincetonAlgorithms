@@ -4,6 +4,7 @@ import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 import org.princeton.sedgewick.wayne.util.SortUtils;
 
+
 public class TestBruteCollinearPoints {
 
     public static final int BOUND = 32768;
@@ -64,7 +65,6 @@ public class TestBruteCollinearPoints {
         points[10] = new Point(19000, 10000);
         points[15] = new Point(18000, 10000);
         points[24] = new Point(32000, 10000);
-        points[5] = new Point(21000, 10000);
         points[6] = new Point(1234, 5678);
         points[29] = new Point(14000, 10000);
     }

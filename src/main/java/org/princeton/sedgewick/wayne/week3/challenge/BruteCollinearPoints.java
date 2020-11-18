@@ -5,7 +5,7 @@ import java.util.List;
 
 public class BruteCollinearPoints {
 
-    final double THRESHOLD = .0001;
+    private static final double THRESHOLD = .00001;
 
     private final List<LineSegment> segmentsList = new ArrayList<>();
 
@@ -17,10 +17,12 @@ public class BruteCollinearPoints {
     private void checkPoints(Point[] points) {
         if (points == null)
             throw new IllegalArgumentException("Points should not be null");
+
         for (Point point : points) {
             if (point == null)
                 throw new IllegalArgumentException("Point should not be null");
         }
+
         for (int i = 0; i < points.length - 1; i++) {
             for (int j = i + 1; j < points.length; j++) {
                 Point point1 = points[i];
@@ -63,7 +65,7 @@ public class BruteCollinearPoints {
                 max = arr[i];
         }
 
-        return new int[]{min, max};
+        return new int[] {min, max};
     }
 
     private boolean checkCollinear(Point[] points, int i, int j, int k, int l) {
