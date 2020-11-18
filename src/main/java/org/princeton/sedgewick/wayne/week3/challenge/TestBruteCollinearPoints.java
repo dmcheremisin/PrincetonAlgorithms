@@ -19,7 +19,7 @@ public class TestBruteCollinearPoints {
             int y = pointsCoordinates[i + 1];
             points[i / 2] = new Point(x, y);
         }
-        addSet3(points);
+        addSet1(points);
 
         // draw the points
         StdDraw.enableDoubleBuffering();

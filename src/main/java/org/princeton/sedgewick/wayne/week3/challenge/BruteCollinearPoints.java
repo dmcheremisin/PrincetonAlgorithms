@@ -1,6 +1,7 @@
 package org.princeton.sedgewick.wayne.week3.challenge;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BruteCollinearPoints {
@@ -34,6 +35,7 @@ public class BruteCollinearPoints {
     }
 
     private void addLineSegments(Point[] points) {
+        Arrays.sort(points);
         int length = points.length;
         for (int i = 0; i < length - 3; i++) {
             for (int j = i + 1; j < length - 2; j++) {
@@ -48,24 +50,8 @@ public class BruteCollinearPoints {
 
     private void addLineSegment(Point[] points, int i, int j, int k, int l) {
         if (checkCollinear(points, i, j, k, l)) {
-            int[] maxMin = getMaxMin(points, i, j, k, l);
-            segmentsList.add(new LineSegment(points[maxMin[0]], points[maxMin[1]]));
+            segmentsList.add(new LineSegment(points[i], points[l]));
         }
-    }
-
-    private int[] getMaxMin(Point[] points, int... arr) {
-        int min = arr[0];
-        int max = arr[0];
-
-        for (int i = 1; i < arr.length; i++) {
-            Point current = points[arr[i]];
-            if (current.compareTo(points[min]) < 0)
-                min = arr[i];
-            if (current.compareTo(points[max]) > 0)
-                max = arr[i];
-        }
-
-        return new int[] {min, max};
     }
 
     private boolean checkCollinear(Point[] points, int i, int j, int k, int l) {
