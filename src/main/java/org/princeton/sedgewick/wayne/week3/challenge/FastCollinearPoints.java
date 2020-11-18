@@ -1,6 +1,7 @@
 package org.princeton.sedgewick.wayne.week3.challenge;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FastCollinearPoints {
@@ -10,6 +11,7 @@ public class FastCollinearPoints {
     private final List<LineSegment> segmentsList = new ArrayList<>();
 
     public FastCollinearPoints(Point[] points) { // finds all line segments containing 4 or more points
+        Arrays.sort(points);
         checkPoints(points);
         addLineSegments(points);
     }
@@ -17,6 +19,7 @@ public class FastCollinearPoints {
     private void checkPoints(Point[] points) {
         if (points == null)
             throw new IllegalArgumentException("Points should not be null");
+
         for (Point point : points) {
             if (point == null)
                 throw new IllegalArgumentException("Point should not be null");
@@ -32,7 +35,13 @@ public class FastCollinearPoints {
     }
 
     private void addLineSegments(Point[] points) {
+        for (int i = 0; i < points.length; i++) {
+            Point current = points[i];
+            Arrays.sort(points, i + 1, points.length - 1, current.slopeOrder());
 
+            double initialSlope = current.slopeTo(points[i+1]);
+            int counter = 0;
+        }
     }
 
     private boolean slopesEqual(double first, double second) {
