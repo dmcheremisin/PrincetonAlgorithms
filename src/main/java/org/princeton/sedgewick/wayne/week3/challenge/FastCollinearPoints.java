@@ -38,7 +38,7 @@ public class FastCollinearPoints {
             Point current = points[i];
 
             System.arraycopy(points, i + 1, pointsForSort, i + 1, length - (i + 1));
-            Arrays.sort(pointsForSort, i + 1, length - 1, current.slopeOrder());
+            Arrays.sort(pointsForSort, i + 1, length, current.slopeOrder());
 
             int counter = 0;
             double slopeForCompare = current.slopeTo(pointsForSort[i + 1]);
