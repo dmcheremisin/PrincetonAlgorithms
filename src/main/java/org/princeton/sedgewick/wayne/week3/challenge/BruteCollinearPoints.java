@@ -6,7 +6,7 @@ import java.util.List;
 
 public class BruteCollinearPoints {
 
-    private static final double THRESHOLD = .00001;
+    private static final double THRESHOLD = 0.00001;
 
     private final List<LineSegment> segmentsList = new ArrayList<>();
 
