@@ -57,7 +57,7 @@ public class FastCollinearPoints {
                     slopeForCompare = nextSlope;
                 }
             }
-            if (counter >= 4)
+            if (counter >= 2)
                 segmentsList.add(new LineSegment(current, points[length - 1]));
         }
     }
