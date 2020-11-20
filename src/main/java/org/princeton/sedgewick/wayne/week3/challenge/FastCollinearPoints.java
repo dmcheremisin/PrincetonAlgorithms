@@ -58,7 +58,7 @@ public class FastCollinearPoints {
                 }
             }
             if (counter >= 2)
-                segmentsList.add(new LineSegment(current, points[length - 1]));
+                segmentsList.add(new LineSegment(current, pointsForSort[length - 1]));
         }
     }
 
