@@ -26,9 +26,7 @@ public class BruteCollinearPoints {
 
         for (int i = 0; i < points.length - 1; i++) {
             for (int j = i + 1; j < points.length; j++) {
-                Point point1 = points[i];
-                Point point2 = points[j];
-                if (point1.compareTo(point2) == 0)
+                if (points[i].compareTo(points[j]) == 0)
                     throw new IllegalArgumentException("Points should be unique");
             }
         }

@@ -26,21 +26,41 @@ public class FastCollinearPoints {
         }
         for (int i = 0; i < points.length - 1; i++) {
             for (int j = i + 1; j < points.length; j++) {
-                Point point1 = points[i];
-                Point point2 = points[j];
-                if (point1.compareTo(point2) == 0)
+                if (points[i].compareTo(points[j]) == 0)
                     throw new IllegalArgumentException("Points should be unique");
             }
         }
     }
 
     private void addLineSegments(Point[] points) {
-        for (int i = 0; i < points.length; i++) {
-            Point current = points[i];
-            Arrays.sort(points, i + 1, points.length - 1, current.slopeOrder());
+        int length = points.length;
+        Point[] pointsForSort = new Point[length];
 
-            double initialSlope = current.slopeTo(points[i+1]);
+        for (int i = 0; i < length - 2; i++) {
+            Point current = points[i];
+
+            System.arraycopy(points, i + 1, pointsForSort, i + 1, length - (i + 1));
+            Arrays.sort(pointsForSort, i + 1, length - 1, current.slopeOrder());
+
             int counter = 0;
+            double slopeForCompare = current.slopeTo(pointsForSort[i + 1]);
+            for (int j = i + 2; j < length; j++) {
+                Point next = pointsForSort[j];
+                double nextSlope = current.slopeTo(next);
+
+                if (slopesEqual(slopeForCompare, nextSlope)) {
+                    counter++;
+                } else {
+                    if (counter >= 2) {
+                        segmentsList.add(new LineSegment(current, pointsForSort[j - 1]));
+                        counter = 0;
+                    }
+
+                    slopeForCompare = nextSlope;
+                }
+            }
+            if (counter >= 4)
+                segmentsList.add(new LineSegment(current, points[length - 1]));
         }
     }
 
@@ -49,10 +69,10 @@ public class FastCollinearPoints {
     }
 
     public int numberOfSegments() { // the number of line segments
-        return 0;
+        return segmentsList.size();
     }
 
     public LineSegment[] segments() { // the line segments
-        return null;
+        return segmentsList.toArray(new LineSegment[0]);
     }
 }

@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 import org.princeton.sedgewick.wayne.util.SortUtils;
 
-public class TestBruteCollinearPoints {
+public class TestFastCollinearPoints {
 
     public static final int BOUND = 32768;
 
@@ -30,7 +30,7 @@ public class TestBruteCollinearPoints {
         StdDraw.show();
 
         // print and draw the line segments
-        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+        FastCollinearPoints collinear = new FastCollinearPoints(points);
         for (LineSegment segment : collinear.segments()) {
             StdOut.println(segment);
             segment.draw();
