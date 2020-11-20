@@ -18,7 +18,7 @@ public class TestBruteCollinearPoints {
             int y = pointsCoordinates[i + 1];
             points[i / 2] = new Point(x, y);
         }
-        addSet3(points);
+        addSet1(points);
 
         // draw the points
         StdDraw.enableDoubleBuffering();
@@ -39,7 +39,7 @@ public class TestBruteCollinearPoints {
     }
 
     private static void addSet1(Point[] points) {
-        points[10] = new Point(1000, 1000);
+        points[10] = new Point(1500, 1500);
         points[15] = new Point(2000, 2000);
         points[24] = new Point(3000, 3000);
         points[5] = new Point(4000, 4000);
@@ -47,6 +47,10 @@ public class TestBruteCollinearPoints {
         points[18] = new Point(10000, 14000);
         points[29] = new Point(15000, 21000);
         points[13] = new Point(20000, 28000);
+        points[1] = new Point(1000, 17000);
+        points[2] = new Point(1000, 27000);
+        points[3] = new Point(1000, 28000);
+        points[4] = new Point(1000, 31000);
     }
 
     private static void addSet2(Point[] points) {

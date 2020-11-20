@@ -6,8 +6,6 @@ import java.util.List;
 
 public class BruteCollinearPoints {
 
-    private static final double THRESHOLD = 0.00001;
-
     private final List<LineSegment> segmentsList = new ArrayList<>();
 
     public BruteCollinearPoints(Point[] points) { // finds all line segments containing 4 points
@@ -60,7 +58,7 @@ public class BruteCollinearPoints {
     }
 
     private boolean slopesEqual(double first, double second) {
-        return Math.abs(first - second) < THRESHOLD;
+        return Double.compare(first, second) == 0;
     }
 
     public int numberOfSegments() { // the number of line segments
@@ -70,4 +68,5 @@ public class BruteCollinearPoints {
     public LineSegment[] segments() { // the line segments
         return segmentsList.toArray(new LineSegment[0]);
     }
+
 }
