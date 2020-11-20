@@ -85,7 +85,7 @@ public class Point implements Comparable<Point> {
      * @return the Comparator that defines this ordering on points
      */
     public Comparator<Point> slopeOrder() {
-        return (p1, p2) -> (int) ((this.slopeTo(p1) - this.slopeTo(p2)) * 100);
+        return (p1, p2) -> (int) ((this.slopeTo(p1) - this.slopeTo(p2)) * 100_000);
     }
 
 
@@ -106,5 +106,15 @@ public class Point implements Comparable<Point> {
      */
     public static void main(String[] args) {
         /* YOUR CODE HERE */
+        Point p = new Point(484, 252);
+        Point q = new Point(429, 257);
+        Point r = new Point(225, 276);
+        Point s = new Point(44, 297);
+        System.out.println(p.slopeTo(q)); //-0.09090909090909091
+        System.out.println(p.slopeTo(r)); //-0.09266409266409266
+        System.out.println(p.slopeTo(s)); //-0.10227272727272728
+        System.out.println(p.slopeOrder().compare(q, r)); // 175
+        System.out.println(p.slopeOrder().compare(r, s)); // 960
+        System.out.println(p.slopeOrder().compare(q, s)); // 1136
     }
 }
