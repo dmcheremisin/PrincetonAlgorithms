@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.week3;
+package org.princeton.sedgewick.wayne.week3.mergeSort;
 
 import static org.princeton.sedgewick.wayne.util.SortUtils.less;
 import static org.princeton.sedgewick.wayne.util.SortUtils.permutation;
