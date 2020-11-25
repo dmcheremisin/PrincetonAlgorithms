@@ -27,8 +27,10 @@ public class QuickSort3Way {
         Comparable pivot = arr[lo];
         while (i <= gt) {
             int cmp = arr[i].compareTo(pivot);
-            if (cmp < 0) exch(arr, lt++, i++);
-            else if (cmp > 0) exch(arr, i, gt--);
+            if (cmp < 0)
+                exch(arr, lt++, i++);
+            else if (cmp > 0)
+                exch(arr, i, gt--);
             else i++;
         }
 
