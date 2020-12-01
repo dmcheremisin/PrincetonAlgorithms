@@ -3,12 +3,12 @@ package org.princeton.sedgewick.wayne.week4;
 import static org.princeton.sedgewick.wayne.util.SortUtils.exch;
 import static org.princeton.sedgewick.wayne.util.SortUtils.less;
 
-public class MaxPQ<T extends Comparable<T>> {
+public class MinPQ<T extends Comparable<T>> {
 
     private T[] pq;
     private int N = 0;
 
-    public MaxPQ(int maxN) {
+    public MinPQ(int maxN) {
         pq = (T[]) new Comparable[maxN + 1];
     }
 
@@ -27,28 +27,28 @@ public class MaxPQ<T extends Comparable<T>> {
 
     private void swim(int k) {
         // parent item may be found by formula parentIndex = childIndex / 2
-        // we can compare parent(k/2) with child(k) and if parent is smaller - then exchange them
-        while (k > 1 && less(pq[k / 2], pq[k])) {
-            exch(pq, k / 2, k);
+        // we can compare parent(k/2) with child(k) and if parent is bigger then exchange them
+        while (k > 1 && less(pq[k], pq[k / 2])) {
+            exch(pq, k, k / 2);
             k = k / 2;
         }
     }
 
-    public T delMax() {
-        T max = pq[1]; // get max item
-        exch(pq, 1, N--); // exchange first item(max) with last item
-        pq[N + 1] = null; // last item becomes null, so max item becomes removed from array
+    public T delMin() {
+        T min = pq[1]; // get min item
+        exch(pq, 1, N--); // exchange first item(min) with last item
+        pq[N + 1] = null; // last item becomes null, so min item becomes removed from array
         sink(1); // sink last item
-        return max;
+        return min;
     }
 
     private void sink(int k) {
         while (2 * k <= N) {
-            int j = 2 * k; // find child index
-            if (j < N && less(pq[j], pq[j + 1])) // understand which child is bigger
+            int j = 2 * k;
+            if (j < N && less(pq[j + 1], pq[j]))
                 j++;
 
-            if (!less(pq[k], pq[j])) // if parent is bigger, then break loop
+            if (less(pq[k], pq[j]))
                 break;
 
             exch(pq, k, j);
@@ -63,7 +63,7 @@ public class MaxPQ<T extends Comparable<T>> {
     }
 
     public static void main(String[] args) {
-        MaxPQ<Integer> pq = new MaxPQ<>(10);
+        MinPQ<Integer> pq = new MinPQ<>(10);
         pq.insert(10);
         pq.insert(4);
         pq.insert(39);
@@ -74,13 +74,13 @@ public class MaxPQ<T extends Comparable<T>> {
         pq.insert(45);
         pq.insert(36);
         pq.insert(14);
-        pq.printQueue(); // null 45 39 22 36 14 10 11 3 18 4
+        pq.printQueue(); // null 3 4 11 10 14 39 22 45 36 18
 
-        pq.delMax();
-        pq.printQueue(); // null 39 36 22 18 14 10 11 3 4 null
+        pq.delMin();
+        pq.printQueue(); // null 4 10 11 18 14 39 22 45 36 null
 
-        pq.delMax();
-        pq.printQueue(); // null 36 18 22 4 14 10 11 3 null null
+        pq.delMin();
+        pq.printQueue(); // null 10 14 11 18 36 39 22 45 null null
     }
 
 
