@@ -1,5 +1,7 @@
 package org.princeton.sedgewick.wayne.week4.challenge;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Board {
@@ -7,6 +9,7 @@ public class Board {
     private final int[] tiles;
     private final int dimension;
     private final int size;
+    private int zeroPosition;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
@@ -17,12 +20,11 @@ public class Board {
 
         int k = 0;
         for (int i = 0; i < dimension; i++)
-            for (int j = 0; j < dimension; j++)
+            for (int j = 0; j < dimension; j++) {
+                if (tiles[i][j] == 0)
+                    zeroPosition = k;
                 this.tiles[k++] = tiles[i][j];
-    }
-
-    public int[] getTiles() {
-        return tiles;
+            }
     }
 
     // string representation of this board
@@ -90,10 +92,8 @@ public class Board {
         if (this.dimension() != that.dimension())
             return false;
 
-        int[] thatTiles = that.getTiles();
-
         for (int i = 0; i < that.dimension; i++)
-            if (tiles[i] != thatTiles[i])
+            if (tiles[i] != that.tiles[i])
                 return false;
 
         return true;
@@ -101,38 +101,93 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
-        return null;
+        List<Board> neighbors = new ArrayList<>();
+        int zeroH = zeroPosition % dimension;
+        int zeroV = zeroPosition / dimension;
+
+        if (zeroH != 0) {
+            int exchangePosition = getPositionByHV(zeroV, zeroH - 1);
+            Board board = getNeighborBoard(exchangePosition);
+            neighbors.add(board);
+        }
+        if (zeroH < dimension - 1) {
+            int exchangePosition = getPositionByHV(zeroV, zeroH + 1);
+            Board board = getNeighborBoard(exchangePosition);
+            neighbors.add(board);
+        }
+        if (zeroV > 0) {
+            int exchangePosition = getPositionByHV(zeroV - 1, zeroH);
+            Board board = getNeighborBoard(exchangePosition);
+            neighbors.add(board);
+        }
+        if (zeroV < dimension - 1) {
+            int exchangePosition = getPositionByHV(zeroV + 1, zeroH);
+            Board board = getNeighborBoard(exchangePosition);
+            neighbors.add(board);
+        }
+
+        return neighbors;
+    }
+
+    private Board getNeighborBoard(int exchangePosition) {
+        int[] tilesCopy = getTilesCopy();
+        exchange(tilesCopy, zeroPosition, exchangePosition);
+        int[][] twoDimTiles = getTwoDimTiles(tilesCopy);
+        return new Board(twoDimTiles);
+    }
+
+    private int getPositionByHV(int V, int H) {
+        return V * dimension + H;
     }
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
+        int[] tilesCopy = getTilesCopy();
+
+        Random random = new Random();
+        exchange(tilesCopy, random.nextInt(size - 1), random.nextInt(size - 1));
+
+        int[][] tilesArr = getTwoDimTiles(tilesCopy);
+
+        return new Board(tilesArr);
+    }
+
+    private int[] getTilesCopy() {
         int[] tilesCopy = new int[size];
         System.arraycopy(tiles, 0, tilesCopy, 0, size);
-        Random random = new Random();
-        int exchange1 = random.nextInt(size - 1);
-        int exchange2 = random.nextInt(size - 1);
-        int tempTile = tilesCopy[exchange1];
-        tilesCopy[exchange1] = tilesCopy[exchange2];
-        tilesCopy[exchange2] = tempTile;
+        return tilesCopy;
+    }
 
+    private void exchange(int[] tiles, int index1, int index2) {
+        int tempTile = tiles[index1];
+        tiles[index1] = tiles[index2];
+        tiles[index2] = tempTile;
+    }
+
+    private int[][] getTwoDimTiles(int[] tiles) {
         int[][] tilesArr = new int[dimension][dimension];
         int[] temp = new int[dimension];
+
         for (int i = 0; i < size; i++) {
             int pos = i >= dimension ? i % dimension : i;
-            temp[pos] = tilesCopy[i];
+            temp[pos] = tiles[i];
             if ((i + 1) >= dimension && (i + 1) % dimension == 0) {
                 tilesArr[i / dimension] = temp;
                 temp = new int[dimension];
             }
         }
 
-        return new Board(tilesArr);
+        return tilesArr;
     }
 
     // unit testing (not graded)
     public static void main(String[] args) {
         Board board = new Board(new int[][]{{8, 1, 3}, {4, 0, 2}, {7, 6, 5}});
         System.out.println(board.toString());
+        //3
+        //   8   1   3
+        //   4   0   2
+        //   7   6   5
         System.out.println(board.hamming()); // 5
         System.out.println(board.manhattan()); // 10
 
@@ -142,8 +197,37 @@ public class Board {
         Board board2 = new Board(new int[][]{{8, 1, 3}, {4, 0, 2}, {7, 6, 5}});
         System.out.println(board.equals(board2)); // true
 
+        System.out.println(">>>>>>>>>> Twin");
         Board twin = board.twin();
         System.out.println(twin.toString());
+        //3
+        //   6   1   3
+        //   4   0   2
+        //   7   8   5
+
+        System.out.println(">>>>>>>>>> Neighbors");
+        for (Board neighbor : board.neighbors())
+            System.out.println(neighbor.toString());
+        //3
+        //   8   1   3
+        //   0   4   2
+        //   7   6   5
+        //
+        //3
+        //   8   1   3
+        //   4   2   0
+        //   7   6   5
+        //
+        //3
+        //   8   0   3
+        //   4   1   2
+        //   7   6   5
+        //
+        //3
+        //   8   1   3
+        //   4   6   2
+        //   7   0   5
+
     }
 
 }
