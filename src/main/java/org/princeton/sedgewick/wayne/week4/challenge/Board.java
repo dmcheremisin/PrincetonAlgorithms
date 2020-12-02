@@ -2,7 +2,7 @@ package org.princeton.sedgewick.wayne.week4.challenge;
 
 public class Board {
 
-    private final int[] board;
+    private final int[] tiles;
     private final int dimension;
     private final int size;
 
@@ -11,19 +11,23 @@ public class Board {
     public Board(int[][] tiles) {
         dimension = tiles.length;
         size = dimension * dimension;
-        board = new int[size];
+        this.tiles = new int[size];
 
         int k = 0;
         for (int i = 0; i < dimension; i++)
             for (int j = 0; j < dimension; j++)
-                board[k++] = tiles[i][j];
+                this.tiles[k++] = tiles[i][j];
+    }
+
+    public int[] getTiles() {
+        return tiles;
     }
 
     // string representation of this board
     public String toString() {
         StringBuilder result = new StringBuilder(dimension + "\n");
         for (int i = 0; i < size; i++) {
-            result.append(String.format("%1$4s", board[i]));
+            result.append(String.format("%1$4s", tiles[i]));
             if ((i + 1) % dimension == 0)
                 result.append("\n");
         }
@@ -40,7 +44,7 @@ public class Board {
     public int hamming() {
         int count = 0;
         for (int i = 0; i < size; i++) {
-            if (board[i] != 0 && board[i] != i + 1)
+            if (tiles[i] != 0 && tiles[i] != i + 1)
                 count++;
         }
         return count;
@@ -50,7 +54,7 @@ public class Board {
     public int manhattan() {
         int count = 0;
         for (int position = 0; position < size; position++) {
-            int tile = board[position];
+            int tile = tiles[position];
             if (tile == 0)
                 continue;
 
@@ -63,20 +67,34 @@ public class Board {
             int horizontal = Math.abs(tileH - actualH) == 0 ? 0 : Math.abs(tileH - actualH);
 
             int manh = vertical + horizontal;
-            System.out.println(String.format("Tile: %s, position: %s, Manhattan: %s", tile, position, manh));
-            count+= manh;
+            //System.out.println(String.format("Tile: %s, position: %s, Manhattan: %s", tile, position, manh));
+            count += manh;
         }
         return count;
     }
 
     // is this board the goal board?
     public boolean isGoal() {
-        return false;
+        return hamming() == 0;
     }
 
     // does this board equal y?
     public boolean equals(Object y) {
-        return false;
+        if (!(y instanceof Board))
+            return false;
+
+        Board that = (Board) y;
+
+        if (this.dimension() != that.dimension())
+            return false;
+
+        int[] thatTiles = that.getTiles();
+
+        for (int i = 0; i < that.dimension; i++)
+            if (tiles[i] != thatTiles[i])
+                return false;
+
+        return true;
     }
 
     // all neighboring boards
@@ -93,8 +111,14 @@ public class Board {
     public static void main(String[] args) {
         Board board = new Board(new int[][]{{8, 1, 3}, {4, 0, 2}, {7, 6, 5}});
         System.out.println(board.toString());
-        System.out.println(board.hamming());
+        System.out.println(board.hamming()); // 5
         System.out.println(board.manhattan()); // 10
+
+        Board board1 = new Board(new int[][]{{8, 3, 1}, {4, 0, 2}, {7, 6, 5}});
+        System.out.println(board.equals(board1)); // false
+
+        Board board2 = new Board(new int[][]{{8, 1, 3}, {4, 0, 2}, {7, 6, 5}});
+        System.out.println(board.equals(board2)); // true
     }
 
 }
