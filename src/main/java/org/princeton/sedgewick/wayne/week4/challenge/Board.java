@@ -1,5 +1,7 @@
 package org.princeton.sedgewick.wayne.week4.challenge;
 
+import java.util.Random;
+
 public class Board {
 
     private final int[] tiles;
@@ -104,7 +106,27 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
-        return null;
+        int[] tilesCopy = new int[size];
+        System.arraycopy(tiles, 0, tilesCopy, 0, size);
+        Random random = new Random();
+        int exchange1 = random.nextInt(size - 1);
+        int exchange2 = random.nextInt(size - 1);
+        int tempTile = tilesCopy[exchange1];
+        tilesCopy[exchange1] = tilesCopy[exchange2];
+        tilesCopy[exchange2] = tempTile;
+
+        int[][] tilesArr = new int[dimension][dimension];
+        int[] temp = new int[dimension];
+        for (int i = 0; i < size; i++) {
+            int pos = i >= dimension ? i % dimension : i;
+            temp[pos] = tilesCopy[i];
+            if ((i + 1) >= dimension && (i + 1) % dimension == 0) {
+                tilesArr[i / dimension] = temp;
+                temp = new int[dimension];
+            }
+        }
+
+        return new Board(tilesArr);
     }
 
     // unit testing (not graded)
@@ -119,6 +141,9 @@ public class Board {
 
         Board board2 = new Board(new int[][]{{8, 1, 3}, {4, 0, 2}, {7, 6, 5}});
         System.out.println(board.equals(board2)); // true
+
+        Board twin = board.twin();
+        System.out.println(twin.toString());
     }
 
 }
