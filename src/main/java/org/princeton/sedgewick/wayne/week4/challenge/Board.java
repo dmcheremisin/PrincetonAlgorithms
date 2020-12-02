@@ -40,7 +40,7 @@ public class Board {
     public int hamming() {
         int count = 0;
         for (int i = 0; i < size; i++) {
-            if (board[i] != i + 1)
+            if (board[i] != 0 && board[i] != i + 1)
                 count++;
         }
         return count;
@@ -49,21 +49,24 @@ public class Board {
     // sum of Manhattan distances between tiles and goal
     public int manhattan() {
         int count = 0;
-        for (int i = 0; i < size; i++) {
-            int tile = board[i];
+        for (int position = 0; position < size; position++) {
+            int tile = board[position];
             if (tile == 0)
                 continue;
-            int position = i;
+
             int tileV = (tile - 1) / dimension;
             int tileH = (tile - 1) % dimension;
             int actualV = position / dimension;
             int actualH = position % dimension;
+
             int vertical = Math.abs(tileV - actualV);
             int horizontal = Math.abs(tileH - actualH) == 0 ? 0 : Math.abs(tileH - actualH);
+
             int manh = vertical + horizontal;
-            System.out.println(String.format("Tile: %s, position: %s, Manhattan: %s", tile, i, manh));
+            System.out.println(String.format("Tile: %s, position: %s, Manhattan: %s", tile, position, manh));
+            count+= manh;
         }
-        return 0;
+        return count;
     }
 
     // is this board the goal board?
@@ -91,7 +94,7 @@ public class Board {
         Board board = new Board(new int[][]{{8, 1, 3}, {4, 0, 2}, {7, 6, 5}});
         System.out.println(board.toString());
         System.out.println(board.hamming());
-        board.manhattan();
+        System.out.println(board.manhattan()); // 10
     }
 
 }
