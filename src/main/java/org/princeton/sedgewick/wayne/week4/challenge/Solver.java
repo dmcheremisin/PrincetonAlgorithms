@@ -18,7 +18,7 @@ public class Solver {
         if (initial == null)
             throw new IllegalArgumentException("Board must not be null");
 
-        queue = new MinPQ<>(Comparator.comparingInt(Board::manhattan));
+        queue = getQueue();
         solution = new ArrayList<>();
 
         queue.insert(initial);
@@ -29,18 +29,23 @@ public class Solver {
                 break;
 
             Iterable<Board> neighbors = board.neighbors();
+            queue = getQueue();
             for (Board neighbor : neighbors) {
-                boolean isDuplicate = false;
-                for (Board solutionBoard : solution) {
-                    if (neighbor.equals(solutionBoard)) {
-                        isDuplicate = true;
-                        break;
-                    }
-                }
-                if (!isDuplicate)
+//                boolean isDuplicate = false;
+//                for (Board solutionBoard : solution) {
+//                    if (neighbor.equals(solutionBoard)) {
+//                        isDuplicate = true;
+//                        break;
+//                    }
+//                }
+//                if (!isDuplicate)
                     queue.insert(neighbor);
             }
         }
+    }
+
+    private MinPQ<Board> getQueue() {
+        return new MinPQ<>(Comparator.comparingInt(Board::manhattan));
     }
 
 
@@ -51,7 +56,7 @@ public class Solver {
 
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
-        return solution.size();
+        return solution.size() - 1;
     }
 
     // sequence of boards in a shortest solution; null if unsolvable
