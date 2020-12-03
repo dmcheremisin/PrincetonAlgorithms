@@ -182,7 +182,11 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
+        Board goal = new Board(new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 0}});
+        System.out.println(goal.isGoal()); // true
+
         Board board = new Board(new int[][]{{8, 1, 3}, {4, 0, 2}, {7, 6, 5}});
+        System.out.println(board.isGoal()); // false
         System.out.println(board.toString());
         //3
         //   8   1   3
