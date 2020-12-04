@@ -5,7 +5,6 @@ import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class Solver {
@@ -46,7 +45,7 @@ public class Solver {
     }
 
     private MinPQ<Board> getQueue() {
-        return new MinPQ<>(Comparator.comparingInt(Board::manhattan));
+        return new MinPQ<>((b1, b2) -> Integer.compare(b1.manhattan(), b2.manhattan()));
     }
 
     // is the initial board solvable? (see below)
