@@ -18,8 +18,12 @@ public class Solver {
         if (initial == null)
             throw new IllegalArgumentException("Board must not be null");
 
+        solution = getSolution(initial);
+    }
+
+    private List<Board> getSolution(Board initial) {
         queue = getQueue();
-        solution = new ArrayList<>();
+        List<Board> solution = new ArrayList<>();
 
         queue.insert(initial);
         while (true) {
@@ -42,6 +46,7 @@ public class Solver {
                     queue.insert(neighbor);
             }
         }
+        return solution;
     }
 
     private MinPQ<Board> getQueue() {

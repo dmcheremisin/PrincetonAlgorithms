@@ -150,12 +150,12 @@ public class Board {
 
     private int getRandomTile() {
         Random random = new Random();
-        int first;
+        int randomPosition;
         do {
-            first = random.nextInt(size - 1);
-        } while (first == zeroPosition);
+            randomPosition = random.nextInt(size);
+        } while (randomPosition == zeroPosition);
 
-        return first;
+        return randomPosition;
     }
 
     private void exchange(int[] tiles, int index1, int index2) {
