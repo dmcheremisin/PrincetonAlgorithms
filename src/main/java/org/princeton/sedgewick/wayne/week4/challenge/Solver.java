@@ -23,31 +23,6 @@ public class Solver {
         isSolvable();
     }
 
-    private boolean addSolution(MinPQ<Board> queue, List<Board> solution) {
-        Board board = queue.delMin();
-        solution.add(board);
-        if (board.isGoal())
-            return true;
-
-        Iterable<Board> neighbors = board.neighbors();
-        for (Board neighbor : neighbors) {
-            boolean isDuplicate = false;
-            for (Board solutionBoard : solution) {
-                if (neighbor.equals(solutionBoard)) {
-                    isDuplicate = true;
-                    break;
-                }
-            }
-            if (!isDuplicate)
-                queue.insert(neighbor);
-        }
-        return false;
-    }
-
-    private MinPQ<Board> getQueue() {
-        return new MinPQ<>((b1, b2) -> Integer.compare(b1.manhattan(), b2.manhattan()));
-    }
-
     // is the initial board solvable? (see below)
     public boolean isSolvable() {
         if (isSolvable)
@@ -75,6 +50,31 @@ public class Solver {
             this.solution = solution;
 
         return isSolvable;
+    }
+
+    private boolean addSolution(MinPQ<Board> queue, List<Board> solution) {
+        Board board = queue.delMin();
+        solution.add(board);
+        if (board.isGoal())
+            return true;
+
+        Iterable<Board> neighbors = board.neighbors();
+        for (Board neighbor : neighbors) {
+            boolean isDuplicate = false;
+            for (Board solutionBoard : solution) {
+                if (neighbor.equals(solutionBoard)) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+            if (!isDuplicate)
+                queue.insert(neighbor);
+        }
+        return false;
+    }
+
+    private MinPQ<Board> getQueue() {
+        return new MinPQ<>((b1, b2) -> Integer.compare(b1.manhattan(), b2.manhattan()));
     }
 
     // min number of moves to solve initial board; -1 if unsolvable

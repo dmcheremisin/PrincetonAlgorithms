@@ -10,8 +10,8 @@ public class Board {
     private final int[] tiles;
     private final int dimension;
     private final int size;
-    private int zeroPosition;
     private Board twin;
+    private int zeroPosition;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
@@ -143,15 +143,21 @@ public class Board {
         if (twin != null)
             return twin;
 
-        int[] tilesCopy = tiles.clone();
-
-        exchange(tilesCopy, getRandomTile(), getRandomTile());
-
-        int[][] tilesArr = getTwoDimTiles(tilesCopy);
-
-        twin = new Board(tilesArr);
-
+        twin = getTwin();
         return twin;
+    }
+
+    private Board getTwin() {
+        int[] tilesCopy = tiles.clone();
+        int first = getRandomTile();
+        int second = getRandomTile();
+        while (first == second) {
+            first = getRandomTile();
+            second = getRandomTile();
+        }
+        exchange(tilesCopy, getRandomTile(), getRandomTile());
+        int[][] tilesArr = getTwoDimTiles(tilesCopy);
+        return new Board(tilesArr);
     }
 
     private int getRandomTile() {
@@ -160,7 +166,6 @@ public class Board {
         do {
             randomPosition = random.nextInt(size);
         } while (randomPosition == zeroPosition);
-
         return randomPosition;
     }
 
@@ -246,6 +251,15 @@ public class Board {
         // 8  1  3
         // 4  6  2
         // 7  0  5
+
+        Board twin3 = board.twin();
+        System.out.println(twin3.toString());
+        //3
+        // 8  1  7
+        // 4  0  2
+        // 3  6  5
+
+        System.out.println("Twin equals: " + twin1.equals(twin3));
 
     }
 
