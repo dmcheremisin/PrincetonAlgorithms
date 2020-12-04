@@ -74,19 +74,28 @@ public class Solver {
         return new MinPQ<>(Comparator.comparingInt(SearchNode::priority));
     }
 
+    private boolean isNotSolvable() {
+        return isTwinSolved || !isSolvable;
+    }
+
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
+        if (isNotSolvable())
+            return -1;
         return currentNode.getMoves();
     }
 
     // sequence of boards in a shortest solution; null if unsolvable
     public Iterable<Board> solution() {
+        if (isNotSolvable())
+            return null;
+
         LinkedList<Board> solution = new LinkedList<>();
         SearchNode node = currentNode;
         solution.push(node.getBoard());
-        while ((node = node.getPreviousNode()) != null) {
+        while ((node = node.getPreviousNode()) != null)
             solution.push(node.getBoard());
-        }
+
         return solution;
     }
 
@@ -134,8 +143,10 @@ public class Solver {
         Solver solver = new Solver(initial);
 
         // print solution to standard output
-        if (!solver.isSolvable())
+        if (!solver.isSolvable()) {
             StdOut.println("No solution possible");
+            StdOut.println(solver.solution());
+        }
         else {
             StdOut.println("Minimum number of moves = " + solver.moves());
             for (Board board : solver.solution())
