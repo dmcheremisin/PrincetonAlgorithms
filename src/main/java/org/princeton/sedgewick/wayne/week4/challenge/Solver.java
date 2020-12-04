@@ -4,15 +4,15 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.StdOut;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.LinkedList;
 
 public class Solver {
 
+    private final Board initialBoard;
     private boolean isSolvable;
     private boolean isTwinSolved;
-    private final Board initialBoard;
-    private List<Board> solution;
+    private SearchNode currentNode;
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
@@ -33,61 +33,92 @@ public class Solver {
 
         Board twinBoard = initialBoard.twin();
 
-        MinPQ<Board> queue = getQueue();
-        MinPQ<Board> twinQueue = getQueue();
+        MinPQ<SearchNode> queue = getQueue();
+        MinPQ<SearchNode> twinQueue = getQueue();
 
-        List<Board> solution = new ArrayList<>();
-        List<Board> twinSolution = new ArrayList<>();
-
-        queue.insert(initialBoard);
-        twinQueue.insert(twinBoard);
+        queue.insert(new SearchNode(initialBoard, null, 0));
+        twinQueue.insert(new SearchNode(twinBoard, null, 0));
 
         while (!isSolvable && !isTwinSolved) {
-            isSolvable = addSolution(queue, solution);
-            isTwinSolved = addSolution(twinQueue, twinSolution);
+            isSolvable = addBoard(queue, false);
+            isTwinSolved = addBoard(twinQueue, true);
         }
-        if (isSolvable)
-            this.solution = solution;
 
         return isSolvable;
     }
 
-    private boolean addSolution(MinPQ<Board> queue, List<Board> solution) {
-        Board board = queue.delMin();
-        solution.add(board);
+    private boolean addBoard(MinPQ<SearchNode> queue, boolean isTwin) {
+        SearchNode searchNode = queue.delMin();
+        if (!isTwin)
+            currentNode = searchNode;
+
+        Board board = searchNode.getBoard();
         if (board.isGoal())
             return true;
 
+        SearchNode previousNode = searchNode.getPreviousNode();
+        Board previousBoard = null;
+        if (previousNode != null)
+            previousBoard = previousNode.getBoard();
+
+        int newMoves = searchNode.getMoves() + 1;
         Iterable<Board> neighbors = board.neighbors();
         for (Board neighbor : neighbors) {
-            boolean isDuplicate = false;
-            for (Board solutionBoard : solution) {
-                if (neighbor.equals(solutionBoard)) {
-                    isDuplicate = true;
-                    break;
-                }
-            }
-            if (!isDuplicate)
-                queue.insert(neighbor);
+            if (!neighbor.equals(previousBoard))
+                queue.insert(new SearchNode(neighbor, searchNode, newMoves));
         }
         return false;
     }
 
-    private MinPQ<Board> getQueue() {
-        return new MinPQ<>((b1, b2) -> Integer.compare(b1.manhattan(), b2.manhattan()));
+    private MinPQ<SearchNode> getQueue() {
+        return new MinPQ<>(Comparator.comparingInt(SearchNode::priority));
     }
 
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
-        return solution.size() - 1;
+        return currentNode.getMoves();
     }
 
     // sequence of boards in a shortest solution; null if unsolvable
     public Iterable<Board> solution() {
+        LinkedList<Board> solution = new LinkedList<>();
+        SearchNode node = currentNode;
+        solution.push(node.getBoard());
+        while ((node = node.getPreviousNode()) != null) {
+            solution.push(node.getBoard());
+        }
         return solution;
     }
 
-    // test client (see below) 
+    private static class SearchNode {
+        private final int moves;
+        private final Board board;
+        private final SearchNode previousNode;
+
+        public SearchNode(Board board, SearchNode previousNode, int moves) {
+            this.moves = moves;
+            this.board = board;
+            this.previousNode = previousNode;
+        }
+
+        public int priority() {
+            return moves + board.manhattan();
+        }
+
+        public Board getBoard() {
+            return board;
+        }
+
+        public SearchNode getPreviousNode() {
+            return previousNode;
+        }
+
+        public int getMoves() {
+            return moves;
+        }
+    }
+
+    // test client (see below)
     public static void main(String[] args) {
 
         // create initial board from file
