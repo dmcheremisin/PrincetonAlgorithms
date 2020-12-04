@@ -10,53 +10,72 @@ import java.util.List;
 
 public class Solver {
 
-    private MinPQ<Board> queue;
+    private boolean isSolvable;
+    private boolean isTwinSolved;
+    private final Board initialBoard;
     private List<Board> solution;
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
         if (initial == null)
             throw new IllegalArgumentException("Board must not be null");
+        initialBoard = initial;
 
-        solution = getSolution(initial);
+        isSolvable();
     }
 
-    private List<Board> getSolution(Board initial) {
-        queue = getQueue();
-        List<Board> solution = new ArrayList<>();
+    private boolean addSolution(MinPQ<Board> queue, List<Board> solution) {
+        Board board = queue.delMin();
+        solution.add(board);
+        if (board.isGoal())
+            return true;
 
-        queue.insert(initial);
-        while (true) {
-            Board board = queue.delMin();
-            solution.add(board);
-            if (board.isGoal())
-                break;
-
-            Iterable<Board> neighbors = board.neighbors();
-            queue = getQueue();
-            for (Board neighbor : neighbors) {
-//                boolean isDuplicate = false;
-//                for (Board solutionBoard : solution) {
-//                    if (neighbor.equals(solutionBoard)) {
-//                        isDuplicate = true;
-//                        break;
-//                    }
-//                }
-//                if (!isDuplicate)
-                    queue.insert(neighbor);
+        Iterable<Board> neighbors = board.neighbors();
+        for (Board neighbor : neighbors) {
+            boolean isDuplicate = false;
+            for (Board solutionBoard : solution) {
+                if (neighbor.equals(solutionBoard)) {
+                    isDuplicate = true;
+                    break;
+                }
             }
+            if (!isDuplicate)
+                queue.insert(neighbor);
         }
-        return solution;
+        return false;
     }
 
     private MinPQ<Board> getQueue() {
         return new MinPQ<>(Comparator.comparingInt(Board::manhattan));
     }
 
-
     // is the initial board solvable? (see below)
     public boolean isSolvable() {
-        return true;
+        if (isSolvable)
+            return true;
+
+        if (isTwinSolved)
+            return false;
+
+        Board twinBoard = initialBoard.twin();
+
+        MinPQ<Board> queue = getQueue();
+        MinPQ<Board> twinQueue = getQueue();
+
+        List<Board> solution = new ArrayList<>();
+        List<Board> twinSolution = new ArrayList<>();
+
+        queue.insert(initialBoard);
+        twinQueue.insert(twinBoard);
+
+        while (!isSolvable && !isTwinSolved) {
+            isSolvable = addSolution(queue, solution);
+            isTwinSolved = addSolution(twinQueue, twinSolution);
+        }
+        if (isSolvable)
+            this.solution = solution;
+
+        return isSolvable;
     }
 
     // min number of moves to solve initial board; -1 if unsolvable
