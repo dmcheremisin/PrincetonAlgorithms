@@ -31,7 +31,7 @@ public class Board {
     public String toString() {
         StringBuilder result = new StringBuilder(dimension + "\n");
         for (int i = 0; i < size; i++) {
-            result.append(String.format("%1$4s", tiles[i]));
+            result.append(String.format("%2d ", tiles[i]));
             if ((i + 1) % dimension == 0)
                 result.append("\n");
         }
@@ -144,12 +144,21 @@ public class Board {
     public Board twin() {
         int[] tilesCopy = getTilesCopy();
 
-        Random random = new Random();
-        exchange(tilesCopy, random.nextInt(size - 1), random.nextInt(size - 1));
+        exchange(tilesCopy, getRandomTile(), getRandomTile());
 
         int[][] tilesArr = getTwoDimTiles(tilesCopy);
 
         return new Board(tilesArr);
+    }
+
+    private int getRandomTile() {
+        Random random = new Random();
+        int first;
+        do {
+            first = random.nextInt(size - 1);
+        } while (first == zeroPosition);
+
+        return first;
     }
 
     private int[] getTilesCopy() {
