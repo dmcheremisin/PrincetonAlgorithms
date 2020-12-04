@@ -1,6 +1,7 @@
 package org.princeton.sedgewick.wayne.week4.challenge;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -92,11 +93,7 @@ public class Board {
         if (this.dimension() != that.dimension())
             return false;
 
-        for (int i = 0; i < that.dimension; i++)
-            if (tiles[i] != that.tiles[i])
-                return false;
-
-        return true;
+        return Arrays.equals(tiles, that.tiles);
     }
 
     // all neighboring boards
@@ -130,7 +127,7 @@ public class Board {
     }
 
     private Board getNeighborBoard(int exchangePosition) {
-        int[] tilesCopy = getTilesCopy();
+        int[] tilesCopy = tiles.clone();
         exchange(tilesCopy, zeroPosition, exchangePosition);
         int[][] twoDimTiles = getTwoDimTiles(tilesCopy);
         return new Board(twoDimTiles);
@@ -142,7 +139,7 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
-        int[] tilesCopy = getTilesCopy();
+        int[] tilesCopy = tiles.clone();
 
         exchange(tilesCopy, getRandomTile(), getRandomTile());
 
@@ -159,12 +156,6 @@ public class Board {
         } while (first == zeroPosition);
 
         return first;
-    }
-
-    private int[] getTilesCopy() {
-        int[] tilesCopy = new int[size];
-        System.arraycopy(tiles, 0, tilesCopy, 0, size);
-        return tilesCopy;
     }
 
     private void exchange(int[] tiles, int index1, int index2) {
