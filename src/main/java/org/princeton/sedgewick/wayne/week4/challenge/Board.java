@@ -189,9 +189,9 @@ public class Board {
         System.out.println(board.isGoal()); // false
         System.out.println(board.toString());
         //3
-        //   8   1   3
-        //   4   0   2
-        //   7   6   5
+        // 8  1  3
+        // 4  0  2
+        // 7  6  5
         System.out.println(board.hamming()); // 5
         System.out.println(board.manhattan()); // 10
 
@@ -205,32 +205,32 @@ public class Board {
         Board twin = board.twin();
         System.out.println(twin.toString());
         //3
-        //   6   1   3
-        //   4   0   2
-        //   7   8   5
+        // 8  1  7
+        // 4  0  2
+        // 3  6  5
 
         System.out.println(">>>>>>>>>> Neighbors");
         for (Board neighbor : board.neighbors())
             System.out.println(neighbor.toString());
         //3
-        //   8   1   3
-        //   0   4   2
-        //   7   6   5
+        // 8  1  3
+        // 0  4  2
+        // 7  6  5
         //
         //3
-        //   8   1   3
-        //   4   2   0
-        //   7   6   5
+        // 8  1  3
+        // 4  2  0
+        // 7  6  5
         //
         //3
-        //   8   0   3
-        //   4   1   2
-        //   7   6   5
+        // 8  0  3
+        // 4  1  2
+        // 7  6  5
         //
         //3
-        //   8   1   3
-        //   4   6   2
-        //   7   0   5
+        // 8  1  3
+        // 4  6  2
+        // 7  0  5
 
     }
 
