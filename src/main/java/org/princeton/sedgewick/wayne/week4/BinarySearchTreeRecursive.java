@@ -90,6 +90,50 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
         return max(node.right);
     }
 
+    public K floor(K key) {
+        Node x = floor(root, key);
+        return x == null ? null : x.key;
+    }
+
+    private Node floor(Node node, K key) {
+        if (node == null)
+            return null;
+
+        int cmp = key.compareTo(node.key);
+        if (cmp == 0)
+            return node;
+        else if (cmp < 0)
+            return floor(node.left, key);
+
+        Node t = floor(node.right, key);
+        if (t != null)
+            return t;
+
+        return node;
+    }
+
+    public K ceiling(K key) {
+        Node x = ceiling(root, key);
+        return x == null ? null : x.key;
+    }
+
+    private Node ceiling(Node node, K key) {
+        if (node == null)
+            return null;
+
+        int cmp = key.compareTo(node.key);
+        if (cmp == 0)
+            return node;
+        else if (cmp > 0)
+            return ceiling(node.right, key);
+
+        Node t = ceiling(node.left, key);
+        if (t != null)
+            return t;
+
+        return node;
+    }
+
     public Iterable<K> getDepthFirstTree() {
         Node node = root;
         List<K> keys = new LinkedList<>();
@@ -158,5 +202,7 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
         printTree(bst.getBreadthFirstTree()); // H B Y A C X Z
         System.out.println(bst.min()); // A
         System.out.println(bst.max()); // Z
+        System.out.println(bst.floor("E")); // C
+        System.out.println(bst.ceiling("W")); // X
     }
 }
