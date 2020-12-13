@@ -139,6 +139,41 @@ public class BinarySearchTreeIteration<K extends Comparable<K>, V> {
         return node;
     }
 
+    public K select(int k) {
+        Node node = select(root, k);
+        return node == null ? null : node.key;
+    }
+
+    private Node select(Node node, int k) {
+        if (node == null)
+            return null;
+
+        int size = size(node.left);
+        if (size > k)
+            return select(node.left, k);
+        else if (size < k)
+            return select(node.right, k - size - 1);
+
+        return node;
+    }
+
+    public int rank(K key) {
+        return rank(root, key);
+    }
+
+    private int rank(Node node, K key) {
+        if (node == null)
+            return 0;
+
+        int cmp = key.compareTo(node.key);
+        if (cmp < 0)
+            return rank(node.left, key);
+        else if (cmp > 0)
+            return 1 + size(node.left) + rank(node.right, key);
+
+        return size(node.left);
+    }
+
     public Iterable<K> getDepthFirstTree() {
         Node node = root;
         List<K> keys = new LinkedList<>();
@@ -209,5 +244,7 @@ public class BinarySearchTreeIteration<K extends Comparable<K>, V> {
         System.out.println(bst.max()); // Z
         System.out.println(bst.floor("E")); // C
         System.out.println(bst.ceiling("W")); // X
+        System.out.println(bst.select(1)); // B
+        System.out.println(bst.rank("B")); // 1
     }
 }
