@@ -17,7 +17,12 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
     private int size(Node node) {
         if (node == null)
             return 0;
+
         return node.size;
+    }
+
+    private boolean isEmpty() {
+        return root == null;
     }
 
     public V get(K key) {
@@ -55,6 +60,34 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
 
         node.size = size(node.left) + size(node.right) + 1;
         return node;
+    }
+
+    public K min() {
+        if (isEmpty())
+            return null;
+
+        return min(root).key;
+    }
+
+    private Node min(Node node) {
+        if (node.left == null)
+            return node;
+
+        return min(node.left);
+    }
+
+    public K max() {
+        if (isEmpty())
+            return null;
+
+        return max(root).key;
+    }
+
+    private Node max(Node node) {
+        if (node.right == null)
+            return node;
+
+        return max(node.right);
     }
 
     public Iterable<K> getDepthFirstTree() {
@@ -111,17 +144,19 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
 
     public static void main(String[] args) {
         BinarySearchTreeRecursive<String, Integer> bst = new BinarySearchTreeRecursive<>();
-        System.out.println(bst.size());
-        System.out.println(bst.get("H"));
+        System.out.println(bst.size()); // 0
+        System.out.println(bst.get("H")); // null
         bst.put("H", 1);
-        System.out.println(bst.get("H"));
+        System.out.println(bst.get("H")); // 1
         bst.put("B", 1);
         bst.put("Y", 1);
         bst.put("A", 1);
         bst.put("X", 1);
         bst.put("C", 1);
         bst.put("Z", 1);
-        printTree(bst.getDepthFirstTree());
-        printTree(bst.getBreadthFirstTree());
+        printTree(bst.getDepthFirstTree()); // H B A C Y X Z
+        printTree(bst.getBreadthFirstTree()); // H B Y A C X Z
+        System.out.println(bst.min()); // A
+        System.out.println(bst.max()); // Z
     }
 }

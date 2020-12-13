@@ -20,8 +20,12 @@ public class BinarySearchTreeIteration<K extends Comparable<K>, V> {
         return node.size;
     }
 
+    private boolean isEmpty() {
+        return size() == 0;
+    }
+
     public V get(K key) {
-        if (size() == 0)
+        if (isEmpty())
             return null;
 
         Node node = root;
@@ -38,7 +42,7 @@ public class BinarySearchTreeIteration<K extends Comparable<K>, V> {
     }
 
     public void put(K key, V value) {
-        if (size() == 0) {
+        if (isEmpty()) {
             root = new Node(key, value, 1);
             return;
         }
@@ -65,6 +69,30 @@ public class BinarySearchTreeIteration<K extends Comparable<K>, V> {
             } else
                 node.value = value;
         }
+    }
+
+    public K min() {
+        if (isEmpty())
+            return null;
+
+        Node node = root;
+        while (node.left != null){
+            node = node.left;
+        }
+
+        return node.key;
+    }
+
+    public K max() {
+        if (isEmpty())
+            return null;
+
+        Node node = root;
+        while (node.right != null){
+            node = node.right;
+        }
+
+        return node.key;
     }
 
     public Iterable<K> getDepthFirstTree() {
@@ -104,7 +132,7 @@ public class BinarySearchTreeIteration<K extends Comparable<K>, V> {
 
     private class Node {
 
-        private K key;
+        private final K key;
         private V value;
 
         private Node left;
@@ -121,17 +149,19 @@ public class BinarySearchTreeIteration<K extends Comparable<K>, V> {
 
     public static void main(String[] args) {
         BinarySearchTreeIteration<String, Integer> bst = new BinarySearchTreeIteration<>();
-        System.out.println(bst.size());
-        System.out.println(bst.get("H"));
+        System.out.println(bst.size()); // 0
+        System.out.println(bst.get("H")); // null
         bst.put("H", 1);
-        System.out.println(bst.get("H"));
+        System.out.println(bst.get("H")); // 1
         bst.put("B", 1);
         bst.put("Y", 1);
         bst.put("A", 1);
         bst.put("X", 1);
         bst.put("C", 1);
         bst.put("Z", 1);
-        printTree(bst.getDepthFirstTree());
-        printTree(bst.getBreadthFirstTree());
+        printTree(bst.getDepthFirstTree()); // H B A C Y X Z
+        printTree(bst.getBreadthFirstTree()); // H B Y A C X Z
+        System.out.println(bst.min()); // A
+        System.out.println(bst.max()); // Z
     }
 }
