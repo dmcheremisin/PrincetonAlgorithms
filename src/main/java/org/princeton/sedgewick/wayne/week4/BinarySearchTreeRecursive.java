@@ -212,6 +212,31 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
         return node;
     }
 
+    public Iterable<K> keys() {
+        return keys(min(), max());
+    }
+
+    private Iterable<K> keys(K lo, K hi) {
+        Queue<K> queue = new LinkedList<>();
+        keys(queue, root, lo, hi);
+        return queue;
+    }
+
+    private void keys(Queue<K> queue, Node node, K lo, K hi) {
+        if (node == null)
+            return;
+
+        int cmplo = lo.compareTo(node.key);
+        int cmphi = hi.compareTo(node.key);
+
+        if (cmplo < 0)
+            keys(queue, node.left, lo, hi);
+        if (cmplo <= 0 && cmphi >= 0)
+            queue.add(node.key);
+        if (cmphi > 0)
+            keys(queue, node.right, lo, hi);
+    }
+
     public Iterable<K> getDepthFirstTree() {
         Node node = root;
         List<K> keys = new LinkedList<>();
@@ -290,5 +315,8 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
 
         bst.delete("Y");
         printTree(bst.getBreadthFirstTree()); // H B Z C X
+
+        System.out.println(bst.keys()); // [B, C, H, X, Z]
+        System.out.println(bst.keys("D", "Y")); // [H, X]
     }
 }
