@@ -183,6 +183,35 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
         return node;
     }
 
+    public void delete(K key) {
+        root = delete(root, key);
+    }
+
+    private Node delete(Node node, K key) {
+        if (node == null)
+            return null;
+
+        int cmp = key.compareTo(node.key);
+        if (cmp < 0)
+            return delete(node.left, key);
+        else if (cmp > 0)
+            return delete(node.right, key);
+        else {
+            if (node.right == null)
+                return node.left;
+            if (node.left == null)
+                return node.left;
+
+            Node temp = node;
+            node = min(node.right);
+            node.right = deleteMin(temp.right);
+            node.left = temp.left;
+        }
+
+        node.size = 1 + size(node.left) + size(node.right);
+        return node;
+    }
+
     public Iterable<K> getDepthFirstTree() {
         Node node = root;
         List<K> keys = new LinkedList<>();
@@ -255,5 +284,8 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
         System.out.println(bst.ceiling("W")); // X
         System.out.println(bst.select(1)); // B
         System.out.println(bst.rank("B")); // 1
+
+        bst.deleteMin();
+        printTree(bst.getBreadthFirstTree()); // H B Y C X Z
     }
 }
