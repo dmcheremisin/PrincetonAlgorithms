@@ -169,6 +169,20 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
         return size(node.left);
     }
 
+    public void deleteMin() {
+        root = deleteMin(root);
+    }
+
+    private Node deleteMin(Node node) {
+        if (node.left == null)
+            return node.right;
+
+        node.left = deleteMin(node.left);
+        node.size = 1 + size(node.left) + size(node.right);
+
+        return node;
+    }
+
     public Iterable<K> getDepthFirstTree() {
         Node node = root;
         List<K> keys = new LinkedList<>();
