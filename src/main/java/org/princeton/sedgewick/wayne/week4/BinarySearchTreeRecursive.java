@@ -193,9 +193,9 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
 
         int cmp = key.compareTo(node.key);
         if (cmp < 0)
-            return delete(node.left, key);
+            node.left = delete(node.left, key);
         else if (cmp > 0)
-            return delete(node.right, key);
+            node.right = delete(node.right, key);
         else {
             if (node.right == null)
                 return node.left;
@@ -287,5 +287,8 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
 
         bst.deleteMin();
         printTree(bst.getBreadthFirstTree()); // H B Y C X Z
+
+        bst.delete("Y");
+        printTree(bst.getBreadthFirstTree()); // H B Z C X
     }
 }

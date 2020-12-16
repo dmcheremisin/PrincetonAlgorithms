@@ -298,7 +298,7 @@ public class BinarySearchTreeIteration<K extends Comparable<K>, V> {
         printTree(bst.getBreadthFirstTree()); // H B Y C X Z
 
         bst.delete("Y");
-        printTree(bst.getBreadthFirstTree()); // H B Y C X Z
+        printTree(bst.getBreadthFirstTree()); // H B Z C X
 
     }
 }
