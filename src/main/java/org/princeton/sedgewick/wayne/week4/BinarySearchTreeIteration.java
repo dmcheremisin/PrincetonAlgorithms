@@ -76,9 +76,8 @@ public class BinarySearchTreeIteration<K extends Comparable<K>, V> {
             return null;
 
         Node node = root;
-        while (node.left != null){
+        while (node.left != null)
             node = node.left;
-        }
 
         return node.key;
     }
@@ -88,9 +87,8 @@ public class BinarySearchTreeIteration<K extends Comparable<K>, V> {
             return null;
 
         Node node = root;
-        while (node.right != null){
+        while (node.right != null)
             node = node.right;
-        }
 
         return node.key;
     }
