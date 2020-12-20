@@ -71,6 +71,30 @@ public class BinarySearchTreeIteration<K extends Comparable<K>, V> {
         }
     }
 
+    public K minIterative() {
+        if (isEmpty())
+            return null;
+
+        Node node = root;
+        while (node.left != null){
+            node = node.left;
+        }
+
+        return node.key;
+    }
+
+    public K maxIterative() {
+        if (isEmpty())
+            return null;
+
+        Node node = root;
+        while (node.right != null){
+            node = node.right;
+        }
+
+        return node.key;
+    }
+
     public K min() {
         if (isEmpty())
             return null;
