@@ -6,22 +6,22 @@ import java.util.Queue;
 
 import static org.princeton.sedgewick.wayne.util.PrintUtils.printTree;
 
-public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
+public class BinarySearchTree<K extends Comparable<K>, V> {
 
-    private Node root;
+    protected Node root;
 
     public int size() {
         return size(root);
     }
 
-    private int size(Node node) {
+    protected int size(Node node) {
         if (node == null)
             return 0;
 
         return node.size;
     }
 
-    private boolean isEmpty() {
+    protected boolean isEmpty() {
         return root == null;
     }
 
@@ -216,7 +216,7 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
         return keys(min(), max());
     }
 
-    private Iterable<K> keys(K lo, K hi) {
+    public Iterable<K> keys(K lo, K hi) {
         Queue<K> queue = new LinkedList<>();
         keys(queue, root, lo, hi);
         return queue;
@@ -272,15 +272,15 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
         return keys;
     }
 
-    private class Node {
+    protected class Node {
 
-        private K key;
-        private V value;
+        protected K key;
+        protected V value;
 
-        private Node left;
-        private Node right;
+        protected Node left;
+        protected Node right;
 
-        private int size; // nodes in subtree
+        protected int size; // nodes in subtree
 
         public Node(K key, V value, int size) {
             this.key = key;
@@ -290,7 +290,7 @@ public class BinarySearchTreeRecursive<K extends Comparable<K>, V> {
     }
 
     public static void main(String[] args) {
-        BinarySearchTreeRecursive<String, Integer> bst = new BinarySearchTreeRecursive<>();
+        BinarySearchTree<String, Integer> bst = new BinarySearchTree<>();
         System.out.println(bst.size()); // 0
         System.out.println(bst.get("H")); // null
         bst.put("H", 1);
