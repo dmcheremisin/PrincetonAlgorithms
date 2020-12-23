@@ -8,6 +8,9 @@ import static org.princeton.sedgewick.wayne.util.PrintUtils.printTree;
 
 public class RedBlackTree<K extends Comparable<K>, V> {
 
+    private static final boolean RED = true;
+    private static final boolean BLACK = false;
+
     private Node root;
 
     public int size() {
@@ -45,7 +48,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     // ------------------- Diff from BinarySearchTree --------------------------
     public void put(K key, V value) {
         root = put(root, key, value);
-        root.color = Node.BLACK;
+        root.color = BLACK;
     }
 
     public Node put(Node node, K key, V value) {
@@ -83,7 +86,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         right.left = top;
 
         right.color = top.color;
-        right.left.color = Node.RED;
+        right.left.color = RED;
 
         right.size = top.size;
         top.size = size(top.left) + size(top.right);
@@ -97,7 +100,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         left.right = top;
 
         left.color = top.color;
-        top.color = Node.RED;
+        top.color = RED;
 
         left.size = top.size;
         top.size = size(top.left) + size(top.right);
@@ -106,9 +109,116 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     private void flipColors(Node top) {
-        top.color = Node.RED;
-        top.left.color = Node.BLACK;
-        top.right.color = Node.BLACK;
+        top.color = RED;
+        if (top.left != null)
+            top.left.color = BLACK;
+        if (top.right != null)
+            top.right.color = BLACK;
+    }
+
+    public void delete(K key) {
+        if (!isRed(root.left) && !isRed(root.right))
+            root.color = RED;
+
+        root = delete(root, key);
+
+        if (!isEmpty())
+            root.color = BLACK;
+    }
+
+    private Node delete(Node node, K key) {
+        if (key.compareTo(node.key) < 0) {
+            if (!isRed(node.left) && !isRed(node.left.left))
+                node = moveRedLeft(node);
+
+            node.left = delete(node.left, key);
+        } else {
+            if (isRed(node.left))
+                node = rotateRight(node);
+
+            if (key.compareTo(node.key) == 0 && (node.right == null))
+                return null;
+
+            if (!isRed(node.right) && !isRed(node.right.left))
+                node = moveRedRight(node);
+
+            if (key.compareTo(node.key) == 0) {
+                node.value = get(node.right, min(node.right).key);
+                node.key = min(node.right).key;
+                node.right = deleteMin(node.right);
+            } else
+                node.right = delete(node.right, key);
+        }
+
+        return balance(node);
+    }
+
+    public void deleteMax() {
+        if (!isRed(root.left) && !isRed(root.right))
+            root.color = RED;
+
+        root = deleteMax(root);
+
+        if (!isEmpty())
+            root.color = BLACK;
+    }
+
+    private Node deleteMax(Node node) {
+        if (isRed(node.left))
+            node = rotateRight(node);
+
+        if (node.right == null)
+            return null;
+
+        if (!isRed(node.right) && !isRed(node.right.left))
+            node = moveRedRight(node);
+
+        node.right = deleteMax(node.right);
+
+        return balance(node);
+    }
+
+    public void deleteMin() {
+        if (!isRed(root.left) && !isRed(root.right))
+            root.color = RED;
+        root = deleteMin(root);
+        if (!isEmpty()) root.color = BLACK;
+    }
+
+    private Node deleteMin(Node node) {
+        if (node.left == null)
+            return null;
+
+        if (!isRed(node.left) && !isRed(node.left.left))
+            node = moveRedLeft(node);
+
+        node.left = deleteMin(node.left);
+
+        return balance(node);
+    }
+
+    private Node balance(Node node) {
+        if (isRed(node.right))
+            node = rotateLeft(node);
+
+        return node;
+    }
+
+    private Node moveRedLeft(Node node) {
+        flipColors(node);
+        if (isRed(node.right.left)) {
+            node.right = rotateRight(node.right);
+            node = rotateLeft(node);
+        }
+        return node;
+    }
+
+    private Node moveRedRight(Node node) {
+        flipColors(node);
+        if (node.left != null && !isRed(node.left.left))
+            node = rotateRight(node);
+
+        return node;
     }
 
     // ------------------- Diff from BinarySearchTree end ------------------------
@@ -220,49 +330,6 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         return size(node.left);
     }
 
-    public void deleteMin() {
-        root = deleteMin(root);
-    }
-
-    private Node deleteMin(Node node) {
-        if (node.left == null)
-            return node.right;
-
-        node.left = deleteMin(node.left);
-        node.size = 1 + size(node.left) + size(node.right);
-
-        return node;
-    }
-
-    public void delete(K key) {
-        root = delete(root, key);
-    }
-
-    private Node delete(Node node, K key) {
-        if (node == null)
-            return null;
-
-        int cmp = key.compareTo(node.key);
-        if (cmp < 0)
-            node.left = delete(node.left, key);
-        else if (cmp > 0)
-            node.right = delete(node.right, key);
-        else {
-            if (node.right == null)
-                return node.left;
-            if (node.left == null)
-                return node.left;
-
-            Node temp = node;
-            node = min(node.right);
-            node.right = deleteMin(temp.right);
-            node.left = temp.left;
-        }
-
-        node.size = 1 + size(node.left) + size(node.right);
-        return node;
-    }
-
     public Iterable<K> keys() {
         return keys(min(), max());
     }
@@ -325,9 +392,6 @@ public class RedBlackTree<K extends Comparable<K>, V> {
 
     private class Node {
 
-        private static final boolean RED = true;
-        private static final boolean BLACK = false;
-
         private K key;
         private V value;
 
@@ -370,7 +434,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         printTree(bst.getBreadthFirstTree()); // H B Y C X Z
 
         bst.delete("Y");
-        printTree(bst.getBreadthFirstTree()); // H B Z C X
+        printTree(bst.getBreadthFirstTree()); // Z B C H X
 
         System.out.println(bst.keys()); // [B, C, H, X, Z]
         System.out.println(bst.keys("D", "Y")); // [H, X]
