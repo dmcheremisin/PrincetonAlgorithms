@@ -16,6 +16,13 @@ public class BinarySearchSortedArray<K extends Comparable<K>, V> {
         return N == 0;
     }
 
+    public K select(int rank) {
+        if (isEmpty() || rank >= N)
+            return null;
+
+        return keys[rank];
+    }
+
     public int rank(K key) {
         if (isEmpty())
             return 0;
@@ -84,10 +91,41 @@ public class BinarySearchSortedArray<K extends Comparable<K>, V> {
         values[N] = null;
     }
 
+    public K min() {
+        if (isEmpty())
+            return null;
+
+        return keys[0];
+    }
+
+    public K max() {
+        if (isEmpty())
+            return null;
+
+        return keys[N - 1];
+    }
+
+    public K ceiling(K key) {
+        if (isEmpty())
+            return null;
+
+        int rank = rank(key);
+        return keys[rank];
+    }
+
+    public K floor(K key) {
+        if (isEmpty())
+            return null;
+
+        int rank = rank(key);
+        return rank - 1 < 0 ? null : keys[rank - 1] ;
+    }
+
     public void printTreeKeys(){
         System.out.println();
         for (K key : keys)
             System.out.printf("%1$3d", key);
+        System.out.println();
     }
 
     public static void main(String[] args) {
@@ -105,6 +143,9 @@ public class BinarySearchSortedArray<K extends Comparable<K>, V> {
         arr.put(10, "a");
         arr.put(6, "a");
         arr.printTreeKeys(); // 1  2  3  4  5  6  7  8  9 10
+        System.out.println(arr.rank(6)); // 5
+        System.out.println(arr.select(6)); // 7
+        System.out.println(arr.select(12)); // null
 
         arr.delete(12);
         arr.printTreeKeys(); // 1  2  3  4  5  6  7  8  9 10
@@ -114,6 +155,9 @@ public class BinarySearchSortedArray<K extends Comparable<K>, V> {
 
         arr.put(12, "a");
         arr.printTreeKeys(); //   1  2  4  5  6  7  8  9 10 12
+        System.out.println(arr.select(10)); // 12
+        System.out.println(arr.floor(11)); // 10
+        System.out.println(arr.ceiling(11)); // 12
     }
 
 
