@@ -25,10 +25,16 @@ public class PointSET {
     }
 
     public void insert(Point2D p) { // add the point to the set (if it is not already in the set)
+        if (p == null)
+            throw new IllegalArgumentException("Point must not be null");
+
         pointsSet.add(p);
     }
 
     public boolean contains(Point2D p) { // does the set contain point p?
+        if (p == null)
+            throw new IllegalArgumentException("Point must not be null");
+
         return pointsSet.contains(p);
     }
 
@@ -37,12 +43,18 @@ public class PointSET {
     }
 
     public Iterable<Point2D> range(RectHV rect) { // all points that are inside the rectangle (or on the boundary)
+        if (rect == null)
+            throw new IllegalArgumentException("Rectangle must not be null");
+
         return pointsSet.stream()
                 .filter(rect::contains)
                 .collect(Collectors.toList());
     }
 
     public Point2D nearest(Point2D p) { // a nearest neighbor in the set to point p; null if the set is empty
+        if (p == null)
+            throw new IllegalArgumentException("Point must not be null");
+
         Point2D nearest = pointsSet.first();
         double distance = p.distanceTo(nearest);
         for (Point2D pointOfSet : pointsSet) {
