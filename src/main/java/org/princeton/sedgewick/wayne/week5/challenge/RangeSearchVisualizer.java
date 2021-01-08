@@ -1,3 +1,4 @@
+package org.princeton.sedgewick.wayne.week5.challenge;
 /******************************************************************************
  *  Compilation:  javac RangeSearchVisualizer.java
  *  Execution:    java RangeSearchVisualizer input.txt
@@ -22,8 +23,7 @@ public class RangeSearchVisualizer {
     public static void main(String[] args) {
 
         // initialize the data structures from file
-        String filename = args[0];
-        In in = new In(filename);
+        In in = new In(args[0]);
         PointSET brute = new PointSET();
         KdTree kdtree = new KdTree();
         while (!in.isEmpty()) {

@@ -1,3 +1,4 @@
+package org.princeton.sedgewick.wayne.week5.challenge;
 /******************************************************************************
  *  Compilation:  javac KdTreeGenerator.java
  *  Execution:    java KdTreeGenerator n
@@ -14,8 +15,8 @@
  *
  ******************************************************************************/
 
-import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class KdTreeGenerator {
 

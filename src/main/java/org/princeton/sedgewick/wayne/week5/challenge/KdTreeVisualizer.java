@@ -1,3 +1,4 @@
+package org.princeton.sedgewick.wayne.week5.challenge;
 /******************************************************************************
  *  Compilation:  javac KdTreeVisualizer.java
  *  Execution:    java KdTreeVisualizer
