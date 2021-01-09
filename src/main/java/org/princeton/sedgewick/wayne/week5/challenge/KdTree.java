@@ -10,18 +10,6 @@ public class KdTree {
     private Node root;
     private int size;
 
-    private static final class Node {
-
-        private Point2D point2D;
-        private Node leftBottom;
-        private Node rightTop;
-        private RectHV rect;
-
-        public Node(Point2D point2D) {
-            this.point2D = point2D;
-        }
-    }
-
     public KdTree() {// construct an empty set of points
     }
 
@@ -33,53 +21,119 @@ public class KdTree {
         return size;
     }
 
-    public void insert(Point2D p) { // add the point to the set (if it is not already in the set)
-        root = insert(root, p, true);
+    public void insert(Point2D point2D) { // add the point to the set (if it is not already in the set)
+        root = insert(root, point2D, true, root, false);
+        size++;
     }
 
-    private Node insert(Node node, Point2D p, boolean isVertical) {
+    private Node insert(Node node, Point2D point, boolean isVertical, Node parentNode, boolean isLeftBottom) {
         if (node == null)
-            return new Node(p);
+            return new Node(point, parentNode, !isVertical, isLeftBottom);
 
         Point2D nodePoint = node.point2D;
-        double cmp = isVertical ? p.x() - nodePoint.x() : p.y() - node.point2D.y();
-        if (cmp < 0) {
-            node.leftBottom = insert(node.leftBottom, p, !isVertical);
-        } else {
-            node.rightTop = insert(node.rightTop, p, !isVertical);
-        }
+        double cmp = isVertical ? point.x() - nodePoint.x() : point.y() - nodePoint.y();
+        if (cmp < 0)
+            node.leftBottom = insert(node.leftBottom, point, !isVertical, node, true);
+        else
+            node.rightTop = insert(node.rightTop, point, !isVertical, node, false);
 
         return node;
     }
 
+
     public boolean contains(Point2D p) { // does the set contain point p?
+        return contains(p, root, true);
+    }
+
+    private boolean contains(Point2D point, Node node, boolean isVertical) {
+        if (node == null)
+            return false;
+
+        Point2D nodePoint = node.point2D;
+        if (nodePoint.equals(point))
+            return true;
+
+        double cmp = isVertical ? point.x() - nodePoint.x() : point.y() - nodePoint.y();
+        if (cmp < 0)
+            return contains(point, node.leftBottom, !isVertical);
+        else
+            return contains(point, node.rightTop, !isVertical);
     }
 
     public void draw() { // draw all points to standard draw
+        draw(root);
+    }
+
+    private void draw(Node node) {
+        if (node == null)
+            return;
+
+        draw(node.leftBottom);
+        StdDraw.filledCircle(node.point2D.x(), node.point2D.y(), 0.005);
+        //node.point2D.draw();
+        draw(node.rightTop);
     }
 
     public Iterable<Point2D> range(RectHV rect) { // all points that are inside the rectangle (or on the boundary)
+        return null;
     }
 
     public Point2D nearest(Point2D p) { // a nearest neighbor in the set to point p; null if the set is empty
-
+        return null;
     }
 
     public static void main(String[] args) {  // unit testing of the methods (optional)
-        KdTree pointSET = new KdTree();
+        KdTree kdTree = new KdTree();
 
         In in = new In(args[0]);
         while (in.hasNextLine()) {
             double x = in.readDouble();
             double y = in.readDouble();
             Point2D point2D = new Point2D(x, y);
-            pointSET.insert(point2D);
+            kdTree.insert(point2D);
         }
-        Point2D newPoint = new Point2D(0.3, 0.5);
-        StdDraw.filledCircle(newPoint.x(), newPoint.y(), 0.005);
-        Point2D nearest = pointSET.nearest(newPoint);
-        StdDraw.line(newPoint.x(), newPoint.y(), nearest.x(), nearest.y());
+//        Point2D newPoint = new Point2D(0.3, 0.5);
+//        StdDraw.filledCircle(newPoint.x(), newPoint.y(), 0.005);
+//        Point2D nearest = kdTree.nearest(newPoint);
+//        StdDraw.line(newPoint.x(), newPoint.y(), nearest.x(), nearest.y());
 
-        pointSET.draw();
+        kdTree.draw();
     }
+
+    private static final class Node {
+
+        private Point2D point2D;
+        private Node leftBottom;
+        private Node rightTop;
+        private RectHV rect;
+
+        public Node(Point2D point2D, Node parentNode, boolean isVertical, boolean isLeftBottom) {
+            this.point2D = point2D;
+            if (parentNode == null) {
+                rect = new RectHV(0.0, 0.0, 1.0, 1.0);
+                return;
+            }
+
+            Point2D parentPoint = parentNode.point2D;
+            double ppX = parentPoint.x();
+            double ppY = parentPoint.y();
+
+            RectHV parentRect = parentNode.rect;
+            double pXmin = parentRect.xmin();
+            double pXmax = parentRect.xmax();
+            double pYmin = parentRect.ymin();
+            double pYmax = parentRect.ymax();
+
+            if (isVertical && isLeftBottom) { // vertical and left
+                rect = new RectHV(pXmin, pYmin, ppX, pYmax);
+            } else if (isVertical) { // vertical and right
+                rect = new RectHV(ppX, pYmin, pXmax, pYmax);
+            } else if (isLeftBottom) { // horizontal and bottom
+                rect = new RectHV(pXmin, pYmin, pXmax, ppY);
+            } else { // horizontal and top
+                rect = new RectHV(pXmin, ppY, pXmax, pYmax);
+            }
+        }
+    }
+
 }
