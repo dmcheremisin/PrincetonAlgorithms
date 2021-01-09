@@ -25,6 +25,9 @@ public class KdTree {
     }
 
     public void insert(Point2D point2D) { // add the point to the set (if it is not already in the set)
+        if (point2D == null)
+            throw new IllegalArgumentException("Point must not be null");
+
         root = insert(root, point2D, true, root, false);
         size++;
     }
@@ -45,6 +48,9 @@ public class KdTree {
 
 
     public boolean contains(Point2D p) { // does the set contain point p?
+        if (p == null)
+            throw new IllegalArgumentException("Point must not be null");
+
         return contains(p, root, true);
     }
 
@@ -78,6 +84,9 @@ public class KdTree {
     }
 
     public Iterable<Point2D> range(RectHV rect) { // all points that are inside the rectangle (or on the boundary)
+        if (rect == null)
+            throw new IllegalArgumentException("Rectangle must not be null");
+
         List<Point2D> points = new ArrayList<>();
         range(rect, root, points);
         return points;
@@ -100,6 +109,9 @@ public class KdTree {
     }
 
     public Point2D nearest(Point2D p) { // a nearest neighbor in the set to point p; null if the set is empty
+        if (p == null)
+            throw new IllegalArgumentException("Point must not be null");
+
         return nearest(p, root, root.point2D, true);
     }
 
