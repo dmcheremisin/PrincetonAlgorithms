@@ -6,6 +6,7 @@ import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class KdTree {
@@ -46,10 +47,12 @@ public class KdTree {
         return node;
     }
 
-
     public boolean contains(Point2D p) { // does the set contain point p?
         if (p == null)
             throw new IllegalArgumentException("Point must not be null");
+
+        if (isEmpty())
+            return false;
 
         return contains(p, root, true);
     }
@@ -86,6 +89,9 @@ public class KdTree {
         if (rect == null)
             throw new IllegalArgumentException("Rectangle must not be null");
 
+        if (isEmpty())
+            return Collections.emptyList();
+
         List<Point2D> points = new ArrayList<>();
         range(rect, root, points);
         return points;
@@ -110,6 +116,9 @@ public class KdTree {
     public Point2D nearest(Point2D p) { // a nearest neighbor in the set to point p; null if the set is empty
         if (p == null)
             throw new IllegalArgumentException("Point must not be null");
+
+        if (isEmpty())
+            return null;
 
         return nearest(p, root, root.point2D, true);
     }

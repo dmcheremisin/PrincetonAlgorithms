@@ -5,6 +5,7 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 
+import java.util.Collections;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,9 @@ public class PointSET {
         if (p == null)
             throw new IllegalArgumentException("Point must not be null");
 
+        if (isEmpty())
+            return false;
+
         return pointsSet.contains(p);
     }
 
@@ -46,6 +50,9 @@ public class PointSET {
         if (rect == null)
             throw new IllegalArgumentException("Rectangle must not be null");
 
+        if (isEmpty())
+            return Collections.emptyList();
+
         return pointsSet.stream()
                 .filter(rect::contains)
                 .collect(Collectors.toList());
@@ -54,6 +61,9 @@ public class PointSET {
     public Point2D nearest(Point2D p) { // a nearest neighbor in the set to point p; null if the set is empty
         if (p == null)
             throw new IllegalArgumentException("Point must not be null");
+
+        if (isEmpty())
+            return null;
 
         Point2D nearest = pointsSet.first();
         double distance = p.distanceTo(nearest);
