@@ -78,8 +78,7 @@ public class KdTree {
             return;
 
         draw(node.leftBottom);
-        StdDraw.filledCircle(node.point2D.x(), node.point2D.y(), 0.003);
-        //node.point2D.draw();
+        node.point2D.draw();
         draw(node.rightTop);
     }
 
