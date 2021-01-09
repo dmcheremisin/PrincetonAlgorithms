@@ -5,15 +5,18 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class KdTree {
 
     private Node root;
     private int size;
 
-    public KdTree() {// construct an empty set of points
+    public KdTree() { // construct an empty set of points
     }
 
-    public boolean isEmpty() {// is the set empty?
+    public boolean isEmpty() { // is the set empty?
         return root == null;
     }
 
@@ -69,17 +72,52 @@ public class KdTree {
             return;
 
         draw(node.leftBottom);
-        StdDraw.filledCircle(node.point2D.x(), node.point2D.y(), 0.005);
+        StdDraw.filledCircle(node.point2D.x(), node.point2D.y(), 0.003);
         //node.point2D.draw();
         draw(node.rightTop);
     }
 
     public Iterable<Point2D> range(RectHV rect) { // all points that are inside the rectangle (or on the boundary)
-        return null;
+        List<Point2D> points = new ArrayList<>();
+        range(rect, root, points);
+        return points;
+    }
+
+    private void range(RectHV rect, Node node, List<Point2D> points) {
+        if (node == null)
+            return;
+
+        RectHV nodeRect = node.rect;
+        if (!nodeRect.intersects(rect))
+            return;
+
+        Point2D nodePoint = node.point2D;
+        if (rect.contains(nodePoint))
+            points.add(nodePoint);
+
+        range(rect, node.leftBottom, points);
+        range(rect, node.rightTop, points);
     }
 
     public Point2D nearest(Point2D p) { // a nearest neighbor in the set to point p; null if the set is empty
-        return null;
+        return nearest(p, root, root.point2D, true);
+    }
+
+    private Point2D nearest(Point2D point, Node node, Point2D nearest, boolean isVertical) {
+        if (node == null)
+            return nearest;
+
+        double distance = nearest.distanceTo(point);
+
+        if (node.rect.distanceTo(point) > distance)
+            return nearest;
+
+        Point2D nodePoint = node.point2D;
+        if (nodePoint.distanceTo(point) < distance)
+            nearest = nodePoint;
+
+        nearest = nearest(point, node.leftBottom, nearest, !isVertical);
+        return nearest(point, node.rightTop, nearest, !isVertical);
     }
 
     public static void main(String[] args) {  // unit testing of the methods (optional)
@@ -92,10 +130,10 @@ public class KdTree {
             Point2D point2D = new Point2D(x, y);
             kdTree.insert(point2D);
         }
-//        Point2D newPoint = new Point2D(0.3, 0.5);
-//        StdDraw.filledCircle(newPoint.x(), newPoint.y(), 0.005);
-//        Point2D nearest = kdTree.nearest(newPoint);
-//        StdDraw.line(newPoint.x(), newPoint.y(), nearest.x(), nearest.y());
+        Point2D newPoint = new Point2D(0.3, 0.5);
+        StdDraw.filledCircle(newPoint.x(), newPoint.y(), 0.005);
+        Point2D nearest = kdTree.nearest(newPoint);
+        StdDraw.line(newPoint.x(), newPoint.y(), nearest.x(), nearest.y());
 
         kdTree.draw();
     }
