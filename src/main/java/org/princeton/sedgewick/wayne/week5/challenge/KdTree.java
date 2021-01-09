@@ -120,24 +120,6 @@ public class KdTree {
         return nearest(point, node.rightTop, nearest, !isVertical);
     }
 
-    public static void main(String[] args) {  // unit testing of the methods (optional)
-        KdTree kdTree = new KdTree();
-
-        In in = new In(args[0]);
-        while (in.hasNextLine()) {
-            double x = in.readDouble();
-            double y = in.readDouble();
-            Point2D point2D = new Point2D(x, y);
-            kdTree.insert(point2D);
-        }
-        Point2D newPoint = new Point2D(0.3, 0.5);
-        StdDraw.filledCircle(newPoint.x(), newPoint.y(), 0.005);
-        Point2D nearest = kdTree.nearest(newPoint);
-        StdDraw.line(newPoint.x(), newPoint.y(), nearest.x(), nearest.y());
-
-        kdTree.draw();
-    }
-
     private static final class Node {
 
         private Point2D point2D;
@@ -172,6 +154,24 @@ public class KdTree {
                 rect = new RectHV(pXmin, ppY, pXmax, pYmax);
             }
         }
+    }
+
+    public static void main(String[] args) {  // unit testing of the methods (optional)
+        KdTree kdTree = new KdTree();
+
+        In in = new In(args[0]);
+        while (in.hasNextLine()) {
+            double x = in.readDouble();
+            double y = in.readDouble();
+            Point2D point2D = new Point2D(x, y);
+            kdTree.insert(point2D);
+        }
+        Point2D newPoint = new Point2D(0.3, 0.5);
+        StdDraw.filledCircle(newPoint.x(), newPoint.y(), 0.005);
+        Point2D nearest = kdTree.nearest(newPoint);
+        StdDraw.line(newPoint.x(), newPoint.y(), nearest.x(), nearest.y());
+
+        kdTree.draw();
     }
 
 }
