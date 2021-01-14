@@ -41,24 +41,52 @@ public class LinearProbingHashST<Key, Value> {
             resize(2 * M); // double M (see text)
 
         int i = hash(key);
-        for (; keys[i] != null; i = (i + 1) % M) {
+        for (; keys[i] != null; i = (i + 1) % M)
             if (keys[i].equals(key)) {
                 vals[i] = val;
                 return;
             }
-        }
 
         keys[i] = key;
         vals[i] = val;
         N++;
     }
 
-    public Value get(Key key) {
+    private int index(Key key) {
         for (int i = hash(key); keys[i] != null; i = (i + 1) % M)
             if (keys[i].equals(key))
-                return vals[i];
+                return i;
 
-        return null;
+        return -1;
+    }
+
+    public Value get(Key key) {
+        int index = index(key);
+        return index == -1 ? null : vals[index];
+    }
+
+    public void delete(Key key) {
+        int i = index(key);
+        if (i == -1)
+            return;
+
+        keys[i] = null;
+        vals[i] = null;
+        i = (i + 1) % M;
+        while (keys[i] != null)
+        {
+            Key keyToRedo = keys[i];
+            Value valToRedo = vals[i];
+            keys[i] = null;
+            vals[i] = null;
+            N--;
+            put(keyToRedo, valToRedo);
+            i = (i + 1) % M;
+        }
+
+        N--;
+        if (N > 0 && N == M / 8)
+            resize(M / 2);
     }
 
     public Iterable<Key> keys() {
@@ -68,5 +96,20 @@ public class LinearProbingHashST<Key, Value> {
                 list.add(key);
 
         return list;
+    }
+
+    public static void main(String[] args) {
+        LinearProbingHashST<Integer, String> lph = new LinearProbingHashST<>();
+        lph.put(1, "a");
+        lph.put(2, "b");
+        lph.put(3, "c");
+        lph.put(4, "d");
+        lph.put(5, "e");
+        lph.put(6, "f");
+        lph.put(10, "r");
+        System.out.println(lph.get(5)); // e
+        lph.delete(5);
+        System.out.println(lph.get(5)); // null
+        System.out.println(lph.get(6)); // f
     }
 }
