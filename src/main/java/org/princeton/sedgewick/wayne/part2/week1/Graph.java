@@ -9,7 +9,7 @@ public class Graph {
     private int E;
     private Bag<Integer>[] adj;
 
-    private Graph(int V) {
+    public Graph(int V) {
         this.V = V;
         adj = (Bag<Integer>[]) new Bag[V];
         for (int i = 0; i < V; i++)
@@ -34,7 +34,7 @@ public class Graph {
         return E;
     }
 
-    private void addEdge(int v, int w) {
+    public void addEdge(int v, int w) {
         adj[v].add(w);
         adj[w].add(v);
         E++;
