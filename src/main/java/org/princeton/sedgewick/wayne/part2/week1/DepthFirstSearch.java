@@ -4,21 +4,23 @@ import edu.princeton.cs.algs4.In;
 
 public class DepthFirstSearch {
 
-    private boolean marked[];
+    private final Graph g;
+    private final boolean[] marked;
     private int count;
 
     public DepthFirstSearch(Graph g, int s) {
+        this.g = g;
         marked = new boolean[g.getV()];
-        dfs(g, s);
+        dfs(s);
     }
 
-    private void dfs(Graph g, int s) {
+    private void dfs(int s) {
         marked[s] = true;
         System.out.printf("Visiting vertex: %s \n", s);
         count++;
         for (Integer adj : g.adj(s))
             if (!marked[adj])
-                dfs(g, adj);
+                dfs(adj);
     }
 
     public boolean marked(int w) {
@@ -27,6 +29,12 @@ public class DepthFirstSearch {
 
     public int count() {
         return count;
+    }
+
+    public void isConnected() {
+        if (count != g.getV())
+            System.out.print("NOT ");
+        System.out.println("connected");
     }
 
     public static void main(String[] args) {
@@ -42,9 +50,7 @@ public class DepthFirstSearch {
         System.out.println(dfs.count()); // 7
         System.out.println(dfs.marked(3)); // true
         System.out.println(dfs.marked(11)); // false
-        if (dfs.count() != graph.getV())
-            System.out.print("NOT ");
-        System.out.println("connected");
+        dfs.isConnected();
         // NOT connected
     }
 }
