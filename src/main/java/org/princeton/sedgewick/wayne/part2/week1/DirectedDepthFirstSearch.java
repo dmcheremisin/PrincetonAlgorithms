@@ -2,6 +2,8 @@ package org.princeton.sedgewick.wayne.part2.week1;
 
 import edu.princeton.cs.algs4.In;
 
+import java.util.List;
+
 public class DirectedDepthFirstSearch {
 
     private final Digraph digraph;
@@ -46,7 +48,8 @@ public class DirectedDepthFirstSearch {
         System.out.println(dfs1.marked(3)); // true
         System.out.println(dfs1.marked(11)); // false
 
-        DirectedDepthFirstSearch dfs2 = new DirectedDepthFirstSearch(digraph, 9);
+        DirectedDepthFirstSearch dfs2 = new DirectedDepthFirstSearch(digraph, List.of(8, 9));
+        //Visiting vertex: 8
         //Visiting vertex: 9
         //Visiting vertex: 11
         //Visiting vertex: 12
