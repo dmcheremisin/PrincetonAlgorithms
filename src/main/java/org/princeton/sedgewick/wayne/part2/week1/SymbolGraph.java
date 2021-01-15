@@ -64,12 +64,12 @@ public class SymbolGraph {
         String filename = args[0];
         String delim = args[1];
         SymbolGraph sg = new SymbolGraph(filename, delim);
-        Graph G = sg.getGraph();
 
+        Graph graph = sg.getGraph();
         for (String key : sg.keys) {
             int vertex = sg.getVertexByName(key);
             System.out.println(key);
-            for (int w : G.adj(vertex))
+            for (int w : graph.adj(vertex))
                 StdOut.println("===> " + sg.getVertexName(w));
         }
         //JFK
