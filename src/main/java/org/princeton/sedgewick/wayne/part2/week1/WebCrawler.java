@@ -19,7 +19,7 @@ public class WebCrawler {
         // initial web page
         String s = args[0];
 
-        // initial web page
+        // search pages size
         int size = Integer.parseInt(args[1]);
 
         // list of web pages to be examined
