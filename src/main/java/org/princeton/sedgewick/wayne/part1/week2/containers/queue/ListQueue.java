@@ -1,7 +1,10 @@
 package org.princeton.sedgewick.wayne.part1.week2.containers.queue;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class ListQueue<Item> implements Iterable<Item> { // 16 as object
      /*
@@ -55,6 +58,18 @@ public class ListQueue<Item> implements Iterable<Item> { // 16 as object
     }
 
     @Override
+    public String toString() {
+        List<Item> values = new ArrayList<>();
+        Node node = first;
+        while(node != null) {
+            values.add(node.value);
+            node = node.next;
+        }
+        String joinedValues = values.stream().map(Item::toString).collect(Collectors.joining(", "));
+        return String.format("[%s]", joinedValues);
+    }
+
+    @Override
     public Iterator<Item> iterator() {
         return new ListStackIterator();
     }
@@ -91,34 +106,33 @@ public class ListQueue<Item> implements Iterable<Item> { // 16 as object
 
 class TestQueue {
     public static void main(String[] args) {
-        ListQueue<Integer> stack = new ListQueue<>();
-        stack.enqueue(10);
-        stack.enqueue(9);
-        stack.enqueue(8);
-        stack.enqueue(7);
-        stack.enqueue(6);
-        stack.enqueue(5);
-        stack.enqueue(4);
-        stack.enqueue(3);
-        stack.enqueue(2);
-        stack.enqueue(1);
+        ListQueue<Integer> queue = new ListQueue<>();
+        queue.enqueue(10);
+        queue.enqueue(9);
+        queue.enqueue(8);
+        queue.enqueue(7);
+        queue.enqueue(6);
+        queue.enqueue(5);
+        queue.enqueue(4);
+        queue.enqueue(3);
+        queue.enqueue(2);
+        queue.enqueue(1);
 
-        for (Integer value : stack)
-            System.out.print(value + " "); // 10 9 8 7 6 5 4 3 2 1
+        System.out.println(queue);
 
         System.out.println();
 
-        System.out.println(stack.dequeue()); // 10
-        System.out.println(stack.dequeue()); // 9
-        System.out.println(stack.dequeue()); // 8
-        System.out.println(stack.dequeue()); // 7
-        System.out.println(stack.dequeue()); // 6
-        System.out.println(stack.dequeue()); // 5
-        System.out.println(stack.dequeue()); // 4
-        System.out.println(stack.dequeue()); // 3
-        System.out.println(stack.dequeue()); // 2
-        System.out.println(stack.dequeue()); // 1
-        System.out.println(stack.dequeue()); // null
+        System.out.println(queue.dequeue()); // 10
+        System.out.println(queue.dequeue()); // 9
+        System.out.println(queue.dequeue()); // 8
+        System.out.println(queue.dequeue()); // 7
+        System.out.println(queue.dequeue()); // 6
+        System.out.println(queue.dequeue()); // 5
+        System.out.println(queue.dequeue()); // 4
+        System.out.println(queue.dequeue()); // 3
+        System.out.println(queue.dequeue()); // 2
+        System.out.println(queue.dequeue()); // 1
+        System.out.println(queue.dequeue()); // null
 
     }
 }

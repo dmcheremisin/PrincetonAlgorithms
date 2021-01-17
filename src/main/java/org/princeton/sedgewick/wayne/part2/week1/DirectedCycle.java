@@ -1,6 +1,7 @@
 package org.princeton.sedgewick.wayne.part2.week1;
 
-import java.util.Stack;
+import edu.princeton.cs.algs4.In;
+import org.princeton.sedgewick.wayne.part1.week2.containers.bag.Bag;
 
 public class DirectedCycle {
 
@@ -8,7 +9,7 @@ public class DirectedCycle {
     private final boolean[] marked;
     private final boolean[] onStack;
     private final int[] edgeTo;
-    private Stack<Integer> cycle;
+    private Bag<Integer> cycle;
 
     public DirectedCycle(Digraph digraph) {
         this.digraph = digraph;
@@ -30,11 +31,11 @@ public class DirectedCycle {
                 edgeTo[w] = v;
                 dfs(w);
             } else if (onStack[w]) {
-                cycle = new Stack<>();
+                cycle = new Bag<>();
                 for (int x = v; x != w; x = edgeTo[x])
-                    cycle.push(x);
-                cycle.push(w);
-                cycle.push(v);
+                    cycle.add(x);
+                cycle.add(w);
+                cycle.add(v);
             }
         }
         onStack[v] = false;
@@ -46,5 +47,13 @@ public class DirectedCycle {
 
     public Iterable<Integer> cycle() {
         return cycle;
+    }
+
+    public static void main(String[] args) {
+        Digraph graph = new Digraph(new In(args[0]));
+        DirectedCycle directedCycle = new DirectedCycle(graph);
+        if (directedCycle.hasCycle())
+            System.out.println(directedCycle.cycle()); // [3, 5, 4, 3]
+
     }
 }

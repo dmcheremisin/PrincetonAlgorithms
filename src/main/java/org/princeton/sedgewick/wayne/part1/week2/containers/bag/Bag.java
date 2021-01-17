@@ -1,7 +1,10 @@
 package org.princeton.sedgewick.wayne.part1.week2.containers.bag;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class Bag<Item> implements Iterable<Item> {
 
@@ -11,6 +14,18 @@ public class Bag<Item> implements Iterable<Item> {
         Node newFirst = new Node(item);
         newFirst.next = first;
         first = newFirst;
+    }
+
+    @Override
+    public String toString() {
+        List<Item> values = new ArrayList<>();
+        Node node = first;
+        while(node != null) {
+            values.add(node.value);
+            node = node.next;
+        }
+        String joinedValues = values.stream().map(Item::toString).collect(Collectors.joining(", "));
+        return String.format("[%s]", joinedValues);
     }
 
     @Override
@@ -62,7 +77,6 @@ class TestQueue {
         stack.add(2);
         stack.add(1);
 
-        for (Integer value : stack)
-            System.out.print(value + " "); // 10 9 8 7 6 5 4 3 2 1
+        System.out.println(stack.toString());
     }
 }
