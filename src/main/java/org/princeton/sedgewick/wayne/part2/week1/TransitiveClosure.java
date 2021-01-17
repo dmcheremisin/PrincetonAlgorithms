@@ -17,11 +17,14 @@ public class TransitiveClosure {
     public static void main(String[] args) {
         SymbolDigraph sg = new SymbolDigraph(args[0], args[1]);
         TransitiveClosure closure = new TransitiveClosure(sg.getDigraph());
-        int v = sg.getVertexByName("JFK");
-        int w = sg.getVertexByName("ATL");
-        int k = sg.getVertexByName("DEN");
-        System.out.println(closure.reachable(v, w)); // true
-        System.out.println(closure.reachable(v, k)); // true
-        System.out.println(closure.reachable(w, k)); // false
+        int jfk = sg.getVertexByName("JFK");
+        int atl = sg.getVertexByName("ATL");
+        int den = sg.getVertexByName("DEN");
+        int lax = sg.getVertexByName("LAX");
+        System.out.println(closure.reachable(jfk, atl)); // true
+        System.out.println(closure.reachable(jfk, den)); // true
+        System.out.println(closure.reachable(jfk, lax)); // true
+        System.out.println(closure.reachable(lax, jfk)); // false
+        System.out.println(closure.reachable(atl, den)); // false
     }
 }
