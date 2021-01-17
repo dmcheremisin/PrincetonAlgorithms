@@ -4,10 +4,10 @@ public class TransitiveClosure {
 
     private DirectedDepthFirstSearch[] all;
 
-    public TransitiveClosure(Digraph G) {
-        all = new DirectedDepthFirstSearch[G.getV()];
-        for (int v = 0; v < G.getV(); v++)
-            all[v] = new DirectedDepthFirstSearch(G, v);
+    public TransitiveClosure(Digraph digraph) {
+        all = new DirectedDepthFirstSearch[digraph.getV()];
+        for (int v = 0; v < digraph.getV(); v++)
+            all[v] = new DirectedDepthFirstSearch(digraph, v);
     }
 
     public boolean reachable(int v, int w) {
@@ -15,12 +15,13 @@ public class TransitiveClosure {
     }
 
     public static void main(String[] args) {
-        SymbolDigraph sg = new SymbolDigraph(args[0], args[1]);
-        TransitiveClosure closure = new TransitiveClosure(sg.getDigraph());
-        int jfk = sg.getVertexByName("JFK");
-        int atl = sg.getVertexByName("ATL");
-        int den = sg.getVertexByName("DEN");
-        int lax = sg.getVertexByName("LAX");
+        SymbolDigraph sd = new SymbolDigraph(args[0], args[1]);
+        int jfk = sd.getVertexByName("JFK");
+        int atl = sd.getVertexByName("ATL");
+        int den = sd.getVertexByName("DEN");
+        int lax = sd.getVertexByName("LAX");
+
+        TransitiveClosure closure = new TransitiveClosure(sd.getDigraph());
         System.out.println(closure.reachable(jfk, atl)); // true
         System.out.println(closure.reachable(jfk, den)); // true
         System.out.println(closure.reachable(jfk, lax)); // true
