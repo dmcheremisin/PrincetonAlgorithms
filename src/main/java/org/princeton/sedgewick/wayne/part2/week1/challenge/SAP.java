@@ -1,10 +1,6 @@
 package org.princeton.sedgewick.wayne.part2.week1.challenge;
 
-import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
-import edu.princeton.cs.algs4.Digraph;
-import edu.princeton.cs.algs4.In;
-
-import java.util.Iterator;
+import edu.princeton.cs.algs4.*;
 
 public class SAP {
 
@@ -17,29 +13,47 @@ public class SAP {
 
     // length of shortest ancestral path between v and w; -1 if no such path
     public int length(int v, int w) {
-        BreadthFirstDirectedPaths paths = new BreadthFirstDirectedPaths(digraph, v);
-        if (!paths.hasPathTo(w))
-            return -1;
+        BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
+        BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
-        return paths.distTo(w);
+        Queue<Integer> queue = new Queue<>();
+        queue.enqueue(w);
+        boolean[] marked = new boolean[digraph.V()];
+        while (!queue.isEmpty()) {
+            Integer vertex = queue.dequeue();
+            for (Integer adj : digraph.adj(vertex)) {
+                if (pathV.hasPathTo(adj))
+                    return pathV.distTo(adj) + pathW.distTo(adj);
+                if (!marked[adj]) {
+                    marked[adj] = true;
+                    queue.enqueue(adj);
+                }
+            }
+        }
+
+        return -1;
     }
 
     // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
     public int ancestor(int v, int w) {
-        BreadthFirstDirectedPaths paths = new BreadthFirstDirectedPaths(digraph, v);
-        if (!paths.hasPathTo(w))
-            return -1;
-        int dist = paths.distTo(w);
+        BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
 
-        Iterable<Integer> integers = paths.pathTo(w);
-        int commonDist = dist / 2;
-        int count = 0;
-        int ancestor = -1;
-        Iterator<Integer> iterator = integers.iterator();
-        while (count++ <= commonDist && iterator.hasNext())
-            ancestor = iterator.next();
+        Queue<Integer> queue = new Queue<>();
+        queue.enqueue(w);
+        boolean[] marked = new boolean[digraph.V()];
+        while (!queue.isEmpty()) {
+            Integer vertex = queue.dequeue();
+            for (Integer adj : digraph.adj(vertex)) {
+                if (pathV.hasPathTo(adj))
+                    return adj;
+                if (!marked[adj]) {
+                    marked[adj] = true;
+                    queue.enqueue(adj);
+                }
+            }
+        }
 
-        return ancestor;
+        return -1;
     }
 
     // length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
@@ -75,5 +89,14 @@ public class SAP {
     public static void main(String[] args) {
         Digraph digraph = new Digraph(new In(args[0]));
         SAP sap = new SAP(digraph);
+        System.out.println(sap.ancestor(3, 11));
+        System.out.println(sap.length(3, 11));
+        while (!StdIn.isEmpty()) {
+            int v = StdIn.readInt();
+            int w = StdIn.readInt();
+            int length   = sap.length(v, w);
+            int ancestor = sap.ancestor(v, w);
+            StdOut.printf("length = %d, ancestor = %d\n", length, ancestor);
+        }
     }
 }
