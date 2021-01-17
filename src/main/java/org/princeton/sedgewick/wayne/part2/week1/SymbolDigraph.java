@@ -12,14 +12,14 @@ public class SymbolDigraph {
     private String[] keys; // index -> String
     private Digraph digraph; // the graph
 
-    public SymbolDigraph(String stream, String sp) {
+    public SymbolDigraph(String fileName, String separator) {
         map = new HashMap<>();
-        In in = new In(stream);
+        In in = new In(fileName);
 
         // ------------- First pass ---------------
         // Build dictionary with airport codes and array indexes
         while (in.hasNextLine()) { // reads line "JFK MCO"
-            String[] codeArr = in.readLine().split(sp); // makes array [JFK, MCO]
+            String[] codeArr = in.readLine().split(separator); // makes array [JFK, MCO]
             for (String s : codeArr)
                 map.putIfAbsent(s, map.size()); // {JFK -> 0, MCO -> 1}
         }
@@ -34,9 +34,9 @@ public class SymbolDigraph {
         // dictionary code indexes
 
         digraph = new Digraph(map.size());
-        in = new In(stream); // Second pass
+        in = new In(fileName); // Second pass
         while (in.hasNextLine()){ // builds the graph
-            String[] codeArr = in.readLine().split(sp); /// makes array [JFK, MCO]
+            String[] codeArr = in.readLine().split(separator); /// makes array [JFK, MCO]
             int v = map.get(codeArr[0]); // map.get("JFK") == 0
             for (int i = 1; i < codeArr.length; i++)
                 digraph.addEdge(v, map.get(codeArr[i])); // map.get("MCO") == 1 => graph.addEdge(0, 1)
