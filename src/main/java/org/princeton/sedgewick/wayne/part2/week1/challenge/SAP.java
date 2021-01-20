@@ -1,6 +1,11 @@
 package org.princeton.sedgewick.wayne.part2.week1.challenge;
 
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
+import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Queue;
+
+import java.util.List;
 
 public class SAP {
 
@@ -41,6 +46,7 @@ public class SAP {
         Queue<Integer> queue = new Queue<>();
         queue.enqueue(w);
         boolean[] marked = new boolean[digraph.V()];
+        marked[w] = true;
         while (!queue.isEmpty()) {
             Integer vertex = queue.dequeue();
             for (Integer adj : digraph.adj(vertex)) {
@@ -82,7 +88,25 @@ public class SAP {
 
     // a common ancestor that participates in shortest ancestral path; -1 if no such path
     public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
-        return 0;
+        BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
+
+        Queue<Integer> queue = new Queue<>();
+        for (Integer wVertex : w)
+            queue.enqueue(wVertex);
+
+        boolean[] marked = new boolean[digraph.V()];
+        while (!queue.isEmpty()) {
+            Integer vertex = queue.dequeue();
+            for (Integer adj : digraph.adj(vertex)) {
+                if (pathV.hasPathTo(adj))
+                    return adj;
+                if (!marked[adj]) {
+                    marked[adj] = true;
+                    queue.enqueue(adj);
+                }
+            }
+        }
+        return -1;
     }
 
     // do unit testing of this class
@@ -91,12 +115,6 @@ public class SAP {
         SAP sap = new SAP(digraph);
         System.out.println(sap.ancestor(3, 11));
         System.out.println(sap.length(3, 11));
-        while (!StdIn.isEmpty()) {
-            int v = StdIn.readInt();
-            int w = StdIn.readInt();
-            int length   = sap.length(v, w);
-            int ancestor = sap.ancestor(v, w);
-            StdOut.printf("length = %d, ancestor = %d\n", length, ancestor);
-        }
+        System.out.println(sap.ancestor(List.of(13, 23, 24), List.of(6, 16,17)));
     }
 }
