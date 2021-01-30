@@ -64,41 +64,44 @@ public class SAP {
 
     // length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
     public int length(Iterable<Integer> v, Iterable<Integer> w) {
-        BreadthFirstDirectedPaths paths = new BreadthFirstDirectedPaths(digraph, v);
+        BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
+        BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
-        boolean hasPath = false;
-        for (Integer wVertex : w) {
-            if (paths.hasPathTo(wVertex)) {
-                hasPath = true;
-                break;
-            }
-        }
-        if (!hasPath)
+        int ancestorV = getAncestor(w, pathV);
+        if (ancestorV == -1)
             return -1;
+        int ancestorW = getAncestor(v, pathW);
+        int distV = pathV.distTo(ancestorV) + pathW.distTo(ancestorV);
+        int distW = pathV.distTo(ancestorW) + pathW.distTo(ancestorW);
 
-        int minPathLength = 0;
-        for (Integer wVertex : w) {
-            int pathLength = paths.distTo(wVertex);
-            if (pathLength < minPathLength)
-                minPathLength = pathLength;
-        }
-
-        return minPathLength;
+        return Math.min(distV, distW);
     }
 
     // a common ancestor that participates in shortest ancestral path; -1 if no such path
     public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
         BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
+        BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
+        int ancestorV = getAncestor(w, pathV);
+        if (ancestorV == -1)
+            return -1;
+        int ancestorW = getAncestor(v, pathW);
+        int distV = pathV.distTo(ancestorV) + pathW.distTo(ancestorV);
+        int distW = pathV.distTo(ancestorW) + pathW.distTo(ancestorW);
+
+        return distV < distW ? ancestorV : ancestorW;
+    }
+
+    private int getAncestor(Iterable<Integer> vertexes, BreadthFirstDirectedPaths paths) {
         Queue<Integer> queue = new Queue<>();
-        for (Integer wVertex : w)
-            queue.enqueue(wVertex);
+        for (Integer vertex : vertexes)
+            queue.enqueue(vertex);
 
         boolean[] marked = new boolean[digraph.V()];
         while (!queue.isEmpty()) {
             Integer vertex = queue.dequeue();
             for (Integer adj : digraph.adj(vertex)) {
-                if (pathV.hasPathTo(adj))
+                if (paths.hasPathTo(adj))
                     return adj;
                 if (!marked[adj]) {
                     marked[adj] = true;
@@ -115,6 +118,7 @@ public class SAP {
         SAP sap = new SAP(digraph);
         System.out.println(sap.ancestor(3, 11));
         System.out.println(sap.length(3, 11));
-        System.out.println(sap.ancestor(List.of(13, 23, 24), List.of(6, 16,17)));
+        System.out.println(sap.ancestor(List.of(13, 23, 24), List.of(6, 16, 17)));
+        System.out.println(sap.length(List.of(13, 23, 24), List.of(6, 16, 17)));
     }
 }
