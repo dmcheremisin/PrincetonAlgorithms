@@ -69,16 +69,21 @@ public class WordNet {
     // distance between nounA and nounB (defined below)
     public int distance(String nounA, String nounB) {
         if (nounA == null || nounB == null)
-            throw new IllegalArgumentException("nounB & nounB must not be null");
-        return 0;
+            throw new IllegalArgumentException("nounA & nounB must not be null");
+
+        SAP sap = new SAP(this.digraph);
+        return sap.length(nounsMap.get(nounA), nounsMap.get(nounB));
     }
 
     // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
     // in a shortest ancestral path (defined below)
     public String sap(String nounA, String nounB) {
         if (nounA == null || nounB == null)
-            throw new IllegalArgumentException("nounB & nounB must not be null");
-        return "";
+            throw new IllegalArgumentException("nounA & nounB must not be null");
+
+        SAP sap = new SAP(this.digraph);
+        int ancestorId = sap.ancestor(nounsMap.get(nounA), nounsMap.get(nounB));
+        return synsets.get(ancestorId);
     }
 
     // do unit testing of this class
