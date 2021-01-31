@@ -91,19 +91,58 @@ public class WordNet {
         System.out.println(wordNet.nounsMap.get("worm")); // [81679, 81680, 81681, 81682]
         System.out.println(wordNet.nounsMap.get("bird")); // [24306, 24307, 25293, 33764, 70067]
 
-        List<Integer> municipalityIds = wordNet.nounsMap.get("municipality");
-        List<Integer> regionIds = wordNet.nounsMap.get("region");
-        System.out.println(municipalityIds); // [55651, 55652]
-        System.out.println(regionIds); // [21477, 65579, 65580, 65581, 65582]
-        BreadthFirstDirectedPaths bfs =
-                new BreadthFirstDirectedPaths(wordNet.digraph, municipalityIds);
-        for (Integer regionId : regionIds) {
-            if (bfs.hasPathTo(regionId)) {
+        getPath(wordNet, "municipality", "region"); // [55651, 55652] && [21477, 65579, 65580, 65581, 65582]
+        //Path from 'municipality' to 'region'
+        //[55651, 55652]
+        //[21477, 65579, 65580, 65581, 65582]
+        // ========================
+        //Has path to id: 65579
+        //55651: municipality
+        //19379: administrative_district administrative_division territorial_division
+        //35787: district territory territorial_dominion dominion
+        //65579: region
+        // ========================
+        getPath(wordNet, "individual", "physical_entity");
+        //Path from 'individual' to 'physical_entity'
+        //[47987, 60216]
+        //[60600]
+        // ========================
+        //Has path to id: 60600
+        //60216: person individual someone somebody mortal soul
+        //28054: causal_agent cause causal_agency
+        //60600: physical_entity
+        // ========================
+        getPath(wordNet, "edible_fruit", "physical_entity");
+        //Path from 'edible_fruit' to 'physical_entity'
+        //[37179]
+        //[60600]
+        // ========================
+        //Has path to id: 60600
+        //37179: edible_fruit
+        //63109: produce green_goods green_groceries garden_truck
+        //41005: food solid_food
+        //71516: solid
+        //53519: matter
+        //60600: physical_entity
+        // ========================
+    }
+
+    private static void getPath(WordNet wordNet, String from, String to) {
+        System.out.println(String.format("Path from '%s' to '%s'", from, to));
+        List<Integer> fromIds = wordNet.nounsMap.get(from);
+        List<Integer> toIds = wordNet.nounsMap.get(to);
+        System.out.println(fromIds);
+        System.out.println(toIds);
+        BreadthFirstDirectedPaths bfs = new BreadthFirstDirectedPaths(wordNet.digraph, fromIds);
+        for (Integer toId : toIds) {
+            if (bfs.hasPathTo(toId)) {
                 System.out.println(" ======================== ");
-                for (Integer vertex : bfs.pathTo(regionId))
-                    System.out.println(wordNet.synsets.get(vertex));
+                System.out.println("Has path to id: " + toId);
+                for (Integer vertex : bfs.pathTo(toId))
+                    System.out.println(vertex + ": " + wordNet.synsets.get(vertex));
+                System.out.println(" ======================== ");
             }
         }
-        // municipality -> administrative_district -> district -> region
+
     }
 }
