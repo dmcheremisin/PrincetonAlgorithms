@@ -1,16 +1,18 @@
 package org.princeton.sedgewick.wayne.part2.week1.challenge;
 
+import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import org.princeton.sedgewick.wayne.part1.week2.containers.bag.Bag;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public class WordNet {
 
-    private Set<String> nouns = new HashSet<>();
+    private final Digraph digraph;
+    private Map<String, Integer> nounsMap = new HashMap<>();
     private List<String> synsets = new ArrayList<>();
     private List<Bag<Integer>> hypernyms = new ArrayList<>();
 
@@ -18,16 +20,20 @@ public class WordNet {
     public WordNet(String synsets, String hypernyms) {
         if (synsets == null || hypernyms == null)
             throw new IllegalArgumentException("Constructor arguments must not be null");
+
         In in = new In(synsets);
         while (in.hasNextLine()) {
             String[] synArr = in.readLine().split(",");
-            this.synsets.add(synArr[1]);
+            int synsetId = Integer.parseInt(synArr[0]);
+            this.synsets.add(synsetId, synArr[1]);
             String[] synNouns = synArr[1].split(" ");
             for (String synNoun : synNouns)
-                nouns.add(synNoun);
+                nounsMap.put(synNoun, synsetId);
 
             this.hypernyms.add(new Bag<>());
         }
+
+        this.digraph = new Digraph(this.synsets.size());
         in = new In(hypernyms);
         while (in.hasNextLine()) {
             String line = in.readLine();
@@ -40,20 +46,21 @@ public class WordNet {
                     continue;
                 }
                 this.hypernyms.get(id).add(parsedInt);
+                this.digraph.addEdge(id, parsedInt);
             }
         }
     }
 
     // returns all WordNet nouns
     public Iterable<String> nouns() {
-        return nouns;
+        return nounsMap.keySet();
     }
 
     // is the word a WordNet noun?
     public boolean isNoun(String word) {
         if (word == null)
             throw new IllegalArgumentException("word must not be null");
-        return nouns.contains(word);
+        return nounsMap.containsKey(word);
     }
 
     // distance between nounA and nounB (defined below)
