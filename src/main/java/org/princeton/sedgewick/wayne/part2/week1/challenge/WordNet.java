@@ -1,5 +1,6 @@
 package org.princeton.sedgewick.wayne.part2.week1.challenge;
 
+import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import org.princeton.sedgewick.wayne.part1.week2.containers.bag.Bag;
@@ -12,7 +13,7 @@ import java.util.Map;
 public class WordNet {
 
     private final Digraph digraph;
-    private Map<String, Integer> nounsMap = new HashMap<>();
+    private Map<String, List<Integer>> nounsMap = new HashMap<>();
     private List<String> synsets = new ArrayList<>();
     private List<Bag<Integer>> hypernyms = new ArrayList<>();
 
@@ -27,8 +28,10 @@ public class WordNet {
             int synsetId = Integer.parseInt(synArr[0]);
             this.synsets.add(synsetId, synArr[1]);
             String[] synNouns = synArr[1].split(" ");
-            for (String synNoun : synNouns)
-                nounsMap.put(synNoun, synsetId);
+            for (String synNoun : synNouns) {
+                nounsMap.putIfAbsent(synNoun, new ArrayList<>());
+                nounsMap.get(synNoun).add(synsetId);
+            }
 
             this.hypernyms.add(new Bag<>());
         }
@@ -85,5 +88,22 @@ public class WordNet {
         System.out.println(wordNet.isNoun("AIDS")); // true
         System.out.println(wordNet.isNoun("ALGOL")); // true
         System.out.println(wordNet.isNoun("BASH")); // false
+        System.out.println(wordNet.nounsMap.get("worm")); // [81679, 81680, 81681, 81682]
+        System.out.println(wordNet.nounsMap.get("bird")); // [24306, 24307, 25293, 33764, 70067]
+
+        List<Integer> municipalityIds = wordNet.nounsMap.get("municipality");
+        List<Integer> regionIds = wordNet.nounsMap.get("region");
+        System.out.println(municipalityIds); // [55651, 55652]
+        System.out.println(regionIds); // [21477, 65579, 65580, 65581, 65582]
+        BreadthFirstDirectedPaths bfs =
+                new BreadthFirstDirectedPaths(wordNet.digraph, municipalityIds);
+        for (Integer regionId : regionIds) {
+            if (bfs.hasPathTo(regionId)) {
+                System.out.println(" ======================== ");
+                for (Integer vertex : bfs.pathTo(regionId))
+                    System.out.println(wordNet.synsets.get(vertex));
+            }
+        }
+        // municipality -> administrative_district -> district -> region
     }
 }
