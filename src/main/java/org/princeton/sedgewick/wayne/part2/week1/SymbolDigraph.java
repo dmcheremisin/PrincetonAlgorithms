@@ -60,14 +60,14 @@ public class SymbolDigraph {
     }
 
     public static void main(String[] args) {
-        String filename = args[0];
-        String delim = args[1];
+        String filename = args[0]; // src/main/resources/part2/week1/routes.txt
+        String delim = args[1]; // ' '
         SymbolDigraph sg = new SymbolDigraph(filename, delim);
 
         Digraph graph = sg.getDigraph();
         for (String key : sg.keys) {
-            int vertex = sg.getVertexByName(key);
             System.out.println(key);
+            int vertex = sg.getVertexByName(key);
             for (int w : graph.adj(vertex))
                 StdOut.println("===> " + sg.getVertexName(w));
         }
