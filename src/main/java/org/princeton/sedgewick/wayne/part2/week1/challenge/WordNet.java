@@ -3,7 +3,6 @@ package org.princeton.sedgewick.wayne.part2.week1.challenge;
 import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
-import org.princeton.sedgewick.wayne.part1.week2.containers.bag.Bag;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +14,6 @@ public class WordNet {
     private final Digraph digraph;
     private Map<String, List<Integer>> nounsMap = new HashMap<>();
     private List<String> synsets = new ArrayList<>();
-    private List<Bag<Integer>> hypernyms = new ArrayList<>();
 
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms) {
@@ -32,8 +30,6 @@ public class WordNet {
                 nounsMap.putIfAbsent(synNoun, new ArrayList<>());
                 nounsMap.get(synNoun).add(synsetId);
             }
-
-            this.hypernyms.add(new Bag<>());
         }
 
         this.digraph = new Digraph(this.synsets.size());
@@ -48,7 +44,6 @@ public class WordNet {
                     id = parsedInt;
                     continue;
                 }
-                this.hypernyms.get(id).add(parsedInt);
                 this.digraph.addEdge(id, parsedInt);
             }
         }

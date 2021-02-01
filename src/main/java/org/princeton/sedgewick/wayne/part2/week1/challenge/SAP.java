@@ -116,9 +116,9 @@ public class SAP {
     public static void main(String[] args) {
         Digraph digraph = new Digraph(new In(args[0]));
         SAP sap = new SAP(digraph);
-        System.out.println(sap.ancestor(3, 11));
-        System.out.println(sap.length(3, 11));
-        System.out.println(sap.ancestor(List.of(13, 23, 24), List.of(6, 16, 17)));
-        System.out.println(sap.length(List.of(13, 23, 24), List.of(6, 16, 17)));
+        System.out.println(sap.ancestor(3, 11)); // 0
+        System.out.println(sap.length(3, 11)); // 5
+        System.out.println(sap.ancestor(List.of(13, 23, 24), List.of(6, 16, 17))); // 3
+        System.out.println(sap.length(List.of(13, 23, 24), List.of(6, 16, 17))); // 4
     }
 }
