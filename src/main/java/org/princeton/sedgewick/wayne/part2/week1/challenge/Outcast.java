@@ -30,7 +30,7 @@ public class Outcast {
             }
             distances.add(i, distance);
         }
-        Integer max = Collections.max(distances);
+        int max = Collections.max(distances);
         int index = distances.indexOf(max);
 
         return nouns[index];

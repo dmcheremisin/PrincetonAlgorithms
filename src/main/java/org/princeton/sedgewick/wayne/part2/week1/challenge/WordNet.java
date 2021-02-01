@@ -92,38 +92,38 @@ public class WordNet {
         System.out.println(wordNet.nounsMap.get("bird")); // [24306, 24307, 25293, 33764, 70067]
 
         printPath(wordNet, "municipality", "region"); // [55651, 55652] && [21477, 65579, 65580, 65581, 65582]
-        //Path from 'municipality' to 'region'
-        //[55651, 55652]
-        //[21477, 65579, 65580, 65581, 65582]
+        // Path from 'municipality' to 'region'
+        // [55651, 55652]
+        // [21477, 65579, 65580, 65581, 65582]
         // ========================
-        //Has path to id: 65579
-        //55651: municipality
-        //19379: administrative_district administrative_division territorial_division
-        //35787: district territory territorial_dominion dominion
-        //65579: region
+        // Has path to id: 65579
+        // 55651: municipality
+        // 19379: administrative_district administrative_division territorial_division
+        // 35787: district territory territorial_dominion dominion
+        // 65579: region
         // ========================
         printPath(wordNet, "individual", "physical_entity");
-        //Path from 'individual' to 'physical_entity'
-        //[47987, 60216]
-        //[60600]
+        // Path from 'individual' to 'physical_entity'
+        // [47987, 60216]
+        // [60600]
         // ========================
-        //Has path to id: 60600
-        //60216: person individual someone somebody mortal soul
-        //28054: causal_agent cause causal_agency
-        //60600: physical_entity
+        // Has path to id: 60600
+        // 60216: person individual someone somebody mortal soul
+        // 28054: causal_agent cause causal_agency
+        // 60600: physical_entity
         // ========================
         printPath(wordNet, "edible_fruit", "physical_entity");
-        //Path from 'edible_fruit' to 'physical_entity'
-        //[37179]
-        //[60600]
+        // Path from 'edible_fruit' to 'physical_entity'
+        // [37179]
+        // [60600]
         // ========================
-        //Has path to id: 60600
-        //37179: edible_fruit
-        //63109: produce green_goods green_groceries garden_truck
-        //41005: food solid_food
-        //71516: solid
-        //53519: matter
-        //60600: physical_entity
+        // Has path to id: 60600
+        // 37179: edible_fruit
+        // 63109: produce green_goods green_groceries garden_truck
+        // 41005: food solid_food
+        // 71516: solid
+        // 53519: matter
+        // 60600: physical_entity
         // ========================
     }
 
@@ -134,11 +134,11 @@ public class WordNet {
         System.out.println(fromIds);
         System.out.println(toIds);
         BreadthFirstDirectedPaths bfs = new BreadthFirstDirectedPaths(wordNet.digraph, fromIds);
-        for (Integer toId : toIds) {
+        for (int toId : toIds) {
             if (bfs.hasPathTo(toId)) {
                 System.out.println(" ======================== ");
                 System.out.println("Has path to id: " + toId);
-                for (Integer vertex : bfs.pathTo(toId))
+                for (int vertex : bfs.pathTo(toId))
                     System.out.println(vertex + ": " + wordNet.synsets.get(vertex));
                 System.out.println(" ======================== ");
             }
