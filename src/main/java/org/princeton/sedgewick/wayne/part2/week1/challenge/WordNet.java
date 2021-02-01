@@ -12,8 +12,8 @@ import java.util.Map;
 public class WordNet {
 
     private final Digraph digraph;
-    private Map<String, List<Integer>> nounsMap = new HashMap<>();
-    private List<String> synsets = new ArrayList<>();
+    private final Map<String, List<Integer>> nounsMap = new HashMap<>();
+    private final List<String> synsets = new ArrayList<>();
 
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms) {
@@ -91,7 +91,7 @@ public class WordNet {
         System.out.println(wordNet.nounsMap.get("worm")); // [81679, 81680, 81681, 81682]
         System.out.println(wordNet.nounsMap.get("bird")); // [24306, 24307, 25293, 33764, 70067]
 
-        getPath(wordNet, "municipality", "region"); // [55651, 55652] && [21477, 65579, 65580, 65581, 65582]
+        printPath(wordNet, "municipality", "region"); // [55651, 55652] && [21477, 65579, 65580, 65581, 65582]
         //Path from 'municipality' to 'region'
         //[55651, 55652]
         //[21477, 65579, 65580, 65581, 65582]
@@ -102,7 +102,7 @@ public class WordNet {
         //35787: district territory territorial_dominion dominion
         //65579: region
         // ========================
-        getPath(wordNet, "individual", "physical_entity");
+        printPath(wordNet, "individual", "physical_entity");
         //Path from 'individual' to 'physical_entity'
         //[47987, 60216]
         //[60600]
@@ -112,7 +112,7 @@ public class WordNet {
         //28054: causal_agent cause causal_agency
         //60600: physical_entity
         // ========================
-        getPath(wordNet, "edible_fruit", "physical_entity");
+        printPath(wordNet, "edible_fruit", "physical_entity");
         //Path from 'edible_fruit' to 'physical_entity'
         //[37179]
         //[60600]
@@ -127,7 +127,7 @@ public class WordNet {
         // ========================
     }
 
-    private static void getPath(WordNet wordNet, String from, String to) {
+    private static void printPath(WordNet wordNet, String from, String to) {
         System.out.println(String.format("Path from '%s' to '%s'", from, to));
         List<Integer> fromIds = wordNet.nounsMap.get(from);
         List<Integer> toIds = wordNet.nounsMap.get(to);
