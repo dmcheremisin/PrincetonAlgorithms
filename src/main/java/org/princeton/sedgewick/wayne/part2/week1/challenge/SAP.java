@@ -23,6 +23,7 @@ public class SAP {
 
     // length of shortest ancestral path between v and w; -1 if no such path
     public int length(int v, int w) {
+        checkArguments(v, w);
         if (v == w)
             return 0;
 
@@ -49,6 +50,7 @@ public class SAP {
 
     // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
     public int ancestor(int v, int w) {
+        checkArguments(v, w);
         if (v == w)
             return v;
 
