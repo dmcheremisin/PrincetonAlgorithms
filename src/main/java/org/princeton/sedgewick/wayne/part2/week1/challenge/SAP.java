@@ -13,11 +13,19 @@ public class SAP {
 
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G) {
-        this.digraph = G;
+        this.digraph = new Digraph(G);
+    }
+
+    private void checkArguments(int v, int w) {
+        if (v < 0 || w < 0)
+            throw new IllegalArgumentException("v and w must be greater than 0");
     }
 
     // length of shortest ancestral path between v and w; -1 if no such path
     public int length(int v, int w) {
+        if (v == w)
+            return 0;
+
         BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
         BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
@@ -41,6 +49,9 @@ public class SAP {
 
     // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
     public int ancestor(int v, int w) {
+        if (v == w)
+            return v;
+
         BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
 
         Queue<Integer> queue = new Queue<>();
@@ -62,8 +73,15 @@ public class SAP {
         return -1;
     }
 
+    private boolean isEmpty(Iterable<Integer> iterable) {
+        return iterable == null || !iterable.iterator().hasNext();
+    }
+
     // length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
     public int length(Iterable<Integer> v, Iterable<Integer> w) {
+        if (isEmpty(v) || isEmpty(w))
+            throw new IllegalArgumentException("zero vertices");
+
         BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
         BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
@@ -79,6 +97,9 @@ public class SAP {
 
     // a common ancestor that participates in shortest ancestral path; -1 if no such path
     public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
+        if (isEmpty(v) || isEmpty(w))
+            throw new IllegalArgumentException("zero vertices");
+
         BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
         BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
