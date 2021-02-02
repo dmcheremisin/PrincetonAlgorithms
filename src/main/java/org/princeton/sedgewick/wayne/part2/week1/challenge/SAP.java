@@ -28,46 +28,47 @@ public class SAP {
         BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
         BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
-        int distance = getDistance(pathW, pathV, v);
-        if (distance != -1)
-            return distance;
+        int ancestor = getAncestor(pathV, w);
+        int distanceW = -1;
+        if (ancestor != -1)
+            distanceW = pathV.distTo(ancestor) + pathW.distTo(ancestor);
 
-        return getDistance(pathV, pathW, w);
-    }
+        ancestor = getAncestor(pathW, v);
+        int distanceV = -1;
+        if (ancestor != -1)
+            distanceV = pathV.distTo(ancestor) + pathW.distTo(ancestor);
 
-    private int getDistance(BreadthFirstDirectedPaths searchPath, BreadthFirstDirectedPaths anotherPath, int search) {
-        Queue<Integer> queue = new Queue<>();
-        queue.enqueue(search);
-        boolean[] marked = new boolean[digraph.V()];
-        marked[search] = true;
-        while (!queue.isEmpty()) {
-            Integer vertex = queue.dequeue();
-            for (Integer adj : digraph.adj(vertex)) {
-                if (searchPath.hasPathTo(adj))
-                    return searchPath.distTo(adj) + anotherPath.distTo(adj);
-                if (!marked[adj]) {
-                    marked[adj] = true;
-                    queue.enqueue(adj);
-                }
-            }
-        }
-
-        return -1;
+        return distanceV == -1 ? distanceW : (distanceW == -1 ? -1 : Math.min(distanceV, distanceW));
     }
 
     // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
     public int ancestor(int v, int w) {
         checkArguments(v, w);
         if (v == w)
-            return v;
+            return 0;
 
-        BreadthFirstDirectedPaths path = new BreadthFirstDirectedPaths(digraph, v);
-        int ancestor = getAncestor(path, w);
-        if (ancestor != -1)
-            return ancestor;
+        BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
+        BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
-        path = new BreadthFirstDirectedPaths(digraph, w);
-        return getAncestor(path, v);
+        int ancestorW = getAncestor(pathV, w);
+        int distanceW = -1;
+        if (ancestorW != -1)
+            distanceW = pathV.distTo(ancestorW) + pathW.distTo(ancestorW);
+
+        int ancestorV = getAncestor(pathW, v);
+        int distanceV = -1;
+        if (ancestorW != -1)
+            distanceV = pathV.distTo(ancestorV) + pathW.distTo(ancestorV);
+
+        if (distanceV != -1 && distanceW != -1) {
+            return distanceV < distanceW ? ancestorV : ancestorW;
+        } else if(distanceV != -1){
+            return ancestorV;
+        } else if(distanceW != -1) {
+            return ancestorW;
+        }
+
+        return -1;
     }
 
     private int getAncestor(BreadthFirstDirectedPaths path, int search) {
