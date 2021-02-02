@@ -28,24 +28,32 @@ public class SAP {
         BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
         BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
-        int ancestor = getAncestor(pathV, w);
+        int ancestorW = getAncestor(pathV, w);
         int distanceW = -1;
-        if (ancestor != -1)
-            distanceW = pathV.distTo(ancestor) + pathW.distTo(ancestor);
+        if (ancestorW != -1)
+            distanceW = pathV.distTo(ancestorW) + pathW.distTo(ancestorW);
 
-        ancestor = getAncestor(pathW, v);
+        int ancestorV = getAncestor(pathW, v);
         int distanceV = -1;
-        if (ancestor != -1)
-            distanceV = pathV.distTo(ancestor) + pathW.distTo(ancestor);
+        if (ancestorV != -1)
+            distanceV = pathV.distTo(ancestorV) + pathW.distTo(ancestorV);
 
-        return distanceV == -1 ? distanceW : (distanceW == -1 ? -1 : Math.min(distanceV, distanceW));
+        if (distanceV != -1 && distanceW != -1) {
+            return Math.min(distanceV, distanceW);
+        } else if (distanceV != -1) {
+            return distanceV;
+        } else if (distanceW != -1) {
+            return distanceW;
+        }
+
+        return -1;
     }
 
     // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
     public int ancestor(int v, int w) {
         checkArguments(v, w);
         if (v == w)
-            return 0;
+            return v;
 
         BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
         BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
@@ -57,14 +65,14 @@ public class SAP {
 
         int ancestorV = getAncestor(pathW, v);
         int distanceV = -1;
-        if (ancestorW != -1)
+        if (ancestorV != -1)
             distanceV = pathV.distTo(ancestorV) + pathW.distTo(ancestorV);
 
         if (distanceV != -1 && distanceW != -1) {
             return distanceV < distanceW ? ancestorV : ancestorW;
-        } else if(distanceV != -1){
+        } else if (distanceV != -1) {
             return ancestorV;
-        } else if(distanceW != -1) {
+        } else if (distanceW != -1) {
             return ancestorW;
         }
 
@@ -133,10 +141,12 @@ public class SAP {
 
     private int getAncestor(Iterable<Integer> vertexes, BreadthFirstDirectedPaths paths) {
         Queue<Integer> queue = new Queue<>();
-        for (Integer vertex : vertexes)
-            queue.enqueue(vertex);
-
         boolean[] marked = new boolean[digraph.V()];
+
+        for (Integer vertex : vertexes) {
+            queue.enqueue(vertex);
+            marked[vertex] = true;
+        }
         while (!queue.isEmpty()) {
             Integer vertex = queue.dequeue();
             for (Integer adj : digraph.adj(vertex)) {
