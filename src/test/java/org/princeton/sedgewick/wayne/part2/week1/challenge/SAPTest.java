@@ -23,14 +23,30 @@ class SAPTest {
     void digraph2() {
         Digraph digraph = new Digraph(new In(basePath + "digraph2.txt"));
         SAP sap = new SAP(digraph);
-        assertEquals(4, sap.length(1, 3));
+        assertEquals(2, sap.length(1, 3));
     }
 
     @Test
     void digraph3() {
         Digraph digraph = new Digraph(new In(basePath + "digraph3.txt"));
         SAP sap = new SAP(digraph);
+        assertEquals(8, sap.ancestor(14, 8));
         assertEquals(4, sap.length(14, 8));
+    }
+
+    @Test
+    void digraph5() {
+        Digraph digraph = new Digraph(new In(basePath + "digraph5.txt"));
+        SAP sap = new SAP(digraph);
+        assertEquals(8, sap.length(14, 21));
+    }
+
+    @Test
+    void digraph6() {
+        Digraph digraph = new Digraph(new In(basePath + "digraph6.txt"));
+        SAP sap = new SAP(digraph);
+        assertEquals(4, sap.ancestor(3, 4));
+        assertEquals(1, sap.length(3, 4));
     }
 
 }

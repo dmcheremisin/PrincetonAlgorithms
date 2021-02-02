@@ -28,6 +28,14 @@ public class SAP {
         BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
         BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
+        int directedW = -1;
+        if (pathV.hasPathTo(w))
+            directedW = pathV.distTo(w);
+
+        int directedV = -1;
+        if (pathW.hasPathTo(v))
+            directedV = pathW.distTo(v);
+
         int ancestorW = getAncestor(pathV, w);
         int distanceW = -1;
         if (ancestorW != -1)
@@ -38,15 +46,18 @@ public class SAP {
         if (ancestorV != -1)
             distanceV = pathV.distTo(ancestorV) + pathW.distTo(ancestorV);
 
+        int minCommonAncestor = getMinDistance(distanceV, distanceW);
+        int minDirectedPath = getMinDistance(directedV, directedW);
+        return getMinDistance(minCommonAncestor, minDirectedPath);
+    }
+
+    private int getMinDistance(int distanceV, int distanceW) {
         if (distanceV != -1 && distanceW != -1) {
             return Math.min(distanceV, distanceW);
         } else if (distanceV != -1) {
             return distanceV;
-        } else if (distanceW != -1) {
-            return distanceW;
         }
-
-        return -1;
+        return distanceW;
     }
 
     // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
@@ -58,26 +69,44 @@ public class SAP {
         BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
         BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
-        int ancestorW = getAncestor(pathV, w);
+        int directedW = -1;
+        if (pathV.hasPathTo(w))
+            directedW = pathV.distTo(w);
+
+        int directedV = -1;
+        if (pathW.hasPathTo(v))
+            directedV = pathW.distTo(v);
+
         int distanceW = -1;
+        int ancestorW = getAncestor(pathV, w);
         if (ancestorW != -1)
             distanceW = pathV.distTo(ancestorW) + pathW.distTo(ancestorW);
 
-        int ancestorV = getAncestor(pathW, v);
         int distanceV = -1;
+        int ancestorV = getAncestor(pathW, v);
         if (ancestorV != -1)
             distanceV = pathV.distTo(ancestorV) + pathW.distTo(ancestorV);
 
+        int[] minCommon = getMinAncestorDistance(new int[]{ancestorV, distanceV}, new int[]{ancestorW, distanceW});
+        int[] minDirected = getMinAncestorDistance(new int[]{v, directedV}, new int[]{w, directedW});
+
+        return getMinAncestorDistance(minCommon, minDirected)[0];
+    }
+
+    private int[] getMinAncestorDistance(int[] ancestorDistV, int[] ancestorDistW) {
+        int distanceV = ancestorDistV[1];
+        int distanceW = ancestorDistW[1];
         if (distanceV != -1 && distanceW != -1) {
-            return distanceV < distanceW ? ancestorV : ancestorW;
+            return distanceV < distanceW ? ancestorDistV : ancestorDistW;
         } else if (distanceV != -1) {
-            return ancestorV;
+            return ancestorDistV;
         } else if (distanceW != -1) {
-            return ancestorW;
+            return ancestorDistW;
         }
 
-        return -1;
+        return new int[]{-1, -1};
     }
+
 
     private int getAncestor(BreadthFirstDirectedPaths path, int search) {
         Queue<Integer> queue = new Queue<>();
