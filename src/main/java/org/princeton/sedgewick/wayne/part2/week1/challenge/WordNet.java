@@ -2,6 +2,7 @@ package org.princeton.sedgewick.wayne.part2.week1.challenge;
 
 import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.DirectedCycle;
 import edu.princeton.cs.algs4.In;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Map;
 public class WordNet {
 
     private final Digraph digraph;
+    private final SAP sap;
     private final Map<String, List<Integer>> nounsMap = new HashMap<>();
     private final List<String> synsets = new ArrayList<>();
 
@@ -47,6 +49,11 @@ public class WordNet {
                 this.digraph.addEdge(id, parsedInt);
             }
         }
+        DirectedCycle directedCycle = new DirectedCycle(digraph);
+        if (directedCycle.hasCycle())
+            throw new IllegalArgumentException("Graph should not have cycles");
+
+        this.sap = new SAP(digraph);
     }
 
     // returns all WordNet nouns
@@ -66,7 +73,6 @@ public class WordNet {
         if (nounA == null || nounB == null)
             throw new IllegalArgumentException("nounA & nounB must not be null");
 
-        SAP sap = new SAP(this.digraph);
         return sap.length(nounsMap.get(nounA), nounsMap.get(nounB));
     }
 
@@ -76,7 +82,6 @@ public class WordNet {
         if (nounA == null || nounB == null)
             throw new IllegalArgumentException("nounA & nounB must not be null");
 
-        SAP sap = new SAP(this.digraph);
         int ancestorId = sap.ancestor(nounsMap.get(nounA), nounsMap.get(nounB));
         return synsets.get(ancestorId);
     }

@@ -38,7 +38,10 @@ class SAPTest {
     void digraph5() {
         Digraph digraph = new Digraph(new In(basePath + "digraph5.txt"));
         SAP sap = new SAP(digraph);
+
         assertEquals(8, sap.length(14, 21));
+
+        assertEquals(5, sap.length(7, 12));
     }
 
     @Test
