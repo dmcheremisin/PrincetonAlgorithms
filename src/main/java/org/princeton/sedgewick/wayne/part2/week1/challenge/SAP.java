@@ -5,8 +5,6 @@ import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
 
-import java.util.List;
-
 public class SAP {
 
     private final Digraph digraph;
@@ -30,14 +28,23 @@ public class SAP {
         BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
         BreadthFirstDirectedPaths pathW = new BreadthFirstDirectedPaths(digraph, w);
 
+        int distance = getDistance(pathW, pathV, v);
+        if (distance != -1)
+            return distance;
+
+        return getDistance(pathV, pathW, w);
+    }
+
+    private int getDistance(BreadthFirstDirectedPaths searchPath, BreadthFirstDirectedPaths anotherPath, int search) {
         Queue<Integer> queue = new Queue<>();
-        queue.enqueue(w);
+        queue.enqueue(search);
         boolean[] marked = new boolean[digraph.V()];
+        marked[search] = true;
         while (!queue.isEmpty()) {
             Integer vertex = queue.dequeue();
             for (Integer adj : digraph.adj(vertex)) {
-                if (pathV.hasPathTo(adj))
-                    return pathV.distTo(adj) + pathW.distTo(adj);
+                if (searchPath.hasPathTo(adj))
+                    return searchPath.distTo(adj) + anotherPath.distTo(adj);
                 if (!marked[adj]) {
                     marked[adj] = true;
                     queue.enqueue(adj);
@@ -54,16 +61,24 @@ public class SAP {
         if (v == w)
             return v;
 
-        BreadthFirstDirectedPaths pathV = new BreadthFirstDirectedPaths(digraph, v);
+        BreadthFirstDirectedPaths path = new BreadthFirstDirectedPaths(digraph, v);
+        int ancestor = getAncestor(path, w);
+        if (ancestor != -1)
+            return ancestor;
 
+        path = new BreadthFirstDirectedPaths(digraph, w);
+        return getAncestor(path, v);
+    }
+
+    private int getAncestor(BreadthFirstDirectedPaths path, int search) {
         Queue<Integer> queue = new Queue<>();
-        queue.enqueue(w);
+        queue.enqueue(search);
         boolean[] marked = new boolean[digraph.V()];
-        marked[w] = true;
+        marked[search] = true;
         while (!queue.isEmpty()) {
             Integer vertex = queue.dequeue();
             for (Integer adj : digraph.adj(vertex)) {
-                if (pathV.hasPathTo(adj))
+                if (path.hasPathTo(adj))
                     return adj;
                 if (!marked[adj]) {
                     marked[adj] = true;
@@ -139,9 +154,7 @@ public class SAP {
     public static void main(String[] args) {
         Digraph digraph = new Digraph(new In(args[0]));
         SAP sap = new SAP(digraph);
-        System.out.println(sap.ancestor(3, 11)); // 0
-        System.out.println(sap.length(3, 11)); // 5
-        System.out.println(sap.ancestor(List.of(13, 23, 24), List.of(6, 16, 17))); // 3
-        System.out.println(sap.length(List.of(13, 23, 24), List.of(6, 16, 17))); // 4
+        System.out.println("Ancestor: " + sap.ancestor(10, 11)); // 0
+        System.out.println("Length: " + sap.length(10, 11)); // 5
     }
 }
