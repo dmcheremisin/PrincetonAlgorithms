@@ -8,26 +8,18 @@ public class EdgeWeightedGraph {
     private final int V;
     private final Bag<Edge>[] adj;
 
-    public EdgeWeightedGraph(In in) {
-        V = in.readInt();
-        adj = (Bag<Edge>[]) new Bag[V];
-        for (int v = 0; v < V; v++)
-            adj[v] = new Bag<>();
-
-        while (in.hasNextLine()) {
-            int v = in.readInt();
-            int w = in.readInt();
-            double weight = in.readDouble();
-            Edge e = new Edge(v, w, weight);
-            addEdge(e);
-        }
-    }
-
     public EdgeWeightedGraph(int v) {
         V = v;
         adj = (Bag<Edge>[]) new Bag[V];
         for (int i = 0; i < v; i++)
             adj[i] = new Bag<>();
+    }
+
+    public EdgeWeightedGraph(In in) {
+        this(in.readInt());
+
+        while (in.hasNextLine())
+            addEdge(new Edge(in.readInt(), in.readInt(), in.readDouble()));
     }
 
     public int V() {
@@ -48,16 +40,9 @@ public class EdgeWeightedGraph {
     public Iterable<Edge> edges() {
         Bag<Edge> list = new Bag<>();
         for (int v = 0; v < V; v++) {
-            int selfLoops = 0;
             for (Edge e : adj(v)) {
-                if (e.other(v) > v) {
+                if (e.other(v) > v)
                     list.add(e);
-                }
-                // add only one copy of each self loop (self loops will be consecutive)
-                else if (e.other(v) == v) {
-                    if (selfLoops % 2 == 0) list.add(e);
-                    selfLoops++;
-                }
             }
         }
         return list;
