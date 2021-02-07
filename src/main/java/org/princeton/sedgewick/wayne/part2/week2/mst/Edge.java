@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.part2.week2;
+package org.princeton.sedgewick.wayne.part2.week2.mst;
 
 public class Edge implements Comparable<Edge> {
 

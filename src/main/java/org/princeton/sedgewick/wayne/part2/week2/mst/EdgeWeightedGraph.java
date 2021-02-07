@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.part2.week2;
+package org.princeton.sedgewick.wayne.part2.week2.mst;
 
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
