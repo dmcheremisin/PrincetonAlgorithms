@@ -45,8 +45,8 @@ public class PrimLazyMST {
     public static void main(String[] args) {
         In in = new In(args[0]);
         EdgeWeightedGraph graph = new EdgeWeightedGraph(in);
-        PrimLazyMST kruskalMST = new PrimLazyMST(graph);
-        for (Edge edge : kruskalMST.mst)
+        PrimLazyMST primLazyMST = new PrimLazyMST(graph);
+        for (Edge edge : primLazyMST.mst)
             System.out.println(edge);
 
         //Edge{v=0, w=7, weight=0.16}
