@@ -1,5 +1,6 @@
 package org.princeton.sedgewick.wayne.part2.week2.shortestPath;
 
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.IndexMinPQ;
 
 public class DijkstraShortestPath {
@@ -39,5 +40,12 @@ public class DijkstraShortestPath {
             else
                 pq.insert(to, newWeight);
         }
+    }
+
+    public static void main(String[] args) {
+        EdgeWeightedDigraph digraph = new EdgeWeightedDigraph(new In(args[0]));
+        DijkstraShortestPath path = new DijkstraShortestPath(digraph, 0);
+        System.out.println(path.distTo[3]); // 0.99
+        System.out.println(path.distTo[6]); // 1.51
     }
 }
