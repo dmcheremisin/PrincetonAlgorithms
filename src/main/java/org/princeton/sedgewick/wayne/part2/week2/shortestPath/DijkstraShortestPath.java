@@ -1,5 +1,6 @@
 package org.princeton.sedgewick.wayne.part2.week2.shortestPath;
 
+import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.IndexMinPQ;
 
@@ -32,6 +33,7 @@ public class DijkstraShortestPath {
         int from = edge.getFrom();
         int to = edge.getTo();
         double newWeight = distTo[from] + edge.getWeight();
+
         if (distTo[to] > newWeight) {
             distTo[to] = newWeight;
             edgeTo[to] = edge;
@@ -42,10 +44,31 @@ public class DijkstraShortestPath {
         }
     }
 
+    public Iterable<DirectedEdge> getPathTo(int v) {
+        Bag<DirectedEdge> pathToV = new Bag<>();
+        int currentVertex = v;
+        DirectedEdge edgeInPath;
+
+        while ((edgeInPath = edgeTo[currentVertex]) != null) {
+            pathToV.add(edgeInPath);
+            currentVertex = edgeInPath.getFrom();
+        }
+
+        return pathToV;
+    }
+
     public static void main(String[] args) {
         EdgeWeightedDigraph digraph = new EdgeWeightedDigraph(new In(args[0]));
         DijkstraShortestPath path = new DijkstraShortestPath(digraph, 0);
-        System.out.println(path.distTo[3]); // 0.99
-        System.out.println(path.distTo[6]); // 1.51
+
+        System.out.println(path.distTo[3]); // 0.9900000000000001
+        System.out.println(path.distTo[6]); // 1.5100000000000002
+
+        for (DirectedEdge edge : path.getPathTo(6))
+            System.out.println(edge);
+        //DirectedEdge{from=0, to=2, weight=0.26}
+        //DirectedEdge{from=2, to=7, weight=0.34}
+        //DirectedEdge{from=7, to=3, weight=0.39}
+        //DirectedEdge{from=3, to=6, weight=0.52}
     }
 }
