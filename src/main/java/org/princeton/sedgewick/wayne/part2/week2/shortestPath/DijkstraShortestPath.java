@@ -58,6 +58,7 @@ public class DijkstraShortestPath {
     }
 
     public static void main(String[] args) {
+        //tinyEWD.txt
         EdgeWeightedDigraph digraph = new EdgeWeightedDigraph(new In(args[0]));
         DijkstraShortestPath path = new DijkstraShortestPath(digraph, 0);
 
