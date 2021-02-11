@@ -13,6 +13,10 @@ public class SeamCarver {
     public SeamCarver(Picture picture) {
         this.picture = picture;
         energy = new double[picture.width()][picture.height()];
+
+        for (int i = 0; i < picture.width(); i++)
+            for (int j = 0; j < picture.height(); j++)
+                energy[i][j] = -1;
     }
 
     // current picture
@@ -38,6 +42,9 @@ public class SeamCarver {
         if (x == 0 || y == 0 || (x + 1) == width() || (y + 1) == height())
             return 1000;
 
+        if (energy[x][y] != -1)
+            return energy[x][y];
+
         int dx = getDeltaSquared(x + 1, y, x - 1, y);
         int dy = getDeltaSquared(x, y + 1, x, y - 1);
 
@@ -59,7 +66,7 @@ public class SeamCarver {
         int b2 = color2.getBlue();
 
         int dr = r1 - r2;
-        int dg = g1 -  g2;
+        int dg = g1 - g2;
         int db = b1 - b2;
         return dr * dr + dg * dg + db * db;
     }
