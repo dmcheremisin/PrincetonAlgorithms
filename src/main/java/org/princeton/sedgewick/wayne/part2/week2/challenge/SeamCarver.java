@@ -7,12 +7,12 @@ import java.awt.*;
 public class SeamCarver {
 
     private final Picture picture;
-    private int[][] energy;
+    private double[][] energy;
 
     // create a seam carver object based on the given picture
     public SeamCarver(Picture picture) {
         this.picture = picture;
-        energy = new int[picture.width()][picture.height()];
+        energy = new double[picture.width()][picture.height()];
     }
 
     // current picture
@@ -41,7 +41,10 @@ public class SeamCarver {
         int dx = getDeltaSquared(x + 1, y, x - 1, y);
         int dy = getDeltaSquared(x, y + 1, x, y - 1);
 
-        return Math.sqrt(dx + dy);
+        double energy = Math.sqrt(dx + dy);
+        this.energy[x][y] = energy;
+
+        return energy;
     }
 
     private int getDeltaSquared(int x1, int y1, int x2, int y2) {
