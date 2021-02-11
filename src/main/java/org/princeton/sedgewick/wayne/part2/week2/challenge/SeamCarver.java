@@ -39,11 +39,11 @@ public class SeamCarver {
         if (x < 0 || y < 0 || x >= width() || y >= height())
             throw new IllegalArgumentException("Coordinates are out of range");
 
-        if (x == 0 || y == 0 || (x + 1) == width() || (y + 1) == height())
-            return 1000;
-
         if (energy[x][y] != -1)
             return energy[x][y];
+
+        if (x == 0 || y == 0 || (x + 1) == width() || (y + 1) == height())
+            return 1000;
 
         int dx = getDeltaSquared(x + 1, y, x - 1, y);
         int dy = getDeltaSquared(x, y + 1, x, y - 1);
