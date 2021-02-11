@@ -83,10 +83,14 @@ public class SeamCarver {
 
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
+        if (seam == null || seam.length != picture.width())
+            throw new IllegalArgumentException("Argument is invalid");
     }
 
     // remove vertical seam from current picture
     public void removeVerticalSeam(int[] seam) {
+        if (seam == null || seam.length != picture.height())
+            throw new IllegalArgumentException("Argument is invalid");
     }
 
     //  unit testing (optional)
