@@ -3,6 +3,8 @@ package org.princeton.sedgewick.wayne.part2.week2.challenge;
 import edu.princeton.cs.algs4.Picture;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SeamCarver {
 
@@ -14,9 +16,9 @@ public class SeamCarver {
         this.picture = picture;
         energy = new double[picture.width()][picture.height()];
 
-        for (int i = 0; i < picture.width(); i++)
-            for (int j = 0; j < picture.height(); j++)
-                energy[i][j] = -1;
+        for (int x = 0; x < picture.width(); x++)
+            for (int y = 0; y < picture.height(); y++)
+                energy[x][y] = energy(x, y);
     }
 
     // current picture
@@ -48,10 +50,7 @@ public class SeamCarver {
         int dx = getDeltaSquared(x + 1, y, x - 1, y);
         int dy = getDeltaSquared(x, y + 1, x, y - 1);
 
-        double energy = Math.sqrt(dx + dy);
-        this.energy[x][y] = energy;
-
-        return energy;
+        return Math.sqrt(dx + dy);
     }
 
     private int getDeltaSquared(int x1, int y1, int x2, int y2) {
@@ -78,7 +77,31 @@ public class SeamCarver {
 
     // sequence of indices for vertical seam
     public int[] findVerticalSeam() {
+        List<Double> seams = new ArrayList<>(width());
+        for (int y = 1; y < width() - 1; y++) {
+            double totalEnergy = 0;
+            for (int x = 1; x < height() - 1; x++) {
+                totalEnergy = energy[x][y] + minVerticalEnergy(x, y + 1);
+            }
+
+        }
         return new int[0];
+    }
+
+    private double minVerticalEnergy(int x, int y) {
+        double left = energy[x - 1][y];
+        double mid = energy[x][y];
+        double right = energy[x + 1][y];
+        double min = Math.min(left, mid);
+        return Math.min(min, right);
+    }
+
+    private double minHorizontalEnergy(int x, int y) {
+        double top = energy[x][y - 1];
+        double mid = energy[x][y];
+        double bottom = energy[x][y + 1];
+        double min = Math.min(top, mid);
+        return Math.min(min, bottom);
     }
 
     // remove horizontal seam from current picture
