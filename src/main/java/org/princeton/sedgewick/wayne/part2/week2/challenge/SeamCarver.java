@@ -3,12 +3,10 @@ package org.princeton.sedgewick.wayne.part2.week2.challenge;
 import edu.princeton.cs.algs4.Picture;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SeamCarver {
 
-    private final Picture picture;
+    private Picture picture;
     private double[][] energy;
 
     // create a seam carver object based on the given picture
@@ -77,31 +75,60 @@ public class SeamCarver {
 
     // sequence of indices for vertical seam
     public int[] findVerticalSeam() {
-        List<Double> seams = new ArrayList<>(width());
-        for (int y = 1; y < width() - 1; y++) {
-            double totalEnergy = 0;
-            for (int x = 1; x < height() - 1; x++) {
-                totalEnergy = energy[x][y] + minVerticalEnergy(x, y + 1);
-            }
+        double[][] seamEnergy = new double[height()][width()];
+        int[][] seamX = new int[height()][width()];
+        for (int y = 0; y < height() - 1; y++) {
+            for (int x = 0; x < width(); x++) {
+                double[] minEnergyAndX = minVerticalEnergy(x, y + 1);
+                double minEnergy = energy[x][y] + minEnergyAndX[0];
+                int minX = (int) minEnergyAndX[1];
 
+                seamEnergy[y + 1][x] = minEnergy;
+                seamX[y + 1][x] = minX;
+            }
         }
+        int minEnergyIndex = findMinIndexInArray(seamEnergy[height() - 1]);
+
+        int[] seam = new int[height()];
+        seam[height() - 1] = minEnergyIndex;
+        for (int i = height() - 2; i >= 0; i--) {
+            seam[i] = seamX[i][minEnergyIndex];
+        }
+
         return new int[0];
     }
 
-    private double minVerticalEnergy(int x, int y) {
+    private int findMinIndexInArray(double[] arr) {
+        double min = arr[0];
+        int minIndex = 0;
+        for (int i = 1; i < arr.length; i++) {
+            if (min > arr[i]) {
+                min = arr[i];
+                minIndex = i;
+            }
+        }
+        return minIndex;
+    }
+
+    private double[] minVerticalEnergy(int x, int y) {
         double left = energy[x - 1][y];
         double mid = energy[x][y];
         double right = energy[x + 1][y];
+
         double min = Math.min(left, mid);
-        return Math.min(min, right);
+        double minX = min == left ? x - 1 : x;
+
+        if (min < right)
+            return new double[]{min, minX};
+        else
+            return new double[]{right, x + 1};
     }
 
     private double minHorizontalEnergy(int x, int y) {
         double top = energy[x][y - 1];
         double mid = energy[x][y];
         double bottom = energy[x][y + 1];
-        double min = Math.min(top, mid);
-        return Math.min(min, bottom);
+        return Math.min(Math.min(top, mid), bottom);
     }
 
     // remove horizontal seam from current picture
