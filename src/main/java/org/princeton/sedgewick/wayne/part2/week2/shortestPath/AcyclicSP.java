@@ -1,10 +1,8 @@
 package org.princeton.sedgewick.wayne.part2.week2.shortestPath;
 
-import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.DirectedEdge;
 import edu.princeton.cs.algs4.EdgeWeightedDigraph;
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.Topological;
+import edu.princeton.cs.algs4.*;
 
 public class AcyclicSP {
 
@@ -29,7 +27,7 @@ public class AcyclicSP {
         int from = edge.from();
         int to = edge.to();
         double weight = distTo[from] + edge.weight();
-        if(distTo[to] > weight){
+        if (distTo[to] > weight) {
             distTo[to] = weight;
             edgeTo[to] = edge;
         }
