@@ -76,11 +76,6 @@ public class SeamCarver {
         return dr * dr + dg * dg + db * db;
     }
 
-    // sequence of indices for horizontal seam
-    public int[] findHorizontalSeam() {
-        return new int[0];
-    }
-
     private double[][] copy2dArray(double[][] arr) {
         double[][] newArr = new double[arr.length][];
         for (int i = 0; i < arr.length; i++)
@@ -106,9 +101,35 @@ public class SeamCarver {
 
         int[] seam = new int[height];
         seam[height - 1] = minEnergyIndex;
-        for (int i = height - 1; i > 0; i--) {
-            seam[i - 1] = seamX[i][minEnergyIndex];
-            minEnergyIndex = seam[i - 1];
+        for (int y = height - 1; y > 0; y--) {
+            seam[y - 1] = seamX[y][minEnergyIndex];
+            minEnergyIndex = seam[y - 1];
+        }
+
+        return seam;
+    }
+
+    // sequence of indices for horizontal seam
+    public int[] findHorizontalSeam() {
+        double[][] seamEnergy = copy2dArray(energy);
+        int[][] seamY = new int[height][width];
+        for (int x = 1; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                double[] minEnergyAndY = minHorizontalEnergy(seamEnergy, x - 1, y);
+                double minEnergy = energy[y][x] + minEnergyAndY[0];
+                int minY = (int) minEnergyAndY[1];
+
+                seamEnergy[y][x] = minEnergy;
+                seamY[y][x] = minY;
+            }
+        }
+        int minEnergyIndex = findMinIndexInHorizontalArray(seamEnergy, width - 1);
+
+        int[] seam = new int[width];
+        seam[width - 1] = minEnergyIndex;
+        for (int x = width - 1; x > 0; x--) {
+            seam[x - 1] = seamY[minEnergyIndex][x];
+            minEnergyIndex = seam[x - 1];
         }
 
         return seam;
@@ -128,6 +149,20 @@ public class SeamCarver {
             return new double[]{min, minX};
     }
 
+    private double[] minHorizontalEnergy(double[][] seamEnergy, int x, int y) {
+        double top = (y - 1) < 0 ? Double.MAX_VALUE : seamEnergy[y - 1][x];
+        double mid = seamEnergy[y][x];
+        double bottom = (y + 1) >= seamEnergy.length ? Double.MAX_VALUE : seamEnergy[y + 1][x];
+
+        double min = Math.min(top, mid);
+        double minY = min == top ? y - 1 : y;
+
+        if (bottom < min)
+            return new double[]{bottom, y + 1};
+        else
+            return new double[]{min, minY};
+    }
+
     private int findMinIndexInArray(double[] arr) {
         double min = arr[0];
         int minIndex = 0;
@@ -140,11 +175,16 @@ public class SeamCarver {
         return minIndex;
     }
 
-    private double minHorizontalEnergy(int x, int y) {
-        double top = energy[x][y - 1];
-        double mid = energy[x][y];
-        double bottom = energy[x][y + 1];
-        return Math.min(Math.min(top, mid), bottom);
+    private int findMinIndexInHorizontalArray(double[][] arr, int x) {
+        double min = arr[0][x];
+        int minIndex = 0;
+        for (int y = 1; y < arr.length; y++) {
+            if (min > arr[y][x]) {
+                min = arr[y][x];
+                minIndex = y;
+            }
+        }
+        return minIndex;
     }
 
     // remove horizontal seam from current picture
@@ -170,8 +210,13 @@ public class SeamCarver {
         //SeamCarver seamCarver = new SeamCarver(energy);
         SeamCarver seamCarver = new SeamCarver(new Picture(args[0]));
         int[] verticalSeam = seamCarver.findVerticalSeam();
-        for (int i : verticalSeam) {
-            System.out.println(i);
+        for (int x : verticalSeam) {
+            System.out.println(x);
+        }
+        System.out.println("==============");
+        int[] horizontalSeam = seamCarver.findHorizontalSeam();
+        for (int y : horizontalSeam) {
+            System.out.println(y);
         }
     }
 
