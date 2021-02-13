@@ -7,16 +7,27 @@ import java.awt.*;
 public class SeamCarver {
 
     private Picture picture;
+    private int height;
+    private int width;
     private double[][] energy;
 
     // create a seam carver object based on the given picture
     public SeamCarver(Picture picture) {
         this.picture = picture;
-        energy = new double[picture.width()][picture.height()];
+        this.height = picture.height();
+        this.width = picture.width();
+        energy = new double[height][width];
 
-        for (int x = 0; x < picture.width(); x++)
-            for (int y = 0; y < picture.height(); y++)
-                energy[x][y] = energy(x, y);
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
+                energy[y][x] = energy(x, y);
+    }
+
+
+    public SeamCarver(double[][] energy) {
+        this.height = energy.length;
+        this.width = energy[0].length;
+        this.energy = energy;
     }
 
     // current picture
@@ -26,23 +37,20 @@ public class SeamCarver {
 
     // width of current picture
     public int width() {
-        return picture.width();
+        return width;
     }
 
     // height of current picture
     public int height() {
-        return picture.height();
+        return height;
     }
 
     // energy of pixel at column x and row y
     public double energy(int x, int y) {
-        if (x < 0 || y < 0 || x >= width() || y >= height())
+        if (x < 0 || y < 0 || x >= width || y >= height)
             throw new IllegalArgumentException("Coordinates are out of range");
 
-        if (energy[x][y] != -1)
-            return energy[x][y];
-
-        if (x == 0 || y == 0 || (x + 1) == width() || (y + 1) == height())
+        if (x == 0 || y == 0 || (x + 1) == width || (y + 1) == height)
             return 1000;
 
         int dx = getDeltaSquared(x + 1, y, x - 1, y);
@@ -75,27 +83,28 @@ public class SeamCarver {
 
     // sequence of indices for vertical seam
     public int[] findVerticalSeam() {
-        double[][] seamEnergy = new double[height()][width()];
-        int[][] seamX = new int[height()][width()];
-        for (int y = 0; y < height() - 1; y++) {
-            for (int x = 0; x < width(); x++) {
-                double[] minEnergyAndX = minVerticalEnergy(x, y + 1);
-                double minEnergy = energy[x][y] + minEnergyAndX[0];
+        double[] seamEnergy = new double[width];
+        int[][] seamX = new int[height][width];
+        for (int y = 1; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                double[] minEnergyAndX = minVerticalEnergy(seamEnergy, x, y - 1);
+                double minEnergy = energy[y][x] + minEnergyAndX[0];
                 int minX = (int) minEnergyAndX[1];
 
-                seamEnergy[y + 1][x] = minEnergy;
-                seamX[y + 1][x] = minX;
+                seamEnergy[x] = minEnergy;
+                seamX[y][x] = minX;
             }
         }
-        int minEnergyIndex = findMinIndexInArray(seamEnergy[height() - 1]);
+        int minEnergyIndex = findMinIndexInArray(seamEnergy);
 
-        int[] seam = new int[height()];
-        seam[height() - 1] = minEnergyIndex;
-        for (int i = height() - 2; i >= 0; i--) {
-            seam[i] = seamX[i][minEnergyIndex];
+        int[] seam = new int[height];
+        seam[height - 1] = minEnergyIndex;
+        for (int i = height - 1; i > 0; i--) {
+            seam[i - 1] = seamX[i][minEnergyIndex];
+            minEnergyIndex = seam[i - 1];
         }
 
-        return new int[0];
+        return seam;
     }
 
     private int findMinIndexInArray(double[] arr) {
@@ -110,18 +119,18 @@ public class SeamCarver {
         return minIndex;
     }
 
-    private double[] minVerticalEnergy(int x, int y) {
-        double left = energy[x - 1][y];
-        double mid = energy[x][y];
-        double right = energy[x + 1][y];
+    private double[] minVerticalEnergy(double[] seamEnergy, int x, int y) {
+        double left = (x - 1) < 0 ? Double.MAX_VALUE : seamEnergy[x - 1];
+        double mid = seamEnergy[x];
+        double right = (x + 1) >= seamEnergy.length ? Double.MAX_VALUE : seamEnergy[x + 1];
 
         double min = Math.min(left, mid);
         double minX = min == left ? x - 1 : x;
 
-        if (min < right)
-            return new double[]{min, minX};
-        else
+        if (right < min)
             return new double[]{right, x + 1};
+        else
+            return new double[]{min, minX};
     }
 
     private double minHorizontalEnergy(int x, int y) {
@@ -133,22 +142,30 @@ public class SeamCarver {
 
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
-        if (seam == null || seam.length != picture.width())
+        if (seam == null || seam.length != width)
             throw new IllegalArgumentException("Argument is invalid");
     }
 
     // remove vertical seam from current picture
     public void removeVerticalSeam(int[] seam) {
-        if (seam == null || seam.length != picture.height())
+        if (seam == null || seam.length != height)
             throw new IllegalArgumentException("Argument is invalid");
     }
 
     //  unit testing (optional)
     public static void main(String[] args) {
-        //HJoceanSmall.png
-        Picture picture = new Picture(args[0]);
-        SeamCarver seamCarver = new SeamCarver(picture);
-        SCUtility.showEnergy(seamCarver);
+        double[][] energy = new double[][]{
+                {9, 9, 0, 9, 9},
+                {9, 1, 9, 8, 9},
+                {9, 9, 9, 9, 0},
+                {9, 9, 9, 0, 9}
+        };
+        //SeamCarver seamCarver = new SeamCarver(energy);
+        SeamCarver seamCarver = new SeamCarver(new Picture(args[0]));
+        int[] verticalSeam = seamCarver.findVerticalSeam();
+        for (int i : verticalSeam) {
+            System.out.println(i);
+        }
     }
 
 }
