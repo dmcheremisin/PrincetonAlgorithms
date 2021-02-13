@@ -81,9 +81,16 @@ public class SeamCarver {
         return new int[0];
     }
 
+    private double[][] copy2dArray(double[][] arr) {
+        double[][] newArr = new double[arr.length][];
+        for (int i = 0; i < arr.length; i++)
+            newArr[i] = arr[i].clone();
+        return newArr;
+    }
+
     // sequence of indices for vertical seam
     public int[] findVerticalSeam() {
-        double[] seamEnergy = new double[width];
+        double[][] seamEnergy = copy2dArray(energy);
         int[][] seamX = new int[height][width];
         for (int y = 1; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -91,11 +98,11 @@ public class SeamCarver {
                 double minEnergy = energy[y][x] + minEnergyAndX[0];
                 int minX = (int) minEnergyAndX[1];
 
-                seamEnergy[x] = minEnergy;
+                seamEnergy[y][x] = minEnergy;
                 seamX[y][x] = minX;
             }
         }
-        int minEnergyIndex = findMinIndexInArray(seamEnergy);
+        int minEnergyIndex = findMinIndexInArray(seamEnergy[height - 1]);
 
         int[] seam = new int[height];
         seam[height - 1] = minEnergyIndex;
@@ -105,6 +112,20 @@ public class SeamCarver {
         }
 
         return seam;
+    }
+
+    private double[] minVerticalEnergy(double[][] seamEnergy, int x, int y) {
+        double left = (x - 1) < 0 ? Double.MAX_VALUE : seamEnergy[y][x - 1];
+        double mid = seamEnergy[y][x];
+        double right = (x + 1) >= seamEnergy[y].length ? Double.MAX_VALUE : seamEnergy[y][x + 1];
+
+        double min = Math.min(left, mid);
+        double minX = min == left ? x - 1 : x;
+
+        if (right < min)
+            return new double[]{right, x + 1};
+        else
+            return new double[]{min, minX};
     }
 
     private int findMinIndexInArray(double[] arr) {
@@ -117,20 +138,6 @@ public class SeamCarver {
             }
         }
         return minIndex;
-    }
-
-    private double[] minVerticalEnergy(double[] seamEnergy, int x, int y) {
-        double left = (x - 1) < 0 ? Double.MAX_VALUE : seamEnergy[x - 1];
-        double mid = seamEnergy[x];
-        double right = (x + 1) >= seamEnergy.length ? Double.MAX_VALUE : seamEnergy[x + 1];
-
-        double min = Math.min(left, mid);
-        double minX = min == left ? x - 1 : x;
-
-        if (right < min)
-            return new double[]{right, x + 1};
-        else
-            return new double[]{min, minX};
     }
 
     private double minHorizontalEnergy(int x, int y) {
