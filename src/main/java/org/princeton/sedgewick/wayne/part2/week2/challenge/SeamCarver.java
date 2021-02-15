@@ -188,6 +188,7 @@ public class SeamCarver {
     public void removeHorizontalSeam(int[] seam) {
         if (seam == null || seam.length != width)
             throw new IllegalArgumentException("Argument is invalid");
+
         if (height <= 1)
             throw new IllegalArgumentException("Picture height is invalid");
 
@@ -217,6 +218,7 @@ public class SeamCarver {
     public void removeVerticalSeam(int[] seam) {
         if (seam == null || seam.length != height)
             throw new IllegalArgumentException("Argument is invalid");
+
         if (width <= 1)
             throw new IllegalArgumentException("Picture width is invalid");
 
