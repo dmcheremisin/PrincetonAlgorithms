@@ -2,7 +2,7 @@ package org.princeton.sedgewick.wayne.part2.week2.challenge;
 
 import edu.princeton.cs.algs4.Picture;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class SeamCarver {
 
