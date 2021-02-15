@@ -16,18 +16,15 @@ public class SeamCarver {
         this.picture = picture;
         this.height = picture.height();
         this.width = picture.width();
-        energy = new double[height][width];
 
+        updateEnergy();
+    }
+
+    private void updateEnergy() {
+        energy = new double[height][width];
         for (int y = 0; y < height; y++)
             for (int x = 0; x < width; x++)
                 energy[y][x] = energy(x, y);
-    }
-
-
-    public SeamCarver(double[][] energy) {
-        this.height = energy.length;
-        this.width = energy[0].length;
-        this.energy = energy;
     }
 
     // current picture
@@ -191,33 +188,79 @@ public class SeamCarver {
     public void removeHorizontalSeam(int[] seam) {
         if (seam == null || seam.length != width)
             throw new IllegalArgumentException("Argument is invalid");
+
+        Picture croppedPicture = new Picture(width, height - 1);
+        for (int x = 0; x < width; x++) {
+            boolean shifted = false;
+            int ySeamPosition = seam[x];
+
+            for (int y = 0; y < height; y++) {
+                if (y == ySeamPosition) {
+                    shifted = true;
+                    continue;
+                }
+
+                if (shifted)
+                    croppedPicture.setRGB(x, y - 1, picture.getRGB(x, y));
+                else
+                    croppedPicture.setRGB(x, y, picture.getRGB(x, y));
+            }
+        }
+        this.picture = croppedPicture;
+        this.height = height - 1;
+        updateEnergy();
     }
 
     // remove vertical seam from current picture
     public void removeVerticalSeam(int[] seam) {
         if (seam == null || seam.length != height)
             throw new IllegalArgumentException("Argument is invalid");
+
+        Picture croppedPicture = new Picture(width - 1, height);
+        for (int y = 0; y < height; y++) {
+            boolean shifted = false;
+            int xSeamPosition = seam[y];
+
+            for (int x = 0; x < width; x++) {
+                if (x == xSeamPosition) {
+                    shifted = true;
+                    continue;
+                }
+
+                if (shifted)
+                    croppedPicture.setRGB(x - 1, y, picture.getRGB(x, y));
+                else
+                    croppedPicture.setRGB(x, y, picture.getRGB(x, y));
+            }
+        }
+        this.picture = croppedPicture;
+        this.width = width - 1;
+        updateEnergy();
     }
 
     //  unit testing (optional)
     public static void main(String[] args) {
-        double[][] energy = new double[][]{
-                {9, 9, 0, 9, 9},
-                {9, 1, 9, 8, 9},
-                {9, 9, 9, 9, 0},
-                {9, 9, 9, 0, 9}
-        };
-        //SeamCarver seamCarver = new SeamCarver(energy);
         SeamCarver seamCarver = new SeamCarver(new Picture(args[0]));
-        int[] verticalSeam = seamCarver.findVerticalSeam();
-        for (int x : verticalSeam) {
-            System.out.println(x);
-        }
-        System.out.println("==============");
-        int[] horizontalSeam = seamCarver.findHorizontalSeam();
-        for (int y : horizontalSeam) {
-            System.out.println(y);
-        }
+//        int[] verticalSeam = seamCarver.findVerticalSeam();
+//        for (int x : verticalSeam) {
+//            System.out.println(x);
+//        }
+//        System.out.println("==============");
+//        int[] horizontalSeam = seamCarver.findHorizontalSeam();
+//        for (int y : horizontalSeam) {
+//            System.out.println(y);
+//        }
+//        ShowSeams.showVerticalSeam(seamCarver);
+
+        seamCarver.picture().show();
+
+//        for (int i = 0; i < 150; i++)
+//            seamCarver.removeVerticalSeam(seamCarver.findVerticalSeam());
+
+        for (int i = 0; i < 150; i++)
+            seamCarver.removeHorizontalSeam(seamCarver.findHorizontalSeam());
+
+        seamCarver.picture().show();
     }
 
 }
