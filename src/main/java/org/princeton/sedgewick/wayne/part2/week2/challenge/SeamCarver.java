@@ -184,6 +184,32 @@ public class SeamCarver {
         return minIndex;
     }
 
+    private void checkVerticalSeam(int[] seam) {
+        int prevX = seam[0];
+        for (int x : seam) {
+            if (x < 0 || x >= width)
+                throw new IllegalArgumentException(String.format("X coordinate %s is out of range [0, %s]", x, width));
+
+            if (Math.abs(prevX - x) > 1)
+                throw new IllegalArgumentException(String.format("X coordinates %s %s are not sequential", x, prevX));
+
+            prevX = x;
+        }
+    }
+
+    private void checkHorizontalSeam(int[] seam) {
+        int prevY = seam[0];
+        for (int y : seam) {
+            if (y < 0 || y >= height)
+                throw new IllegalArgumentException(String.format("Y coordinate %s is out of range [0, %s]", y, height));
+
+            if (Math.abs(prevY - y) > 1)
+                throw new IllegalArgumentException(String.format("Y coordinates %s %s are not sequential", y, prevY));
+
+            prevY = y;
+        }
+    }
+
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
         if (seam == null || seam.length != width)
@@ -191,6 +217,8 @@ public class SeamCarver {
 
         if (height <= 1)
             throw new IllegalArgumentException("Picture height is invalid");
+
+        checkHorizontalSeam(seam);
 
         Picture croppedPicture = new Picture(width, height - 1);
         for (int x = 0; x < width; x++) {
@@ -222,6 +250,8 @@ public class SeamCarver {
         if (width <= 1)
             throw new IllegalArgumentException("Picture width is invalid");
 
+        checkVerticalSeam(seam);
+
         Picture croppedPicture = new Picture(width - 1, height);
         for (int y = 0; y < height; y++) {
             boolean shifted = false;
@@ -247,22 +277,10 @@ public class SeamCarver {
     //  unit testing (optional)
     public static void main(String[] args) {
         SeamCarver seamCarver = new SeamCarver(new Picture(args[0]));
-//        int[] verticalSeam = seamCarver.findVerticalSeam();
-//        for (int x : verticalSeam) {
-//            System.out.println(x);
-//        }
-//        System.out.println("==============");
-//        int[] horizontalSeam = seamCarver.findHorizontalSeam();
-//        for (int y : horizontalSeam) {
-//            System.out.println(y);
-//        }
-//        ShowSeams.showVerticalSeam(seamCarver);
-
         seamCarver.picture().show();
 
-//        for (int i = 0; i < 150; i++)
-//            seamCarver.removeVerticalSeam(seamCarver.findVerticalSeam());
-
+        for (int i = 0; i < 150; i++)
+            seamCarver.removeVerticalSeam(seamCarver.findVerticalSeam());
         for (int i = 0; i < 150; i++)
             seamCarver.removeHorizontalSeam(seamCarver.findHorizontalSeam());
 
