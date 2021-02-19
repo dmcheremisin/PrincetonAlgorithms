@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.part2.week3.minCutMaxFlow;
+package org.princeton.sedgewick.wayne.part2.week3.minCutMaxFlow.fordFulkerson;
 
 import edu.princeton.cs.algs4.In;
 import org.princeton.sedgewick.wayne.part1.week2.containers.bag.Bag;
