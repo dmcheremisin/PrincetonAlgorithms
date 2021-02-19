@@ -1,5 +1,6 @@
 package org.princeton.sedgewick.wayne.part2.week3.minCutMaxFlow;
 
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
 
 public class FordFulkerson {
@@ -55,5 +56,12 @@ public class FordFulkerson {
 
     public boolean inCut(int v) {
         return marked[v];
+    }
+
+    public static void main(String[] args) {
+        FlowNetwork flowNetwork = new FlowNetwork(new In(args[0]));
+        FordFulkerson fordFulkerson = new FordFulkerson(flowNetwork, 0, 5);
+
+        System.out.println(fordFulkerson.getValue()); //4.0
     }
 }

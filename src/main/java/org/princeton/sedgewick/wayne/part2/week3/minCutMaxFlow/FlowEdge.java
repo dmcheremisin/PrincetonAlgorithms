@@ -47,10 +47,19 @@ public class FlowEdge {
     public void addResidualFlowTo(int vertex, double delta) {
         if (vertex == v)
             flow -= delta;
-
-        if (vertex == w)
+        else if (vertex == w)
             flow += delta;
+        else
+            throw new IllegalArgumentException("Illegal endpoint");
+    }
 
-        throw new IllegalArgumentException("Illegal endpoint");
+    @Override
+    public String toString() {
+        return "FlowEdge{" +
+                "v=" + v +
+                ", w=" + w +
+                ", capacity=" + capacity +
+                ", flow=" + flow +
+                '}';
     }
 }
