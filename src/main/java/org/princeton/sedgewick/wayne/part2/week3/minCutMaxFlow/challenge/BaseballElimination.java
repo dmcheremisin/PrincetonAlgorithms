@@ -2,13 +2,16 @@ package org.princeton.sedgewick.wayne.part2.week3.minCutMaxFlow.challenge;
 
 import edu.princeton.cs.algs4.In;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BaseballElimination {
 
     private final int v;
     private final Map<String, Integer> teams;
+    private final Map<Integer, String> teamsByIndex;
     private final int[][] score;
     private final int[][] schedule;
 
@@ -19,11 +22,14 @@ public class BaseballElimination {
         this.v = v;
 
         teams = new HashMap<>();
+        teamsByIndex = new HashMap<>();
         score = new int[v][];
         schedule = new int[v][];
 
         for (int i = 0; i < v; i++) {
-            teams.put(in.readString(), i);
+            String teamName = in.readString();
+            teams.put(teamName, i);
+            teamsByIndex.put(i, teamName);
 
             int[] teamScore = new int[3];
             score[i] = teamScore;
@@ -51,6 +57,7 @@ public class BaseballElimination {
         Integer index = teams.get(team);
         if (index == null)
             throw new IllegalArgumentException(String.format("Team with name %s is not found", team));
+
         return index;
     }
 
@@ -81,12 +88,31 @@ public class BaseballElimination {
 
     // is given team eliminated?
     public boolean isEliminated(String team) {
-        return false;
+        List<String> list = getTrivialElimination(team);
+        return !list.isEmpty();
     }
 
     // subset R of teams that eliminates given team; null if not eliminated
     public Iterable<String> certificateOfElimination(String team) {
-        return null;
+        List<String> trivialElimination = getTrivialElimination(team);
+        return trivialElimination.isEmpty() ? null : trivialElimination;
+    }
+
+    private List<String> getTrivialElimination(String team) {
+        int teamIndex = getTeamIndex(team);
+        int[] teamScore = score[teamIndex];
+        int wins = teamScore[0];
+        int remaining = teamScore[2];
+        int possibleWins = wins + remaining;
+
+        List<String> eliminatingTeams = new ArrayList<>();
+        for (int i = 0; i < v && i != teamIndex; i++) {
+            int otherWins = score[i][0];
+            if (otherWins > possibleWins)
+                eliminatingTeams.add(teamsByIndex.get(i));
+        }
+
+        return eliminatingTeams;
     }
 
     public static void main(String[] args) {
@@ -106,6 +132,11 @@ public class BaseballElimination {
         System.out.println(elimination.remaining("Philadelphia")); // 3
         System.out.println(elimination.against("Atlanta", "Philadelphia")); // 1
 
+        System.out.println(elimination.isEliminated("Montreal")); // true
+        System.out.println(elimination.certificateOfElimination("Montreal")); // [Atlanta]
+
+        System.out.println(elimination.isEliminated("New_York")); // false
+        System.out.println(elimination.certificateOfElimination("New_York")); // null
     }
 
 }
