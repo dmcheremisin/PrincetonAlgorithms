@@ -21,15 +21,15 @@ public class BaseballElimination {
     // create a baseball division from given filename in format specified below
     public BaseballElimination(String filename) {
         In in = new In(filename);
-        int v = in.readInt();
-        this.v = v;
+        int vertexes = in.readInt();
+        v = vertexes;
 
         teams = new HashMap<>();
         teamsByIndex = new HashMap<>();
-        score = new int[v][];
-        schedule = new int[v][];
+        score = new int[vertexes][];
+        schedule = new int[vertexes][];
 
-        for (int i = 0; i < v; i++) {
+        for (int i = 0; i < vertexes; i++) {
             String teamName = in.readString();
             teams.put(teamName, i);
             teamsByIndex.put(i, teamName);
@@ -39,9 +39,9 @@ public class BaseballElimination {
             for (int j = 0; j < 3; j++)
                 teamScore[j] = in.readInt();
 
-            int[] teamSchedule = new int[v];
+            int[] teamSchedule = new int[vertexes];
             schedule[i] = teamSchedule;
-            for (int j = 0; j < v; j++)
+            for (int j = 0; j < vertexes; j++)
                 teamSchedule[j] = in.readInt();
         }
     }
@@ -56,7 +56,7 @@ public class BaseballElimination {
         return teams.keySet();
     }
 
-    private Integer getTeamIndex(String team) {
+    private int getTeamIndex(String team) {
         Integer index = teams.get(team);
         if (index == null)
             throw new IllegalArgumentException(String.format("Team with name %s is not found", team));
@@ -66,26 +66,26 @@ public class BaseballElimination {
 
     // number of wins for given team
     public int wins(String team) {
-        Integer teamIndex = getTeamIndex(team);
+        int teamIndex = getTeamIndex(team);
         return score[teamIndex][0];
     }
 
     // number of losses for given team
     public int losses(String team) {
-        Integer teamIndex = getTeamIndex(team);
+        int teamIndex = getTeamIndex(team);
         return score[teamIndex][1];
     }
 
     // number of remaining games for given team
     public int remaining(String team) {
-        Integer teamIndex = getTeamIndex(team);
+        int teamIndex = getTeamIndex(team);
         return score[teamIndex][2];
     }
 
     // number of remaining games between team1 and team2
     public int against(String team1, String team2) {
-        Integer i1 = getTeamIndex(team1);
-        Integer i2 = getTeamIndex(team2);
+        int i1 = getTeamIndex(team1);
+        int i2 = getTeamIndex(team2);
         return schedule[i1][i2];
     }
 
@@ -175,7 +175,7 @@ public class BaseballElimination {
         FordFulkerson fordFulkerson = new FordFulkerson(flowNetwork, s, t);
 
         List<String> inCutTeams = new ArrayList<>();
-        for (Integer teamToTargetEdge : teamToTargetEdges)
+        for (int teamToTargetEdge : teamToTargetEdges)
             if (fordFulkerson.inCut(teamToTargetEdge))
                 inCutTeams.add(teamsByIndex.get(teamToTargetEdge - totalGameVertexes - 1));
 
@@ -195,10 +195,10 @@ public class BaseballElimination {
 
         for (String team : elimination.teams())
             System.out.println(team);
-        //Atlanta
-        //New_York
-        //Montreal
-        //Philadelphia
+        // Atlanta
+        // New_York
+        // Montreal
+        // Philadelphia
 
         System.out.println(elimination.numberOfTeams()); // 4
         System.out.println(elimination.wins("Philadelphia")); // 80
