@@ -114,7 +114,10 @@ public class BaseballElimination {
         int possibleWins = getPossibleWins(teamIndex);
 
         List<String> eliminatingTeams = new ArrayList<>();
-        for (int i = 0; i < v && i != teamIndex; i++) {
+        for (int i = 0; i < v; i++) {
+            if (i == teamIndex)
+                continue;
+
             int otherWins = score[i][0];
             if (otherWins > possibleWins)
                 eliminatingTeams.add(teamsByIndex.get(i));
