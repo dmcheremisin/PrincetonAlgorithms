@@ -46,4 +46,10 @@ public class SortUtils {
             System.out.print(o + " ");
         System.out.println();
     }
+
+    public static void printArr(int[] arr) {
+        for (Object o : arr)
+            System.out.print(o + " ");
+        System.out.println();
+    }
 }
