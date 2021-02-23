@@ -1,13 +1,29 @@
 package org.princeton.sedgewick.wayne.part2.week3.radixSort;
 
+import edu.princeton.cs.algs4.In;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.princeton.sedgewick.wayne.util.SortUtils.printArr;
 
 public class LSD {
-
     public static void main(String[] args) {
-        String[] strArr = {"dacffbdbfbea", "adaaeaaeeebc", "bdbdeddeddbe"};
-        sort(strArr, 12);
-        printArr(strArr); // adaaeaaeeebc bdbdeddeddbe dacffbdbfbea
+        //C:\Workspace\PrincetonAlgorithms\src\main\resources\part2\week3\words.txt
+        In in = new In(args[0]);
+        List<String> stringList = new ArrayList<>();
+
+        while (in.hasNextLine())
+            stringList.add(in.readString());
+
+        String[] a = stringList.toArray(new String[]{});
+
+        // sort the strings
+        sort(a, a[0].length());// length == 3
+
+        printArr(a);
+        //all bad bed bug dad dim dug egg fee few for gig hut ilk jam jay jot joy men nob now owl rap sky sob tag tap
+        //tar tip wad was wee yes yet zoo
     }
 
     public static void sort(String[] a, int w) { // fixed-length W strings
