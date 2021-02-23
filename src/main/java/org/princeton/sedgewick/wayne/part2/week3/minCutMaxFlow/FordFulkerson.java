@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.part2.week3.minCutMaxFlow.fordFulkerson;
+package org.princeton.sedgewick.wayne.part2.week3.minCutMaxFlow;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;

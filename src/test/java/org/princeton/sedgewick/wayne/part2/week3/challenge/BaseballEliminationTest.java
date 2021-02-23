@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.part2.week3.minCutMaxFlow.challenge;
+package org.princeton.sedgewick.wayne.part2.week3.challenge;
 
 import org.junit.jupiter.api.Test;
 

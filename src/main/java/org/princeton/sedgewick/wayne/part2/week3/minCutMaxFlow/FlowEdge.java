@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.part2.week3.minCutMaxFlow.fordFulkerson;
+package org.princeton.sedgewick.wayne.part2.week3.minCutMaxFlow;
 
 public class FlowEdge {
 
