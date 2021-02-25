@@ -1,5 +1,7 @@
 package org.princeton.sedgewick.wayne.part2.week4.tries;
 
+import edu.princeton.cs.algs4.Queue;
+
 public class TrieST<V> {
 
     private static final int R = 256;
@@ -48,12 +50,40 @@ public class TrieST<V> {
         return get(node.next[c], key, position + 1);
     }
 
+    public Iterable<String> keys() {
+        Queue<String> queue = new Queue<>();
+        collect(root, "", queue);
+        return queue;
+    }
+
+    public Iterable<String> keysWithPrefix(String prefix) {
+        Node node = get(root, prefix, 0);
+
+        Queue<String> queue = new Queue<>();
+        collect(node, prefix, queue);
+
+        return queue;
+    }
+
+    private void collect(Node node, String prefix, Queue<String> queue) {
+        if (node == null)
+            return;
+
+        if (node.value != null)
+            queue.enqueue(prefix);
+
+        for (char c = 0; c < R; c++)
+            collect(node.next[c], prefix + c, queue);
+    }
+
     public static void main(String[] args) {
         TrieST<Integer> trieST = new TrieST<>();
         trieST.put("one", 1);
         trieST.put("two", 2);
         trieST.put("three", 3);
         trieST.put("four", 4);
+        trieST.put("apple", 4);
+        trieST.put("bicycle", 4);
 
         System.out.println(trieST.contains("one")); // true
         System.out.println(trieST.contains("two")); // true
@@ -66,6 +96,10 @@ public class TrieST<V> {
         System.out.println(trieST.get("three")); // 3
         System.out.println(trieST.get("four")); // 4
         System.out.println(trieST.get("five")); // null
+
+        System.out.println(trieST.keys()); // apple bicycle four one three two
+        System.out.println(trieST.keysWithPrefix("t")); // three two
+
     }
 
 }
