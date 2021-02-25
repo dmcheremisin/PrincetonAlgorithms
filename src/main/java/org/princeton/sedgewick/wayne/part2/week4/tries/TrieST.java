@@ -1,4 +1,4 @@
-package org.princeton.sedgewick.wayne.part2.week4.trie;
+package org.princeton.sedgewick.wayne.part2.week4.tries;
 
 public class TrieST<V> {
 
