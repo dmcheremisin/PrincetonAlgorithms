@@ -8,6 +8,7 @@ import java.util.List;
 import static org.princeton.sedgewick.wayne.util.SortUtils.printArr;
 
 public class LSD {
+
     public static void main(String[] args) {
         //C:\Workspace\PrincetonAlgorithms\src\main\resources\part2\week3\words.txt
         In in = new In(args[0]);
