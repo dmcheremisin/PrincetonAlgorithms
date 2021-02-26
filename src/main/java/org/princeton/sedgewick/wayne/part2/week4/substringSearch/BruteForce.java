@@ -7,7 +7,7 @@ public class BruteForce {
         System.out.println(findSubstring("yahoo", "abacadabrac")); // -1
     }
 
-    private static int findSubstring(String pattern, String txt) {
+    public static int findSubstring(String pattern, String txt) {
         int N = txt.length();
         int M = pattern.length();
 
