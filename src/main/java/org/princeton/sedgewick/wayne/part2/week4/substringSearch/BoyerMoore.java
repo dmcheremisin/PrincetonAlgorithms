@@ -18,9 +18,8 @@ public class BoyerMoore {
                 }
             }
 
-            if (skip == 0) {
+            if (skip == 0)
                 return i;
-            }
         }
 
         return -1;
