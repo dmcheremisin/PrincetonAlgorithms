@@ -26,13 +26,16 @@ public class KMP {
 
         for (int x = 0, j = 1; j < patternLength; j++) {
 
-            for (int c = 0; c < R; c++)
-                dfa[c][j] = dfa[c][x];
+            for (int r = 0; r < R; r++)
+                dfa[r][j] = dfa[r][x]; // Copy mismatch cases
 
-            dfa[pattern.charAt(j)][j] = j + 1;
+            char c = pattern.charAt(j);
 
-            x = dfa[pattern.charAt(j)][x];
+            dfa[c][j] = j + 1; // Set match case
+
+            x = dfa[c][x]; // Update restart state
         }
+
         return dfa;
     }
 
