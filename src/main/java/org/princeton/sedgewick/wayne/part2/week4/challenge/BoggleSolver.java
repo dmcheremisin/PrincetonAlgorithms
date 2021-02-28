@@ -10,12 +10,15 @@ import java.util.Set;
 public class BoggleSolver {
 
     private final TST<Object> words = new TST<>();
+    private final Set<String> wordSet = new HashSet<>();
 
     // Initializes the data structure using the given array of strings as the dictionary.
     // (You can assume each word in the dictionary contains only the uppercase letters A through Z.)
     public BoggleSolver(String[] dictionary) {
-        for (String word : dictionary)
+        for (String word : dictionary) {
             words.put(word, new Object());
+            wordSet.add(word);
+        }
     }
 
     // Returns the set of all valid words in the given Boggle board, as an Iterable.
@@ -45,12 +48,9 @@ public class BoggleSolver {
 
     private void addValidNeighbors(int row, int col, boolean[][] visited, String prefix,
                                    BoggleBoard board, Set<String> validWords) {
-        if (visited[row][col])
-            return;
-
         visited[row][col] = true;
 
-        if (prefix.length() >= 3 && words.contains(prefix))
+        if (prefix.length() >= 3 && wordSet.contains(prefix))
             validWords.add(prefix);
 
         for (int i = -1; i < 2; i++) {
@@ -64,6 +64,9 @@ public class BoggleSolver {
 
                 int jCol = col + j;
                 if (jCol < 0 || jCol >= board.cols())
+                    continue;
+
+                if (visited[iRow][jCol])
                     continue;
 
                 String newPrefix = getNewPrefixWithQ(board, iRow, jCol, prefix);
