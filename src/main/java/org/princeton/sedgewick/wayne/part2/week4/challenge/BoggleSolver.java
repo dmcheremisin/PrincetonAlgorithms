@@ -50,7 +50,7 @@ public class BoggleSolver {
 
         visited[row][col] = true;
 
-        if (prefix.length() > 3 && words.contains(prefix))
+        if (prefix.length() >= 3 && words.contains(prefix))
             validWords.add(prefix);
 
         for (int i = -1; i < 2; i++) {
