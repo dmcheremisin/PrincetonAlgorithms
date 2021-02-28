@@ -31,7 +31,7 @@ public class BoggleSolver {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 String prefix = getNewPrefixWithQ(board, row, col, "");
-                getValidNeighbors(row, col, copy2dArray(visited), prefix, board, validWords);
+                addValidNeighbors(row, col, copy2dArray(visited), prefix, board, validWords);
             }
         }
 
@@ -43,14 +43,14 @@ public class BoggleSolver {
         return letter == 'Q' ? prefix + letter + 'U' : prefix + letter;
     }
 
-    private void getValidNeighbors(int row, int col, boolean[][] visited, String prefix,
+    private void addValidNeighbors(int row, int col, boolean[][] visited, String prefix,
                                    BoggleBoard board, Set<String> validWords) {
         if (visited[row][col])
             return;
 
         visited[row][col] = true;
 
-        if (words.contains(prefix))
+        if (prefix.length() > 3 && words.contains(prefix))
             validWords.add(prefix);
 
         for (int i = -1; i < 2; i++) {
@@ -70,7 +70,7 @@ public class BoggleSolver {
 
                 Iterable<String> keysWithPrefix = words.keysWithPrefix(newPrefix);
                 if (((Queue<String>) keysWithPrefix).size() > 0)
-                    getValidNeighbors(iRow, jCol, copy2dArray(visited), newPrefix, board, validWords);
+                    addValidNeighbors(iRow, jCol, copy2dArray(visited), newPrefix, board, validWords);
             }
         }
     }
