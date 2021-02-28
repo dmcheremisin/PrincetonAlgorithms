@@ -1,6 +1,7 @@
 package org.princeton.sedgewick.wayne.part2.week4.challenge;
 
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.TST;
 
 import java.util.HashSet;
@@ -29,7 +30,8 @@ public class BoggleSolver {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                String prefix = board.getLetter(row, col) + "";
+                char letter = board.getLetter(row, col);
+                String prefix = letter == 'Q' ? "" + letter + 'U' : "" + letter;
                 getValidNeighbors(row, col, copy2dArray(visited), prefix, board, validWords);
             }
         }
@@ -64,7 +66,8 @@ public class BoggleSolver {
 
                 String newPrefix = letter == 'Q' ? prefix + letter + 'U' : prefix + letter;
 
-                if (words.keysWithPrefix(newPrefix).iterator().hasNext())
+                Iterable<String> keysWithPrefix = words.keysWithPrefix(newPrefix);
+                if (((Queue<String>)keysWithPrefix).size() > 0)
                     getValidNeighbors(iRow, jCol, copy2dArray(visited), newPrefix, board, validWords);
             }
         }
