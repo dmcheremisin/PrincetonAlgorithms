@@ -1,7 +1,6 @@
 package org.princeton.sedgewick.wayne.part2.week4.challenge;
 
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.Queue;
 import org.princeton.sedgewick.wayne.part2.week4.challenge.TernarySearchTrie.Node;
 
 import java.util.HashSet;
@@ -73,8 +72,7 @@ public class BoggleSolver {
 
                 String newPrefix = getNewPrefixWithQ(board, iRow, jCol, prefix);
 
-                Queue<String> keysWithPrefix = words.keysWithPrefix(node, newPrefix);
-                if (keysWithPrefix.size() > 0)
+                if (words.containsPrefix(node, newPrefix))
                     addValidNeighbors(iRow, jCol, copy2dArray(visited), newPrefix, board, validWords);
             }
         }

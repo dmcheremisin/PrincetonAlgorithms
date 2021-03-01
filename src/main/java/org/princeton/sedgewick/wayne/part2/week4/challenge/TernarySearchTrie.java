@@ -22,7 +22,7 @@ public class TernarySearchTrie<V> {
         char c = key.charAt(position);
 
         if (node == null) {
-            node = new Node<V>();
+            node = new Node<>();
             node.c = c;
         }
 
@@ -42,8 +42,12 @@ public class TernarySearchTrie<V> {
         return get(key) != null;
     }
 
+    public Node<V> getRoot() {
+         return root;
+    }
+
     public Node<V> getNode(String key) {
-         return get(root, key, 0);
+        return get(root, key, 0);
     }
 
     public V get(String key) {
@@ -51,7 +55,7 @@ public class TernarySearchTrie<V> {
         return node == null ? null : node.value;
     }
 
-    private Node<V> get(Node<V> node, String key, int position) {
+    public Node<V> get(Node<V> node, String key, int position) {
         if (node == null)
             return null;
 
@@ -100,6 +104,36 @@ public class TernarySearchTrie<V> {
 
     private void collect(Node<V> x, StringBuilder prefix, Queue<String> queue) {
         if (x == null)
+            return;
+
+        collect(x.left, prefix, queue);
+        if (x.value != null)
+            queue.enqueue(prefix.toString() + x.c);
+
+        collect(x.middle, prefix.append(x.c), queue);
+        prefix.deleteCharAt(prefix.length() - 1);
+        collect(x.right, prefix, queue);
+    }
+
+    public boolean containsPrefix(Node<V> node, String prefix) {
+        if (prefix == null)
+            throw new IllegalArgumentException("calls keysWithPrefix() with null argument");
+
+        Queue<String> queue = new Queue<>();
+
+        if (node == null)
+            return false;
+
+        if (node.value != null)
+            queue.enqueue(prefix);
+
+        collectForContains(node.middle, new StringBuilder(prefix), queue);
+
+        return queue.size() > 0;
+    }
+
+    private void collectForContains(Node<V> x, StringBuilder prefix, Queue<String> queue) {
+        if (x == null || queue.size() > 0)
             return;
 
         collect(x.left, prefix, queue);
