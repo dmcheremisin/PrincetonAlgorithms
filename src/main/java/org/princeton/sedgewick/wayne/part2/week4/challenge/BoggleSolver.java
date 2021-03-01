@@ -72,9 +72,18 @@ public class BoggleSolver {
                 if (visited[iRow][jCol])
                     continue;
 
-                String newPrefix = getNewPrefixWithQ(board, iRow, jCol, prefix);
+                char letter = board.getLetter(iRow, jCol);
+                String newPrefix = prefix + letter;
 
-                if (words.containsPrefix(node, newPrefix)) {
+                if (letter == 'Q') {
+                    Node<Object> newNode = words.get(node.getMiddle(), newPrefix, newPrefix.length() - 1);
+
+                    newPrefix = newPrefix + 'U';
+                    if (newNode != null && words.containsPrefix(newNode, newPrefix)) {
+                        Node<Object> prefixNode = words.get(newNode.getMiddle(), newPrefix, newPrefix.length() - 1);
+                        addValidNeighbors(iRow, jCol, copy2dArray(visited), newPrefix, board, validWords, prefixNode);
+                    }
+                } else if (words.containsPrefix(node, newPrefix)) {
                     Node<Object> prefixNode = words.get(node.getMiddle(), newPrefix, newPrefix.length() - 1);
                     addValidNeighbors(iRow, jCol, copy2dArray(visited), newPrefix, board, validWords, prefixNode);
                 }
