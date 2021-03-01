@@ -136,13 +136,13 @@ public class TernarySearchTrie<V> {
         if (x == null || queue.size() > 0)
             return;
 
-        collect(x.left, prefix, queue);
+        collectForContains(x.left, prefix, queue);
         if (x.value != null)
             queue.enqueue(prefix.toString() + x.c);
 
-        collect(x.middle, prefix.append(x.c), queue);
+        collectForContains(x.middle, prefix.append(x.c), queue);
         prefix.deleteCharAt(prefix.length() - 1);
-        collect(x.right, prefix, queue);
+        collectForContains(x.right, prefix, queue);
     }
 
     public static void main(String[] args) {

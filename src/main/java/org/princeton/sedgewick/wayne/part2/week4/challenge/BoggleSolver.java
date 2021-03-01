@@ -53,6 +53,8 @@ public class BoggleSolver {
             validWords.add(prefix);
 
         Node<Object> node = words.getNode(prefix);
+        if (node == null)
+            return;
 
         for (int i = -1; i < 2; i++) {
             int iRow = row + i;
