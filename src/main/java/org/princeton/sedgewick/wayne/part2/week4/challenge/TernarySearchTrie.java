@@ -1,16 +1,16 @@
-package org.princeton.sedgewick.wayne.part2.week4.tries;
+package org.princeton.sedgewick.wayne.part2.week4.challenge;
 
 import edu.princeton.cs.algs4.Queue;
 
 public class TernarySearchTrie<V> {
 
-    private Node root;
+    private Node<V> root;
 
-    private class Node {
+    public static class Node<V> {
 
         private char c;
         private V value;
-        private Node left, middle, right;
+        private Node<V> left, middle, right;
 
     }
 
@@ -18,11 +18,11 @@ public class TernarySearchTrie<V> {
         root = put(root, key, 0, value);
     }
 
-    private Node put(Node node, String key, int position, V value) {
+    private Node<V> put(Node<V> node, String key, int position, V value) {
         char c = key.charAt(position);
 
         if (node == null) {
-            node = new Node();
+            node = new Node<V>();
             node.c = c;
         }
 
@@ -42,12 +42,16 @@ public class TernarySearchTrie<V> {
         return get(key) != null;
     }
 
+    public Node<V> getNode(String key) {
+         return get(root, key, 0);
+    }
+
     public V get(String key) {
-        Node node = get(root, key, 0);
+        Node<V> node = get(root, key, 0);
         return node == null ? null : node.value;
     }
 
-    private Node get(Node node, String key, int position) {
+    private Node<V> get(Node<V> node, String key, int position) {
         if (node == null)
             return null;
 
@@ -72,21 +76,29 @@ public class TernarySearchTrie<V> {
         if (prefix == null)
             throw new IllegalArgumentException("calls keysWithPrefix() with null argument");
 
-        Queue<String> queue = new Queue<String>();
-        Node x = get(root, prefix, 0);
+        Node<V> node = get(root, prefix, 0);
 
-        if (x == null)
+        return keysWithPrefix(node, prefix);
+    }
+
+    public Queue<String> keysWithPrefix(Node<V> node, String prefix) {
+        if (prefix == null)
+            throw new IllegalArgumentException("calls keysWithPrefix() with null argument");
+
+        Queue<String> queue = new Queue<>();
+
+        if (node == null)
             return queue;
 
-        if (x.value != null)
+        if (node.value != null)
             queue.enqueue(prefix);
 
-        collect(x.middle, new StringBuilder(prefix), queue);
+        collect(node.middle, new StringBuilder(prefix), queue);
 
         return queue;
     }
 
-    private void collect(Node x, StringBuilder prefix, Queue<String> queue) {
+    private void collect(Node<V> x, StringBuilder prefix, Queue<String> queue) {
         if (x == null)
             return;
 

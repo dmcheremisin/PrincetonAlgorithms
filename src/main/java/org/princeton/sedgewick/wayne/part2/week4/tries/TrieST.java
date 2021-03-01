@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.Queue;
 
 public class TrieST<V> {
 
-    private static final int R = 256;
+    private static final int R = 26;
     private Node root;
 
     private static class Node {
@@ -27,7 +27,7 @@ public class TrieST<V> {
         }
 
         char c = key.charAt(position);
-        node.next[c] = put(node.next[c], key, position + 1, value);
+        node.next[c - 97] = put(node.next[c - 97], key, position + 1, value);
 
         return node;
     }
@@ -47,7 +47,7 @@ public class TrieST<V> {
         if (key.length() == position)
             return node;
         char c = key.charAt(position);
-        return get(node.next[c], key, position + 1);
+        return get(node.next[c - 97], key, position + 1);
     }
 
     public Iterable<String> keys() {
@@ -72,11 +72,15 @@ public class TrieST<V> {
         if (node.value != null)
             queue.enqueue(prefix);
 
-        for (char c = 0; c < R; c++)
-            collect(node.next[c], prefix + c, queue);
+        for (char c = 97; c < 97 + R; c++)
+            collect(node.next[c - 97], prefix + c, queue);
     }
 
     public static void main(String[] args) {
+        System.out.println((int) 'A'); // 65
+        System.out.println((int) 'Z'); // 90
+        System.out.println((int) 'a'); // 97
+        System.out.println((int) 'z'); // 122
         TrieST<Integer> trieST = new TrieST<>();
         trieST.put("one", 1);
         trieST.put("two", 2);

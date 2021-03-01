@@ -2,14 +2,14 @@ package org.princeton.sedgewick.wayne.part2.week4.challenge;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
-import edu.princeton.cs.algs4.TST;
+import org.princeton.sedgewick.wayne.part2.week4.challenge.TernarySearchTrie.Node;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class BoggleSolver {
 
-    private final TST<Object> words = new TST<>();
+    private final TernarySearchTrie<Object> words = new TernarySearchTrie<>();
     private final Set<String> wordSet = new HashSet<>();
 
     // Initializes the data structure using the given array of strings as the dictionary.
@@ -53,6 +53,8 @@ public class BoggleSolver {
         if (prefix.length() >= 3 && wordSet.contains(prefix))
             validWords.add(prefix);
 
+        Node<Object> node = words.getNode(prefix);
+
         for (int i = -1; i < 2; i++) {
             int iRow = row + i;
             if (iRow < 0 || iRow >= board.rows())
@@ -71,8 +73,8 @@ public class BoggleSolver {
 
                 String newPrefix = getNewPrefixWithQ(board, iRow, jCol, prefix);
 
-                Iterable<String> keysWithPrefix = words.keysWithPrefix(newPrefix);
-                if (((Queue<String>) keysWithPrefix).size() > 0)
+                Queue<String> keysWithPrefix = words.keysWithPrefix(node, newPrefix);
+                if (keysWithPrefix.size() > 0)
                     addValidNeighbors(iRow, jCol, copy2dArray(visited), newPrefix, board, validWords);
             }
         }

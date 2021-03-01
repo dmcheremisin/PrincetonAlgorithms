@@ -8,6 +8,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BoggleSolverTest {
+
     private String BASE_PATH = "C:\\Workspace\\PrincetonAlgorithms\\src\\main\\resources\\part2\\week4\\challenge\\";
 
     private BoggleSolver getBoggleSolver(String dictionary) {
@@ -26,6 +27,7 @@ class BoggleSolverTest {
         System.out.println("Size: " + size);
         assertEquals(expectedSize, size);
     }
+
     private void checkScore(BoggleSolver boggleSolver, Set<String> allValidWords, int expectedScore) {
         int score = getScore(boggleSolver, allValidWords);
         System.out.println("Score: " + score);
