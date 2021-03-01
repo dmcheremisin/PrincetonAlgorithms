@@ -21,6 +21,11 @@ public class BoggleSolver {
     }
 
     // Returns the set of all valid words in the given Boggle board, as an Iterable.
+    private String getNewPrefixWithQ(BoggleBoard board, int row, int col, String prefix) {
+        char letter = board.getLetter(row, col);
+        return letter == 'Q' ? prefix + letter + 'U' : prefix + letter;
+    }
+
     public Iterable<String> getAllValidWords(BoggleBoard board) {
         int rows = board.rows();
         int cols = board.cols();
@@ -33,28 +38,23 @@ public class BoggleSolver {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 String prefix = getNewPrefixWithQ(board, row, col, "");
-                addValidNeighbors(row, col, copy2dArray(visited), prefix, board, validWords);
+                Node<Object> node = words.get(words.getRoot(), prefix, 0);
+                addValidNeighbors(row, col, copy2dArray(visited), prefix, board, validWords, node);
             }
         }
 
         return validWords;
     }
 
-    private String getNewPrefixWithQ(BoggleBoard board, int row, int col, String prefix) {
-        char letter = board.getLetter(row, col);
-        return letter == 'Q' ? prefix + letter + 'U' : prefix + letter;
-    }
-
     private void addValidNeighbors(int row, int col, boolean[][] visited, String prefix,
-                                   BoggleBoard board, Set<String> validWords) {
+                                   BoggleBoard board, Set<String> validWords, Node<Object> node) {
+        if (node == null)
+            return;
+
         visited[row][col] = true;
 
         if (prefix.length() >= 3 && wordSet.contains(prefix))
             validWords.add(prefix);
-
-        Node<Object> node = words.getNode(prefix);
-        if (node == null)
-            return;
 
         for (int i = -1; i < 2; i++) {
             int iRow = row + i;
@@ -74,8 +74,10 @@ public class BoggleSolver {
 
                 String newPrefix = getNewPrefixWithQ(board, iRow, jCol, prefix);
 
-                if (words.containsPrefix(node, newPrefix))
-                    addValidNeighbors(iRow, jCol, copy2dArray(visited), newPrefix, board, validWords);
+                if (words.containsPrefix(node, newPrefix)) {
+                    Node<Object> prefixNode = words.get(node.getMiddle(), newPrefix, newPrefix.length() - 1);
+                    addValidNeighbors(iRow, jCol, copy2dArray(visited), newPrefix, board, validWords, prefixNode);
+                }
             }
         }
     }

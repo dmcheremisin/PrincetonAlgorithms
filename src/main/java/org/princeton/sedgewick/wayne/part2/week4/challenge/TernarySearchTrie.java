@@ -12,6 +12,9 @@ public class TernarySearchTrie<V> {
         private V value;
         private Node<V> left, middle, right;
 
+        public Node<V> getMiddle() {
+            return middle;
+        }
     }
 
     public void put(String key, V value) {
@@ -71,7 +74,7 @@ public class TernarySearchTrie<V> {
     }
 
     public Iterable<String> keys() {
-        Queue<String> queue = new Queue<String>();
+        Queue<String> queue = new Queue<>();
         collect(root, new StringBuilder(), queue);
         return queue;
     }
@@ -119,12 +122,14 @@ public class TernarySearchTrie<V> {
         if (prefix == null)
             throw new IllegalArgumentException("calls keysWithPrefix() with null argument");
 
-        Queue<String> queue = new Queue<>();
+        Node<V> prefixNode = get(node.middle, prefix, prefix.length() - 1);
 
-        if (node == null)
+        if (prefixNode == null)
             return false;
 
-        if (node.value != null)
+        Queue<String> queue = new Queue<>();
+
+        if (prefixNode.value != null)
             queue.enqueue(prefix);
 
         collectForContains(node.middle, new StringBuilder(prefix), queue);
