@@ -7,9 +7,9 @@ import edu.princeton.cs.algs4.Stack;
 
 public class NFA {
 
-    private char[] re;
-    private Digraph digraph;
-    private int M;
+    private final char[] re;
+    private final Digraph digraph;
+    private final int M;
 
     public NFA(String regexp) {
         M = regexp.length();
@@ -39,10 +39,10 @@ public class NFA {
 
             if (i < M - 1 && re[i + 1] == '*') {
                 digraph.addEdge(lp, i + 1);
-                digraph.addEdge(i+1, lp);
+                digraph.addEdge(i + 1, lp);
             }
 
-            if(re[i] == '(' || re[i] == '*' || re[i] == ')')
+            if (re[i] == '(' || re[i] == '*' || re[i] == ')')
                 digraph.addEdge(i, i + 1);
         }
         return digraph;
