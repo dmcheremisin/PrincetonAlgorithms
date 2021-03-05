@@ -26,7 +26,7 @@ public class MoveToFront {
         LinkedList<Character> charStack = getCharStack();
         while (!BinaryStdIn.isEmpty()) {
             int charIndex = BinaryStdIn.readInt(8);
-            Character aChar = charStack.remove(charIndex);
+            char aChar = charStack.remove(charIndex);
 
             BinaryStdOut.write(aChar, 8);
             charStack.push(aChar);
