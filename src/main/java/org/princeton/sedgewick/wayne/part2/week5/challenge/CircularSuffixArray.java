@@ -2,11 +2,8 @@ package org.princeton.sedgewick.wayne.part2.week5.challenge;
 
 import java.util.*;
 
-import static org.princeton.sedgewick.wayne.util.SortUtils.printArr;
-
 public class CircularSuffixArray {
 
-    private final String str;
     private final int length;
     private final int[] indexes;
 
@@ -14,23 +11,22 @@ public class CircularSuffixArray {
     public CircularSuffixArray(String s) {
         if (s == null)
             throw new IllegalArgumentException("Illegal input string");
-        str = s;
-        length = str.length();
+
+        length = s.length();
 
         Map<String, Integer> suffixMap = new HashMap<>();
-        StringBuilder sb = new StringBuilder(str);
-        suffixMap.put(str, 0);
+        suffixMap.put(s, 0);
+
+        StringBuilder sb = new StringBuilder(s);
         for (int i = 1; i < length; i++) {
             char firstChar = sb.charAt(0);
             StringBuilder suffix = sb.deleteCharAt(0);
             suffix.append(firstChar);
             suffixMap.put(suffix.toString(), i);
         }
-        System.out.println(suffixMap);
 
         List<String> sortedSuffixes = new ArrayList<>(suffixMap.keySet());
         sortedSuffixes.sort(Comparator.naturalOrder());
-        System.out.println(sortedSuffixes);
 
         indexes = new int[length];
         for (int i = 0; i < length; i++) {
@@ -38,7 +34,6 @@ public class CircularSuffixArray {
             int indexOf = suffixMap.get(sortedSuffix);
             indexes[i] = indexOf;
         }
-        printArr(indexes);
     }
 
     // length of s
