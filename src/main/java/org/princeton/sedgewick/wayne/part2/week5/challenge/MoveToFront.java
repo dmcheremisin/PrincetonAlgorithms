@@ -47,10 +47,9 @@ public class MoveToFront {
 
     private static LinkedList<Character> getCharStack() {
         LinkedList<Character> stack = new LinkedList<>();
-        for (int i = 0; i < 256; i++) {
-            char aChar = (char) i;
-            stack.add(aChar);
-        }
+        for (char i = 0; i < 256; i++)
+            stack.add(i);
+
         return stack;
     }
 
