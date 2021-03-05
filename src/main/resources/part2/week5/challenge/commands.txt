@@ -16,4 +16,10 @@ java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonA
 
 5. BurrowsWheeler -> HexDump
 java-algs4 BurrowsWheeler - < abra.txt | java-algs4 edu.princeton.cs.algs4.HexDump 16
+
 java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.BurrowsWheeler - < src/main/resources/part2/week5/challenge/abra.txt | java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.HexDump 16
+
+6. BurrowsWheeler -> BurrowsWheeler
+java-algs4 BurrowsWheeler - < abra.txt | java-algs4 BurrowsWheeler +
+
+java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.BurrowsWheeler - < src/main/resources/part2/week5/challenge/abra.txt | java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.BurrowsWheeler +
