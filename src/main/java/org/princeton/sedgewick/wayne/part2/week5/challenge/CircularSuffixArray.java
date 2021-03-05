@@ -20,9 +20,9 @@ public class CircularSuffixArray {
         StringBuilder sb = new StringBuilder(s);
         for (int i = 1; i < length; i++) {
             char firstChar = sb.charAt(0);
-            StringBuilder suffix = sb.deleteCharAt(0);
-            suffix.append(firstChar);
-            suffixMap.put(suffix.toString(), i);
+            sb.deleteCharAt(0);
+            sb.append(firstChar);
+            suffixMap.put(sb.toString(), i);
         }
 
         List<String> sortedSuffixes = new ArrayList<>(suffixMap.keySet());
