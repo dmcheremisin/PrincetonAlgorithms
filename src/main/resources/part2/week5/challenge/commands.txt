@@ -1,3 +1,16 @@
 1. HexDump
-java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.HexDump < src/main/r
-esources/part2/week5/challenge/abra.txt
+java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.HexDump < src/main/resources/part2/week5/challenge/abra.txt
+
+2. Huffman -> HexDump
+java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.dataCompression.Huffman - < src/main/resources/part2/week5/challenge/abra.txt | java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.HexDump 16
+
+3. MoveToFront -> HexDump
+java-algs4 MoveToFront - < abra.txt | java-algs4 edu.princeton.cs.algs4.HexDump 16
+
+java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.MoveToFront - < src/main/resources/part2/week5/challenge/abra.txt | java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.HexDump 16
+
+4. MoveToFront -> MoveToFront
+java-algs4 MoveToFront - < abra.txt | java-algs4 MoveToFront +
+
+java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.MoveToFront - < src/main/resources/part2/week5/challenge/abra.txt | java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.MoveToFront +
+
