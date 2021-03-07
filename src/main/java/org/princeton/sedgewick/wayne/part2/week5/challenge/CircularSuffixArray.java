@@ -56,7 +56,7 @@ public class CircularSuffixArray {
     }
 
     private class CircularSuffix implements Comparable<CircularSuffix> {
-        private int shift;
+        private final int shift;
 
         public CircularSuffix(int shift) {
             this.shift = shift;
@@ -68,7 +68,6 @@ public class CircularSuffixArray {
 
         @Override
         public int compareTo(CircularSuffix other) {
-            int length = str.length();
             for (int i = 0; i < length; i++) {
                 int charPosition1 = getCharPosition(i);
                 int charPosition2 = other.getCharPosition(i);

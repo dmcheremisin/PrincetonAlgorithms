@@ -14,19 +14,21 @@ public class BurrowsWheeler {
 
         CircularSuffixArray circularSuffixArray = new CircularSuffixArray(str);
 
-        StringBuilder sb = new StringBuilder();
-        int position = 0;
         int length = str.length();
+        char[] chars = new char[length];
+
+        int position = 0;
         for (int i = 0; i < length; i++) {
             int index = circularSuffixArray.index(i);
             if (index == 0)
                 position = i;
             index = index > 0 ? index - 1 : length - 1;
-            sb.append(str.charAt(index));
+            chars[i] = str.charAt(index);
         }
 
         BinaryStdOut.write(position);
-        BinaryStdOut.write(sb.toString());
+        for (int i = 0; i < length; i++)
+            BinaryStdOut.write(chars[i]);
         BinaryStdOut.close();
     }
 
@@ -41,23 +43,17 @@ public class BurrowsWheeler {
         Arrays.sort(sortedChars);
         int[] next = getNextArray(chars, sortedChars);
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < chars.length; i++) {
-            sb.append(sortedChars[position]);
-            position = next[position];
-        }
+        for (int i = 0; i < chars.length; i++, position = next[position])
+            BinaryStdOut.write(sortedChars[position]);
 
-        BinaryStdOut.write(sb.toString());
         BinaryStdOut.close();
     }
 
     private static int[] getNextArray(char[] chars, char[] sortedChars) {
         int length = chars.length;
         int[] next = new int[length];
-        for (int i = 0; i < length; i++)
-            next[i] = -1;
-
         boolean[] marked = new boolean[length];
+
         for (int i = 0; i < length; i++) {
             char aChar = sortedChars[i];
             for (int j = 0; j < length; j++) {
