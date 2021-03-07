@@ -1,13 +1,11 @@
 package org.princeton.sedgewick.wayne.part2.week5.challenge;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 public class CircularSuffixArray {
 
+    private final String str;
     private final int length;
     private final int[] indexes;
 
@@ -16,27 +14,20 @@ public class CircularSuffixArray {
         if (s == null)
             throw new IllegalArgumentException("Illegal input string");
 
+        str = s;
         length = s.length();
 
-        Map<String, Integer> suffixMap = new HashMap<>();
-        suffixMap.put(s, 0);
-
-        StringBuilder sb = new StringBuilder(s);
-        for (int i = 1; i < length; i++) {
-            char firstChar = sb.charAt(0);
-            sb.deleteCharAt(0);
-            sb.append(firstChar);
-            suffixMap.put(sb.toString(), i);
-        }
-
-        List<String> sortedSuffixes = new ArrayList<>(suffixMap.keySet());
-        sortedSuffixes.sort(Comparator.naturalOrder());
+        TreeSet<CircularSuffix> circularSuffixes = new TreeSet<>();
+        for (int i = 0; i < length; i++)
+            circularSuffixes.add(new CircularSuffix(i));
 
         indexes = new int[length];
-        for (int i = 0; i < length; i++) {
-            String sortedSuffix = sortedSuffixes.get(i);
-            int indexOf = suffixMap.get(sortedSuffix);
-            indexes[i] = indexOf;
+        Iterator<CircularSuffix> iterator = circularSuffixes.iterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            CircularSuffix suffix = iterator.next();
+            indexes[i] = suffix.shift;
+            i++;
         }
     }
 
@@ -59,6 +50,52 @@ public class CircularSuffixArray {
         System.out.println(circularSuffixArray.length());
         System.out.println(circularSuffixArray.index(0));
         System.out.println(circularSuffixArray.index(10));
+        System.out.println(circularSuffixArray.index(11));
+
+        CircularSuffix circularSuffix1 = circularSuffixArray.new CircularSuffix(5);
+        CircularSuffix circularSuffix2 = circularSuffixArray.new CircularSuffix(5);
+        System.out.println(circularSuffix1.compareTo(circularSuffix2));
+    }
+
+    class CircularSuffix implements Comparable<CircularSuffix> {
+        private int shift;
+
+        public CircularSuffix(int shift) {
+            this.shift = shift;
+        }
+
+        public int getCharPosition(int position) {
+            return (this.shift + position) < length ? this.shift + position : this.shift + position - length;
+        }
+
+        @Override
+        public int compareTo(CircularSuffix other) {
+            int length = str.length();
+            for (int i = 0; i < length; i++) {
+                int charPosition1 = getCharPosition(i);
+                int charPosition2 = other.getCharPosition(i);
+                char thisChar = str.charAt(charPosition1);
+                char otherChar = str.charAt(charPosition2);
+                if (thisChar < otherChar)
+                    return -1;
+                else if (otherChar < thisChar)
+                    return 1;
+            }
+            return 0;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CircularSuffix that = (CircularSuffix) o;
+            return shift == that.shift;
+        }
+
+        @Override
+        public int hashCode() {
+            return shift;
+        }
     }
 
 }
