@@ -1,7 +1,7 @@
 package org.princeton.sedgewick.wayne.part2.week5.challenge;
 
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CircularSuffixArray {
 
@@ -17,17 +17,15 @@ public class CircularSuffixArray {
         str = s;
         length = s.length();
 
-        TreeSet<CircularSuffix> circularSuffixes = new TreeSet<>();
+        List<CircularSuffix> circularSuffixes = new ArrayList<>();
         for (int i = 0; i < length; i++)
             circularSuffixes.add(new CircularSuffix(i));
 
+        circularSuffixes.sort(CircularSuffix::compareTo);
         indexes = new int[length];
-        Iterator<CircularSuffix> iterator = circularSuffixes.iterator();
-        int i = 0;
-        while (iterator.hasNext()) {
-            CircularSuffix suffix = iterator.next();
+        for (int i = 0; i < length; i++) {
+            CircularSuffix suffix = circularSuffixes.get(i);
             indexes[i] = suffix.shift;
-            i++;
         }
     }
 
@@ -57,7 +55,7 @@ public class CircularSuffixArray {
         System.out.println(circularSuffix1.compareTo(circularSuffix2));
     }
 
-    class CircularSuffix implements Comparable<CircularSuffix> {
+    private class CircularSuffix implements Comparable<CircularSuffix> {
         private int shift;
 
         public CircularSuffix(int shift) {
@@ -83,19 +81,5 @@ public class CircularSuffixArray {
             }
             return 0;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            CircularSuffix that = (CircularSuffix) o;
-            return shift == that.shift;
-        }
-
-        @Override
-        public int hashCode() {
-            return shift;
-        }
     }
-
 }
