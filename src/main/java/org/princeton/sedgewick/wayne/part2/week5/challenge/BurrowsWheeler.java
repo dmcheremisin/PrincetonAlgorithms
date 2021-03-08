@@ -37,9 +37,11 @@ public class BurrowsWheeler {
         String str = BinaryStdIn.readString();
 
         char[] chars = str.toCharArray();
-        char[] sortedChars = chars.clone();
-        sortArray(sortedChars);
-        int[] next = getNextArray(chars, sortedChars);
+        int length = chars.length;
+
+        int[] count = getCharsCount(chars);
+        char[] sortedChars = getSortedChars(chars, length, count);
+        int[] next = getNextArray(chars, length, count);
 
         for (int i = 0; i < chars.length; i++, position = next[position])
             BinaryStdOut.write(sortedChars[position]);
@@ -47,38 +49,35 @@ public class BurrowsWheeler {
         BinaryStdOut.close();
     }
 
-    private static void sortArray(char[] chars) {
+    private static int[] getCharsCount(char[] chars) {
         int R = 256;
-        int[] count = new int[R];
+        int[] count = new int[R + 1];
 
-        for (int arrValue : chars)
-            count[arrValue]++;
+        for (char value : chars)
+            count[value + 1]++;
 
-        int index = 0;
-        for (char i = 0; i < R; i++) { // possible values
-            for (int j = 0; j < count[i]; j++) { // count[i] => value frequency
-                chars[index] = i;
-                index++;
-            }
-        }
+        for (int i = 0; i < R; i++)
+            count[i + 1] += count[i];
+
+        return count;
     }
 
-    private static int[] getNextArray(char[] chars, char[] sortedChars) {
-        int length = chars.length;
-        int[] next = new int[length];
-        boolean[] marked = new boolean[length];
-
-        for (int i = 0; i < length; i++) {
-            char sortedChar = sortedChars[i];
-            for (int j = 0; j < length; j++) {
-                if (sortedChar == chars[j] && !marked[j]) {
-                    next[i] = j;
-                    marked[j] = true;
-                    break;
-                }
-            }
+    private static char[] getSortedChars(char[] chars, int length, int[] count) {
+        int[] countForSort = count.clone();
+        char[] sortedChars = new char[length];
+        for (char aChar : chars) {
+            int countIndex = countForSort[aChar]++;
+            sortedChars[countIndex] = aChar;
         }
+        return sortedChars;
+    }
 
+    private static int[] getNextArray(char[] chars, int length, int[] count) {
+        int[] next = new int[length];
+        for (int i = 0; i < length; i++) {
+            char aChar = chars[i];
+            next[count[aChar]++] = i;
+        }
         return next;
     }
 

@@ -23,3 +23,4 @@ java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonA
 java-algs4 BurrowsWheeler - < abra.txt | java-algs4 BurrowsWheeler +
 
 java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.BurrowsWheeler - < src/main/resources/part2/week5/challenge/abra.txt | java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.BurrowsWheeler +
+java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.BurrowsWheeler - < src/main/resources/part2/week5/challenge/aesop.txt | java -cp C:\Workspace\PrincetonAlgorithms\target\classes;C:\Workspace\PrincetonAlgorithms\libs\algs4.jar org.princeton.sedgewick.wayne.part2.week5.challenge.BurrowsWheeler +
