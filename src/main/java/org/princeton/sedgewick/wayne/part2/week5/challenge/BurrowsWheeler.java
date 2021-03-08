@@ -3,8 +3,6 @@ package org.princeton.sedgewick.wayne.part2.week5.challenge;
 import edu.princeton.cs.algs4.BinaryStdIn;
 import edu.princeton.cs.algs4.BinaryStdOut;
 
-import java.util.Arrays;
-
 public class BurrowsWheeler {
 
     // apply Burrows-Wheeler transform,
@@ -40,7 +38,7 @@ public class BurrowsWheeler {
 
         char[] chars = str.toCharArray();
         char[] sortedChars = chars.clone();
-        Arrays.sort(sortedChars);
+        sortArray(sortedChars);
         int[] next = getNextArray(chars, sortedChars);
 
         for (int i = 0; i < chars.length; i++, position = next[position])
@@ -49,15 +47,31 @@ public class BurrowsWheeler {
         BinaryStdOut.close();
     }
 
+    private static void sortArray(char[] chars) {
+        int R = 256;
+        int[] count = new int[R];
+
+        for (int arrValue : chars)
+            count[arrValue]++;
+
+        int index = 0;
+        for (char i = 0; i < R; i++) { // possible values
+            for (int j = 0; j < count[i]; j++) { // count[i] => value frequency
+                chars[index] = i;
+                index++;
+            }
+        }
+    }
+
     private static int[] getNextArray(char[] chars, char[] sortedChars) {
         int length = chars.length;
         int[] next = new int[length];
         boolean[] marked = new boolean[length];
 
         for (int i = 0; i < length; i++) {
-            char aChar = sortedChars[i];
+            char sortedChar = sortedChars[i];
             for (int j = 0; j < length; j++) {
-                if (aChar == chars[j] && !marked[j]) {
+                if (sortedChar == chars[j] && !marked[j]) {
                     next[i] = j;
                     marked[j] = true;
                     break;
