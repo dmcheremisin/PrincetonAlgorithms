@@ -12,13 +12,15 @@ public class ShellSort {
             System.out.println(str);
     }
 
-    public static void sort(Comparable... arr) {
-        int length = arr.length;
-
-        for (int h = length / 2; h >= 1; h = h / 2) {
-            for (int i = h; i < length; i++) {
-                for (int j = i; j >= h && less(arr[j], arr[j - h]); j -= h)
-                    exch(arr, j, j - h);
+    public static void sort(Comparable... a) {
+        int N = a.length; // N = 18
+        for (int h = N / 2; h >= 1; h = h / 2) { // h = 9, 4, 2, 1
+            for (int i = h; i < N; i++) {
+                for (int j = i; j >= h; j -= h) {
+                    if (less(a[j], a[j - h])) {
+                        exch(a, j, j - h);
+                    } else break; // already h-sorted
+                }
             }
         }
     }

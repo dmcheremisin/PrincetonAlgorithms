@@ -12,16 +12,15 @@ public class SelectionSort {
             System.out.println(str);
     }
 
-    public static void selectionSort(Comparable... arr) {
-        int length = arr.length;
-
-        for (int i = 0; i < length; i++) {
+    public static void selectionSort(Comparable... a) {
+        int N = a.length;
+        for (int i = 0; i < N; i++) {
             int min = i;
-            for (int j = i + 1; j < length; j++) {
-                if (less(arr[j], arr[min]))
+            for (int j = i + 1; j < N; j++) {
+                if (less(a[j], a[min]))
                     min = j;
             }
-            exch(arr, i, min);
+            exch(a, i, min);
         }
     }
 }
