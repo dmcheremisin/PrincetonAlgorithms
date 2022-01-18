@@ -1,5 +1,6 @@
 package org.princeton.sedgewick.wayne.part1.week3.quickSort;
 
+import static edu.princeton.cs.algs4.StdRandom.shuffle;
 import static org.princeton.sedgewick.wayne.util.SortUtils.*;
 
 public class QuickSort3Way {
@@ -13,27 +14,30 @@ public class QuickSort3Way {
         //0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
     }
 
-    private static void sort(Comparable[] permutation) {
-        sort(permutation, 0, permutation.length - 1);
+    private static void sort(Comparable[] a) {
+        shuffle(a);
+        sort(a, 0, a.length - 1);
     }
 
-    private static void sort(Comparable[] arr, int lo, int hi) {
+    private static void sort(Comparable[] a, int lo, int hi) {
         if (hi <= lo)
             return;
 
         int lt = lo, i = lo, gt = hi;
-        Comparable pivot = arr[lo];
+
+        Comparable v = a[lo];
         while (i <= gt) {
-            int cmp = arr[i].compareTo(pivot);
+            int cmp = a[i].compareTo(v);
+
             if (cmp < 0)
-                exch(arr, lt++, i++);
+                exch(a, lt++, i++);
             else if (cmp > 0)
-                exch(arr, i, gt--);
+                exch(a, i, gt--);
             else i++;
         }
 
-        sort(arr, lo, lt - 1);
-        sort(arr, gt + 1, hi);
+        sort(a, lo, lt - 1);
+        sort(a, gt + 1, hi);
     }
 
 }
