@@ -3,30 +3,38 @@ package org.princeton.sedgewick.wayne.part1.week2.containers.stack.array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class IterableResizableGenericStack<Item> implements Iterable<Item> {
+public class ResizableArrayStack<T> implements Iterable<T> {
 
     private int N;
-    private Item[] arr;
+    private T[] arr;
 
-    public IterableResizableGenericStack() {
-        arr = (Item[]) new Object[4];
-    }
-
-    public void push(Item str) {
-        if (arr.length == N)
-            resize(N * 2);
-
-        arr[N++] = str;
+    public ResizableArrayStack() {
+        arr = (T[]) new Object[4];
     }
 
     private void resize(int newLength) {
-        Item[] temp = (Item[]) new Object[newLength];
+        T[] temp = (T[]) new Object[newLength];
         System.arraycopy(arr, 0, temp, 0, N);
         arr = temp;
     }
 
-    public Item pop() {
-        Item item = arr[--N];
+    public boolean isEmpty() {
+        return N == 0;
+    }
+
+    public int size() {
+        return N;
+    }
+
+    public void push(T item) {
+        if (arr.length == N)
+            resize(N * 2);
+
+        arr[N++] = item;
+    }
+
+    public T pop() {
+        T item = arr[--N];
         arr[N] = null;
 
         if (N > 0 && N == arr.length / 4)
@@ -35,20 +43,30 @@ public class IterableResizableGenericStack<Item> implements Iterable<Item> {
         return item;
     }
 
-    public boolean isEmpty() {
-        return N == 0;
-    }
-
-    public int getSize() {
-        return N;
-    }
-
     @Override
-    public Iterator<Item> iterator() {
-        return new ReverseStackIterator();
+    public Iterator<T> iterator() {
+        return new StackIterator();
     }
 
-    private class ReverseStackIterator implements Iterator<Item> {
+    private class StackIterator implements Iterator<T> {
+
+        int i = 0;
+
+        @Override
+        public boolean hasNext() {
+            return i < N;
+        }
+
+        @Override
+        public T next() {
+            if (i >= N)
+                throw new NoSuchElementException("No next element");
+
+            return arr[i++];
+        }
+    }
+
+    private class ReverseStackIterator implements Iterator<T> {
 
         int i = N;
 
@@ -58,7 +76,7 @@ public class IterableResizableGenericStack<Item> implements Iterable<Item> {
         }
 
         @Override
-        public Item next() {
+        public T next() {
             if (i < 0)
                 throw new NoSuchElementException("No next element");
 
@@ -69,7 +87,7 @@ public class IterableResizableGenericStack<Item> implements Iterable<Item> {
 
 class TestIterableResizableGenericStack {
     public static void main(String[] args) {
-        IterableResizableGenericStack<Integer> stack = new IterableResizableGenericStack<>();
+        ResizableArrayStack<Integer> stack = new ResizableArrayStack<>();
         stack.push(10);
         stack.push(9);
         stack.push(8);

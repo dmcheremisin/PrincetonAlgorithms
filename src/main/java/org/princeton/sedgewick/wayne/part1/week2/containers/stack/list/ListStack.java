@@ -3,31 +3,40 @@ package org.princeton.sedgewick.wayne.part1.week2.containers.stack.list;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ListStack<Item> implements Iterable<Item> {
+public class ListStack<T> implements Iterable<T> {
 
     private Node head;
     private int size;
+
+    private class Node {
+        T value;
+        Node next;
+
+        Node(T value) {
+            this.value = value;
+        }
+    }
 
     public boolean isEmpty() {
         return head == null;
     }
 
-    public int getSize() {
+    public int size() {
         return size;
     }
 
-    public void push(Item item) {
+    public void push(T item) {
         Node newHead = new Node(item);
         newHead.next = head;
         head = newHead;
         size++;
     }
 
-    public Item pop() {
+    public T pop() {
         if (isEmpty())
             return null;
 
-        Item item = head.value;
+        T item = head.value;
         head = head.next;
         size--;
 
@@ -35,20 +44,11 @@ public class ListStack<Item> implements Iterable<Item> {
     }
 
     @Override
-    public Iterator<Item> iterator() {
+    public Iterator<T> iterator() {
         return new ListStackIterator();
     }
 
-    private class Node {
-        Item value;
-        Node next;
-
-        Node(Item value) {
-            this.value = value;
-        }
-    }
-
-    private class ListStackIterator implements Iterator<Item> {
+    private class ListStackIterator implements Iterator<T> {
 
         Node current = head;
 
@@ -58,11 +58,11 @@ public class ListStack<Item> implements Iterable<Item> {
         }
 
         @Override
-        public Item next() {
+        public T next() {
             if (current == null)
-                throw new NoSuchElementException("No next element");
+                throw new RuntimeException("No next element");
 
-            Item next = current.value;
+            T next = current.value;
             current = current.next;
             return next;
         }

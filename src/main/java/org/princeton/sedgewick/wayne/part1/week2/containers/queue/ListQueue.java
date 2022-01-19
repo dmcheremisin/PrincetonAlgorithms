@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-public class ListQueue<Item> implements Iterable<Item> { // 16 as object
+public class ListQueue<T> implements Iterable<T> { // 16 as object
      /*
      Memory usage:
      ListQueue object = 16
-     Inner references(first,last,size) = 24
+     Inner references(first,last,size) = 8 * 3 = 24
      Inner class Node = 40N
      Inner class ListStackIterator = 32
      ------------------------
@@ -19,19 +19,28 @@ public class ListQueue<Item> implements Iterable<Item> { // 16 as object
 
     private Node first; // 8
     private Node last; // 8
-    private int size; // 4(int size) + 4(addition to dividable by 8) = 8
+    private int size; // 4(int size) + 4(addition to dividable by 8 "padding") = 8
     // total 24
+
+    private class Node { // 16(object) + 8(as inner class) + 8 + 8 = 40
+        T value; // 8
+        Node next; // 8
+
+        Node(T value) {
+            this.value = value;
+        }
+    }
 
     public boolean isEmpty() {
         return first == null;
     }
 
-    public int getSize() {
+    public int size() {
         return size;
     }
 
     // add to tail
-    public void enqueue(Item item) {
+    public void enqueue(T item) {
         Node oldLast = last;
         last = new Node(item);
 
@@ -44,13 +53,13 @@ public class ListQueue<Item> implements Iterable<Item> { // 16 as object
     }
 
     // get first element
-    public Item dequeue() {
+    public T dequeue() {
         if (isEmpty()) {
             last = null;
             return null;
         }
 
-        Item item = first.value;
+        T item = first.value;
         first = first.next;
         size--;
 
@@ -59,31 +68,22 @@ public class ListQueue<Item> implements Iterable<Item> { // 16 as object
 
     @Override
     public String toString() {
-        List<Item> values = new ArrayList<>();
+        List<T> values = new ArrayList<>();
         Node node = first;
         while(node != null) {
             values.add(node.value);
             node = node.next;
         }
-        String joinedValues = values.stream().map(Item::toString).collect(Collectors.joining(", "));
+        String joinedValues = values.stream().map(T::toString).collect(Collectors.joining(", "));
         return String.format("[%s]", joinedValues);
     }
 
     @Override
-    public Iterator<Item> iterator() {
+    public Iterator<T> iterator() {
         return new ListStackIterator();
     }
 
-    private class Node { // 16(object) + 8(as inner class) + 8 + 8 = 40
-        Item value; // 8
-        Node next; // 8
-
-        Node(Item value) {
-            this.value = value;
-        }
-    }
-
-    private class ListStackIterator implements Iterator<Item> { // 16(object) + 8(inner class) + 8(ref) = 32
+    private class ListStackIterator implements Iterator<T> { // 16(object) + 8(inner class) + 8(ref) = 32
 
         Node current = first; // 8
 
@@ -93,11 +93,11 @@ public class ListQueue<Item> implements Iterable<Item> { // 16 as object
         }
 
         @Override
-        public Item next() {
+        public T next() {
             if (current == null)
                 throw new NoSuchElementException("No next element");
 
-            Item next = current.value;
+            T next = current.value;
             current = current.next;
             return next;
         }

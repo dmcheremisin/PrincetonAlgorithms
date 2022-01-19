@@ -1,19 +1,12 @@
 package org.princeton.sedgewick.wayne.part1.week2.containers.stack.array;
 
-public class ResizableGenericStack<Item> {
+public class ResizableGenericIterableStack<Item> {
 
     private int N;
     private Item[] arr;
 
-    public ResizableGenericStack() {
+    public ResizableGenericIterableStack() {
         arr = (Item[]) new Object[4];
-    }
-
-    public void push(Item str) {
-        if (arr.length == N)
-            resize(N * 2);
-
-        arr[N++] = str;
     }
 
     private void resize(int newLength) {
@@ -21,6 +14,13 @@ public class ResizableGenericStack<Item> {
         Item[] temp = (Item[]) new Object[newLength];
         System.arraycopy(arr, 0, temp, 0, N);
         arr = temp;
+    }
+
+    public void push(Item str) {
+        if (arr.length == N)
+            resize(N * 2);
+
+        arr[N++] = str;
     }
 
     public Item pop() {
@@ -42,9 +42,9 @@ public class ResizableGenericStack<Item> {
     }
 }
 
-class TestResizableFixedCapacityStack {
+class TestResizableGenericIterableStack {
     public static void main(String[] args) {
-        ResizableGenericStack<Integer> stack = new ResizableGenericStack<>();
+        ResizableGenericIterableStack<Integer> stack = new ResizableGenericIterableStack<>();
         stack.push(10);
         stack.push(9);
         stack.push(8);
