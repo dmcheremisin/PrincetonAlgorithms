@@ -25,7 +25,8 @@ public class CircularQueue<T> {
             T[] newArray = (T[]) new Object[2 * queue.length];
 
             System.arraycopy(queue, front, newArray, 0, queue.length - front);
-            System.arraycopy(queue, 0, newArray, queue.length - front, back);
+            if (back < front)
+                System.arraycopy(queue, 0, newArray, queue.length - front, back);
 
             queue = newArray;
 
