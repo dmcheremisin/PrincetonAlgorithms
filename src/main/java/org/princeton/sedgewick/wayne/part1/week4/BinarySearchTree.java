@@ -14,14 +14,11 @@ public class BinarySearchTree<K extends Comparable<K>, V> {
         return size(root);
     }
 
-    protected int size(Node node) {
-        if (node == null)
-            return 0;
-
-        return node.size;
+    private int size(Node node) {
+        return node == null ? 0 : node.size;
     }
 
-    protected boolean isEmpty() {
+    public boolean isEmpty() {
         return root == null;
     }
 
@@ -30,16 +27,15 @@ public class BinarySearchTree<K extends Comparable<K>, V> {
     }
 
     public V get(Node node, K key) {
-        if (node == null)
-            return null;
+        if (node == null) return null;
 
         int cmp = node.key.compareTo(key);
         if (cmp > 0)
             return get(node.right, key);
-        else if (cmp < 0)
+        if (cmp < 0)
             return get(node.left, key);
-        else
-            return node.value;
+
+        return node.value;
     }
 
     public void put(K key, V value) {
@@ -47,8 +43,7 @@ public class BinarySearchTree<K extends Comparable<K>, V> {
     }
 
     public Node put(Node node, K key, V value) {
-        if (node == null)
-            return new Node(key, value, 1);
+        if (node == null) return new Node(key, value, 1);
 
         int cmp = key.compareTo(node.key);
         if (cmp > 0)
@@ -63,31 +58,19 @@ public class BinarySearchTree<K extends Comparable<K>, V> {
     }
 
     public K min() {
-        if (isEmpty())
-            return null;
-
-        return min(root).key;
+        return root == null ? null : min(root).key;
     }
 
     private Node min(Node node) {
-        if (node.left == null)
-            return node;
-
-        return min(node.left);
+        return node.left == null ? node : min(node.left);
     }
 
     public K max() {
-        if (isEmpty())
-            return null;
-
-        return max(root).key;
+        return root == null ? null : max(root).key;
     }
 
     private Node max(Node node) {
-        if (node.right == null)
-            return node;
-
-        return max(node.right);
+        return node.right == null ? node : max(node.right);
     }
 
     public K floor(K key) {
@@ -96,18 +79,16 @@ public class BinarySearchTree<K extends Comparable<K>, V> {
     }
 
     private Node floor(Node node, K key) {
-        if (node == null)
-            return null;
+        if (node == null) return null;
 
         int cmp = key.compareTo(node.key);
         if (cmp == 0)
             return node;
-        else if (cmp < 0)
+        if (cmp < 0)
             return floor(node.left, key);
 
         Node t = floor(node.right, key);
-        if (t != null)
-            return t;
+        if (t != null) return t;
 
         return node;
     }
@@ -118,13 +99,12 @@ public class BinarySearchTree<K extends Comparable<K>, V> {
     }
 
     private Node ceiling(Node node, K key) {
-        if (node == null)
-            return null;
+        if (node == null) return null;
 
         int cmp = key.compareTo(node.key);
         if (cmp == 0)
             return node;
-        else if (cmp > 0)
+        if (cmp > 0)
             return ceiling(node.right, key);
 
         Node t = ceiling(node.left, key);
@@ -144,9 +124,9 @@ public class BinarySearchTree<K extends Comparable<K>, V> {
             return null;
 
         int size = size(node.left);
-        if (size > k)
+        if (k < size)
             return select(node.left, k);
-        else if (size < k)
+        if (k > size)
             return select(node.right, k - size - 1);
 
         return node;

@@ -18,13 +18,10 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     private int size(Node node) {
-        if (node == null)
-            return 0;
-
-        return node.size;
+        return node == null ? 0 : node.size;
     }
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return root == null;
     }
 
@@ -33,8 +30,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     public V get(Node node, K key) {
-        if (node == null)
-            return null;
+        if (node == null) return null;
 
         int cmp = node.key.compareTo(key);
         if (cmp > 0)
@@ -224,31 +220,19 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     // ------------------- Diff from BinarySearchTree end ------------------------
 
     public K min() {
-        if (isEmpty())
-            return null;
-
-        return min(root).key;
+        return root == null ? null : min(root).key;
     }
 
     private Node min(Node node) {
-        if (node.left == null)
-            return node;
-
-        return min(node.left);
+        return node.left == null ? node : min(node.left);
     }
 
     public K max() {
-        if (isEmpty())
-            return null;
-
-        return max(root).key;
+        return root == null ? null : max(root).key;
     }
 
     private Node max(Node node) {
-        if (node.right == null)
-            return node;
-
-        return max(node.right);
+        return node.right == null ? node : max(node.right);
     }
 
     public K floor(K key) {
@@ -261,10 +245,8 @@ public class RedBlackTree<K extends Comparable<K>, V> {
             return null;
 
         int cmp = key.compareTo(node.key);
-        if (cmp == 0)
-            return node;
-        else if (cmp < 0)
-            return floor(node.left, key);
+        if (cmp == 0) return node;
+        if (cmp < 0)  return floor(node.left, key);
 
         Node t = floor(node.right, key);
         if (t != null)
@@ -279,18 +261,14 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     private Node ceiling(Node node, K key) {
-        if (node == null)
-            return null;
+        if (node == null) return null;
 
         int cmp = key.compareTo(node.key);
-        if (cmp == 0)
-            return node;
-        else if (cmp > 0)
-            return ceiling(node.right, key);
+        if (cmp == 0) return node;
+        if (cmp > 0)  return ceiling(node.right, key);
 
         Node t = ceiling(node.left, key);
-        if (t != null)
-            return t;
+        if (t != null) return t;
 
         return node;
     }
@@ -301,14 +279,11 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     private Node select(Node node, int k) {
-        if (node == null)
-            return null;
+        if (node == null) return null;
 
         int size = size(node.left);
-        if (size > k)
-            return select(node.left, k);
-        else if (size < k)
-            return select(node.right, k - size - 1);
+        if (k < size) return select(node.left, k);
+        if (k > size) return select(node.right, k - size - 1);
 
         return node;
     }
@@ -318,14 +293,11 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     private int rank(Node node, K key) {
-        if (node == null)
-            return 0;
+        if (node == null) return 0;
 
         int cmp = key.compareTo(node.key);
-        if (cmp < 0)
-            return rank(node.left, key);
-        else if (cmp > 0)
-            return 1 + size(node.left) + rank(node.right, key);
+        if (cmp < 0) return rank(node.left, key);
+        if (cmp > 0) return 1 + size(node.left) + rank(node.right, key);
 
         return size(node.left);
     }
@@ -341,8 +313,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     private void keys(Queue<K> queue, Node node, K lo, K hi) {
-        if (node == null)
-            return;
+        if (node == null) return;
 
         int cmplo = lo.compareTo(node.key);
         int cmphi = hi.compareTo(node.key);
@@ -363,8 +334,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     private void addNode(Node node, List<K> keys) {
-        if (node == null)
-            return;
+        if (node == null) return;
 
         keys.add(node.key);
         addNode(node.left, keys);
