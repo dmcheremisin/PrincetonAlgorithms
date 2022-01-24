@@ -12,19 +12,6 @@ public class MaxPQ<T extends Comparable<T>> {
         pq = (T[]) new Comparable[maxN + 1];
     }
 
-    public boolean isEmpty() {
-        return N == 0;
-    }
-
-    public int size() {
-        return N;
-    }
-
-    public void insert(T v) {
-        pq[++N] = v;
-        swim(N);
-    }
-
     private void swim(int k) {
         // parent item may be found by formula parentIndex = childIndex / 2
         // we can compare parent(k/2) with child(k) and if parent is smaller - then exchange them
@@ -32,14 +19,6 @@ public class MaxPQ<T extends Comparable<T>> {
             exch(pq, k / 2, k);
             k = k / 2;
         }
-    }
-
-    public T delMax() {
-        T max = pq[1]; // get max item
-        exch(pq, 1, N--); // exchange first item(max) with last item
-        pq[N + 1] = null; // last item becomes null, so max item becomes removed from array
-        sink(1); // sink last item
-        return max;
     }
 
     private void sink(int k) {
@@ -54,6 +33,27 @@ public class MaxPQ<T extends Comparable<T>> {
             exch(pq, k, j);
             k = j;
         }
+    }
+
+    public boolean isEmpty() {
+        return N == 0;
+    }
+
+    public int size() {
+        return N;
+    }
+
+    public void insert(T v) {
+        pq[++N] = v;
+        swim(N);
+    }
+
+    public T delMax() {
+        T max = pq[1]; // get max item
+        exch(pq, 1, N--); // exchange first item(max) with last item
+        pq[N + 1] = null; // last item becomes null, so max item becomes removed from array
+        sink(1); // sink last item
+        return max;
     }
 
     public void printQueue() {
