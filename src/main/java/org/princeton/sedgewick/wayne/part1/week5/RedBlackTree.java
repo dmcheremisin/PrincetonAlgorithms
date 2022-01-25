@@ -13,6 +13,25 @@ public class RedBlackTree<K extends Comparable<K>, V> {
 
     private Node root;
 
+    private class Node {
+
+        private K key;
+        private V value;
+
+        private Node left;
+        private Node right;
+
+        private int size;
+        private boolean color;
+
+        public Node(K key, V value, int size, boolean color) {
+            this.key = key;
+            this.value = value;
+            this.size = size;
+            this.color = color;
+        }
+    }
+
     public int size() {
         return size(root);
     }
@@ -29,48 +48,19 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         return get(root, key);
     }
 
-    public V get(Node node, K key) {
+    private V get(Node node, K key) {
         if (node == null) return null;
 
         int cmp = node.key.compareTo(key);
         if (cmp > 0)
             return get(node.right, key);
-        else if (cmp < 0)
+        if (cmp < 0)
             return get(node.left, key);
-        else
-            return node.value;
+
+        return node.value;
     }
 
     // ------------------- Diff from BinarySearchTree --------------------------
-    public void put(K key, V value) {
-        root = put(root, key, value);
-        root.color = BLACK;
-    }
-
-    public Node put(Node node, K key, V value) {
-        if (node == null)
-            return new Node(key, value, 1, false);
-
-        int cmp = key.compareTo(node.key);
-        if (cmp > 0)
-            node.right = put(node.right, key, value);
-        else if (cmp < 0)
-            node.left = put(node.left, key, value);
-        else
-            node.value = value;
-
-        if (isRed(node.right) && !isRed(node.left))
-            node = rotateLeft(node);
-
-        if (isRed(node.left) && isRed(node.left.left))
-            node = rotateRight(node);
-
-        if (isRed(node.left) && isRed(node.right))
-            flipColors(node);
-
-        node.size = size(node.left) + size(node.right) + 1;
-        return node;
-    }
 
     private boolean isRed(Node node) {
         return node != null && node.color;
@@ -110,6 +100,36 @@ public class RedBlackTree<K extends Comparable<K>, V> {
             top.left.color = BLACK;
         if (top.right != null)
             top.right.color = BLACK;
+    }
+
+    public void put(K key, V value) {
+        root = put(root, key, value);
+        root.color = BLACK;
+    }
+
+    private Node put(Node h, K key, V value) {
+        if (h == null)
+            return new Node(key, value, 1, RED);
+
+        int cmp = key.compareTo(h.key);
+        if (cmp > 0)
+            h.right = put(h.right, key, value);
+        else if (cmp < 0)
+            h.left = put(h.left, key, value);
+        else
+            h.value = value;
+
+        if (isRed(h.right) && !isRed(h.left))
+            h = rotateLeft(h);
+
+        if (isRed(h.left) && isRed(h.left.left))
+            h = rotateRight(h);
+
+        if (isRed(h.left) && isRed(h.right))
+            flipColors(h);
+
+        h.size = size(h.left) + size(h.right) + 1;
+        return h;
     }
 
     public void delete(K key) {
@@ -358,25 +378,6 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         }
 
         return keys;
-    }
-
-    private class Node {
-
-        private K key;
-        private V value;
-
-        private Node left;
-        private Node right;
-
-        private int size;
-        private boolean color;
-
-        public Node(K key, V value, int size, boolean color) {
-            this.key = key;
-            this.value = value;
-            this.size = size;
-            this.color = color;
-        }
     }
 
     public static void main(String[] args) {
