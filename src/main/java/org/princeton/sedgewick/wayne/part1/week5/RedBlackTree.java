@@ -47,69 +47,69 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         root.color = BLACK;
     }
 
-    public Node put(Node node, K key, V value) {
-        if (node == null)
+    public Node put(Node h, K key, V value) {
+        if (h == null)
             return new Node(key, value, 1, false);
 
-        int cmp = key.compareTo(node.key);
+        int cmp = key.compareTo(h.key);
         if (cmp > 0)
-            node.right = put(node.right, key, value);
+            h.right = put(h.right, key, value);
         else if (cmp < 0)
-            node.left = put(node.left, key, value);
+            h.left = put(h.left, key, value);
         else
-            node.value = value;
+            h.value = value;
 
-        if (isRed(node.right) && !isRed(node.left))
-            node = rotateLeft(node);
+        if (isRed(h.right) && !isRed(h.left))
+            h = rotateLeft(h);
 
-        if (isRed(node.left) && isRed(node.left.left))
-            node = rotateRight(node);
+        if (isRed(h.left) && isRed(h.left.left))
+            h = rotateRight(h);
 
-        if (isRed(node.left) && isRed(node.right))
-            flipColors(node);
+        if (isRed(h.left) && isRed(h.right))
+            flipColors(h);
 
-        node.size = size(node.left) + size(node.right) + 1;
-        return node;
+        h.size = size(h.left) + size(h.right) + 1;
+        return h;
     }
 
     private boolean isRed(Node node) {
         return node != null && node.color;
     }
 
-    private Node rotateLeft(Node top) {
-        Node right = top.right;
-        top.right = right.left;
-        right.left = top;
+    private Node rotateLeft(Node h) {
+        Node x = h.right;
+        h.right = x.left;
+        x.left = h;
 
-        right.color = top.color;
-        right.left.color = RED;
+        x.color = h.color;
+        x.left.color = RED;
 
-        right.size = top.size;
-        top.size = size(top.left) + size(top.right);
+        x.size = h.size;
+        h.size = size(h.left) + size(h.right);
 
-        return right;
+        return x;
     }
 
-    private Node rotateRight(Node top) {
-        Node left = top.left;
-        top.left = left.right;
-        left.right = top;
+    private Node rotateRight(Node h) {
+        Node x = h.left;
+        h.left = x.right;
+        x.right = h;
 
-        left.color = top.color;
-        top.color = RED;
+        x.color = h.color;
+        h.color = RED;
 
-        left.size = top.size;
-        top.size = size(top.left) + size(top.right);
+        x.size = h.size;
+        h.size = size(h.left) + size(h.right);
 
-        return left;
+        return x;
     }
 
-    private void flipColors(Node top) {
-        top.color = RED;
-        if (top.left != null)
-            top.left.color = BLACK;
-        if (top.right != null)
-            top.right.color = BLACK;
+    private void flipColors(Node h) {
+        h.color = RED;
+        if (h.left != null)
+            h.left.color = BLACK;
+        if (h.right != null)
+            h.right.color = BLACK;
     }
 
     public void delete(K key) {
@@ -380,6 +380,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     public static void main(String[] args) {
+        System.out.println( Math.abs( ( ((int)Math.pow(2, 32)) + 1) % 10 ) );
         RedBlackTree<String, Integer> bst = new RedBlackTree<>();
         System.out.println(bst.size()); // 0
         System.out.println(bst.get("H")); // null
