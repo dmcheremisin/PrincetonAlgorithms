@@ -6,25 +6,25 @@ import java.util.Stack;
 
 public class DepthFirstPath {
 
-    private final Graph g;
+    private final Graph G;
     private final boolean[] marked;
     private final int[] edgeTo;
     private final int s;
 
     public DepthFirstPath(Graph g, int s) {
-        this.g = g;
+        this.G = g;
         this.s = s;
         marked = new boolean[g.getV()];
         edgeTo = new int[g.getV()];
-        dfp(s);
+        dfs(s);
     }
 
-    private void dfp(int s) {
+    private void dfs(int s) {
         marked[s] = true;
-        for (Integer adj : g.adj(s)) {
+        for (Integer adj : G.adj(s)) {
             if (!marked[adj]) {
                 edgeTo[adj] = s;
-                dfp(adj);
+                dfs(adj);
             }
         }
     }
