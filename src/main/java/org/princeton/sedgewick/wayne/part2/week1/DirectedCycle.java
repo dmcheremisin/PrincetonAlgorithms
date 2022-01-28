@@ -5,18 +5,18 @@ import org.princeton.sedgewick.wayne.part1.week2.containers.bag.Bag;
 
 public class DirectedCycle {
 
-    private final Digraph digraph;
+    private final Digraph G;
     private final boolean[] marked;
-    private final boolean[] onStack;
+    private final boolean[] onStack; // helps to detect cycle
     private final int[] edgeTo;
     private Bag<Integer> cycle;
 
-    public DirectedCycle(Digraph digraph) {
-        this.digraph = digraph;
-        marked = new boolean[digraph.getV()];
-        onStack = new boolean[digraph.getV()];
-        edgeTo = new int[digraph.getV()];
-        for (int v = 0; v < digraph.getV(); v++)
+    public DirectedCycle(Digraph G) {
+        this.G = G;
+        marked = new boolean[G.V()];
+        onStack = new boolean[G.V()];
+        edgeTo = new int[G.V()];
+        for (int v = 0; v < G.V(); v++)
             if (!marked[v])
                 dfs(v);
     }
@@ -24,7 +24,7 @@ public class DirectedCycle {
     private void dfs(int v) {
         marked[v] = true;
         onStack[v] = true;
-        for (Integer w : digraph.adj(v)) {
+        for (int w : G.adj(v)) {
             if (hasCycle())
                 return;
             else if (!marked[w]) {

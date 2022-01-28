@@ -9,16 +9,16 @@ public class PrimLazyMST {
     private final MinPQ<Edge> minPQ = new MinPQ<>();
     private final Queue<Edge> mst = new Queue<>();
 
-    private final EdgeWeightedGraph graph;
+    private final EdgeWeightedGraph G;
     private final boolean[] marked;
 
-    public PrimLazyMST(EdgeWeightedGraph graph) {
-        this.graph = graph;
-        marked = new boolean[graph.V()];
+    public PrimLazyMST(EdgeWeightedGraph G) {
+        this.G = G;
+        marked = new boolean[G.V()];
 
         visit(0);
 
-        while (!minPQ.isEmpty() && mst.size() < graph.V() - 1) {
+        while (!minPQ.isEmpty() && mst.size() < G.V() - 1) {
             Edge edge = minPQ.delMin();
             int v = edge.either();
             int w = edge.other(v);
@@ -35,7 +35,7 @@ public class PrimLazyMST {
     private void visit(int v) {
         marked[v] = true;
 
-        for (Edge edge : graph.adj(v)) {
+        for (Edge edge : G.adj(v)) {
             int w = edge.other(v);
             if (!marked[w])
                 minPQ.insert(edge);

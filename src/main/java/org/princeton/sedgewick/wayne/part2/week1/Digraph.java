@@ -26,7 +26,7 @@ public class Digraph {
         }
     }
 
-    public int getV() {
+    public int V() {
         return V;
     }
 
