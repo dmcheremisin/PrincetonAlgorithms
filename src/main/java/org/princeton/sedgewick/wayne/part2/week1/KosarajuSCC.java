@@ -7,8 +7,8 @@ public class KosarajuSCC {
     private int count; // number of strong components
 
     public KosarajuSCC(Digraph G) {
-        marked = new boolean[G.getV()];
-        id = new int[G.getV()];
+        marked = new boolean[G.V()];
+        id = new int[G.V()];
 
         DigraphDepthFirstOrder order = new DigraphDepthFirstOrder(G.reverse());
         for (int s : order.reversePost())

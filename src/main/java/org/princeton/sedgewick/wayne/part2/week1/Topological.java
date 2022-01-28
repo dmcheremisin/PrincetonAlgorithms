@@ -24,7 +24,7 @@ public class Topological {
     public static void main(String[] args) {
         SymbolDigraph sg = new SymbolDigraph(args[0], args[1]);
 
-        Topological topological = new Topological(sg.getDigraph());
+        Topological topological = new Topological(sg.getG());
         if (topological.hasOrder())
             for (Integer v : topological.getOrder())
                 System.out.println(sg.getVertexName(v));

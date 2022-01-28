@@ -5,8 +5,8 @@ public class TransitiveClosure {
     private DirectedDepthFirstSearch[] all;
 
     public TransitiveClosure(Digraph digraph) {
-        all = new DirectedDepthFirstSearch[digraph.getV()];
-        for (int v = 0; v < digraph.getV(); v++)
+        all = new DirectedDepthFirstSearch[digraph.V()];
+        for (int v = 0; v < digraph.V(); v++)
             all[v] = new DirectedDepthFirstSearch(digraph, v);
     }
 
@@ -21,7 +21,7 @@ public class TransitiveClosure {
         int den = sd.getVertexByName("DEN");
         int lax = sd.getVertexByName("LAX");
 
-        TransitiveClosure closure = new TransitiveClosure(sd.getDigraph());
+        TransitiveClosure closure = new TransitiveClosure(sd.getG());
         System.out.println(closure.reachable(jfk, atl)); // true
         System.out.println(closure.reachable(jfk, den)); // true
         System.out.println(closure.reachable(jfk, lax)); // true

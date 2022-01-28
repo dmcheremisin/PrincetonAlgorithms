@@ -15,13 +15,13 @@ public class DigraphDepthFirstOrder {
 
     public DigraphDepthFirstOrder(Digraph digraph) {
         this.digraph = digraph;
-        this.marked = new boolean[digraph.getV()];
+        this.marked = new boolean[digraph.V()];
 
         pre = new ListQueue<>();
         post = new ListQueue<>();
         reversePost = new Bag<>();
 
-        for (int v = 0; v < digraph.getV(); v++)
+        for (int v = 0; v < digraph.V(); v++)
             if (!marked[v])
                 dfs(v);
     }

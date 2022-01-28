@@ -9,13 +9,13 @@ public class KruskalMST {
 
     private Queue<Edge> mst = new Queue<>();
 
-    public KruskalMST(EdgeWeightedGraph graph) {
+    public KruskalMST(EdgeWeightedGraph G) {
         MinPQ<Edge> minPq = new MinPQ<>();
-        for (Edge edge : graph.edges())
+        for (Edge edge : G.edges())
             minPq.insert(edge);
 
-        UF uf = new UF(graph.V());
-        while (!minPq.isEmpty() && mst.size() < graph.V() - 1) {
+        UF uf = new UF(G.V());
+        while (!minPq.isEmpty() && mst.size() < G.V() - 1) {
             Edge edge = minPq.delMin();
             int v = edge.either();
             int w = edge.other(v);
@@ -26,7 +26,7 @@ public class KruskalMST {
         }
     }
 
-    public Iterable<Edge> edges() {
+    public Iterable<Edge> mst() {
         return mst;
     }
 

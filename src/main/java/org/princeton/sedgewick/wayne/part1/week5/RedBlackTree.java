@@ -13,25 +13,6 @@ public class RedBlackTree<K extends Comparable<K>, V> {
 
     private Node root;
 
-    private class Node {
-
-        private K key;
-        private V value;
-
-        private Node left;
-        private Node right;
-
-        private int size;
-        private boolean color;
-
-        public Node(K key, V value, int size, boolean color) {
-            this.key = key;
-            this.value = value;
-            this.size = size;
-            this.color = color;
-        }
-    }
-
     public int size() {
         return size(root);
     }
@@ -48,68 +29,27 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         return get(root, key);
     }
 
-    private V get(Node node, K key) {
+    public V get(Node node, K key) {
         if (node == null) return null;
 
         int cmp = node.key.compareTo(key);
         if (cmp > 0)
             return get(node.right, key);
-        if (cmp < 0)
+        else if (cmp < 0)
             return get(node.left, key);
-
-        return node.value;
+        else
+            return node.value;
     }
 
     // ------------------- Diff from BinarySearchTree --------------------------
-
-    private boolean isRed(Node node) {
-        return node != null && node.color;
-    }
-
-    private Node rotateLeft(Node top) {
-        Node right = top.right;
-        top.right = right.left;
-        right.left = top;
-
-        right.color = top.color;
-        right.left.color = RED;
-
-        right.size = top.size;
-        top.size = size(top.left) + size(top.right);
-
-        return right;
-    }
-
-    private Node rotateRight(Node top) {
-        Node left = top.left;
-        top.left = left.right;
-        left.right = top;
-
-        left.color = top.color;
-        top.color = RED;
-
-        left.size = top.size;
-        top.size = size(top.left) + size(top.right);
-
-        return left;
-    }
-
-    private void flipColors(Node top) {
-        top.color = RED;
-        if (top.left != null)
-            top.left.color = BLACK;
-        if (top.right != null)
-            top.right.color = BLACK;
-    }
-
     public void put(K key, V value) {
         root = put(root, key, value);
         root.color = BLACK;
     }
 
-    private Node put(Node h, K key, V value) {
+    public Node put(Node h, K key, V value) {
         if (h == null)
-            return new Node(key, value, 1, RED);
+            return new Node(key, value, 1, false);
 
         int cmp = key.compareTo(h.key);
         if (cmp > 0)
@@ -130,6 +70,46 @@ public class RedBlackTree<K extends Comparable<K>, V> {
 
         h.size = size(h.left) + size(h.right) + 1;
         return h;
+    }
+
+    private boolean isRed(Node node) {
+        return node != null && node.color;
+    }
+
+    private Node rotateLeft(Node h) {
+        Node x = h.right;
+        h.right = x.left;
+        x.left = h;
+
+        x.color = h.color;
+        x.left.color = RED;
+
+        x.size = h.size;
+        h.size = size(h.left) + size(h.right);
+
+        return x;
+    }
+
+    private Node rotateRight(Node h) {
+        Node x = h.left;
+        h.left = x.right;
+        x.right = h;
+
+        x.color = h.color;
+        h.color = RED;
+
+        x.size = h.size;
+        h.size = size(h.left) + size(h.right);
+
+        return x;
+    }
+
+    private void flipColors(Node h) {
+        h.color = RED;
+        if (h.left != null)
+            h.left.color = BLACK;
+        if (h.right != null)
+            h.right.color = BLACK;
     }
 
     public void delete(K key) {
@@ -380,7 +360,27 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         return keys;
     }
 
+    private class Node {
+
+        private K key;
+        private V value;
+
+        private Node left;
+        private Node right;
+
+        private int size;
+        private boolean color;
+
+        public Node(K key, V value, int size, boolean color) {
+            this.key = key;
+            this.value = value;
+            this.size = size;
+            this.color = color;
+        }
+    }
+
     public static void main(String[] args) {
+        System.out.println( Math.abs( ( ((int)Math.pow(2, 32)) + 1) % 10 ) );
         RedBlackTree<String, Integer> bst = new RedBlackTree<>();
         System.out.println(bst.size()); // 0
         System.out.println(bst.get("H")); // null

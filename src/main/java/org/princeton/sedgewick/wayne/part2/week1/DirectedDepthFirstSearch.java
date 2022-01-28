@@ -11,13 +11,13 @@ public class DirectedDepthFirstSearch {
 
     public DirectedDepthFirstSearch(Digraph digraph, int s) {
         this.digraph = digraph;
-        marked = new boolean[digraph.getV()];
+        marked = new boolean[digraph.V()];
         dfs(s);
     }
 
     public DirectedDepthFirstSearch(Digraph digraph, Iterable<Integer> sources) {
         this.digraph = digraph;
-        marked = new boolean[digraph.getV()];
+        marked = new boolean[digraph.V()];
         for (Integer s : sources)
             if (!marked[s])
                 dfs(s);

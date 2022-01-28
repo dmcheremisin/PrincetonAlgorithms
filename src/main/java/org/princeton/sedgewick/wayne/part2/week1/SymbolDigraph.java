@@ -10,7 +10,7 @@ public class SymbolDigraph {
 
     private Map<String, Integer> map; // String -> index
     private String[] keys; // index -> String
-    private Digraph digraph; // the graph
+    private Digraph G; // the graph
 
     public SymbolDigraph(String fileName, String separator) {
         map = new HashMap<>();
@@ -33,13 +33,13 @@ public class SymbolDigraph {
         // Reads the same date for the second time and builds graph according to
         // dictionary code indexes
 
-        digraph = new Digraph(map.size());
+        G = new Digraph(map.size());
         in = new In(fileName); // Second pass
         while (in.hasNextLine()){ // builds the graph
             String[] codeArr = in.readLine().split(separator); /// makes array [JFK, MCO]
             int v = map.get(codeArr[0]); // map.get("JFK") == 0
             for (int i = 1; i < codeArr.length; i++)
-                digraph.addEdge(v, map.get(codeArr[i])); // map.get("MCO") == 1 => graph.addEdge(0, 1)
+                G.addEdge(v, map.get(codeArr[i])); // map.get("MCO") == 1 => graph.addEdge(0, 1)
         }
     }
 
@@ -55,8 +55,8 @@ public class SymbolDigraph {
         return keys[v];
     }
 
-    public Digraph getDigraph() {
-        return digraph;
+    public Digraph getG() {
+        return G;
     }
 
     public static void main(String[] args) {
@@ -64,7 +64,7 @@ public class SymbolDigraph {
         String delim = args[1]; // ' '
         SymbolDigraph sg = new SymbolDigraph(filename, delim);
 
-        Digraph graph = sg.getDigraph();
+        Digraph graph = sg.getG();
         for (String key : sg.keys) {
             System.out.println(key);
             int vertex = sg.getVertexByName(key);

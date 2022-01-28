@@ -15,19 +15,19 @@ public class ConnectedComponents {
         id = new int[g.getV()];
         for(int s = 0; s < g.getV(); s++) {
             if(!marked[s]) {
-                searchComponent(s);
+                dfs(s);
                 count++;
             }
         }
     }
 
-    private void searchComponent(int v) {
+    private void dfs(int v) {
         marked[v] = true;
         id[v] = count;
         System.out.printf("Vertex: %s ; component: %s \n", v, count);
         for (Integer adj : g.adj(v))
             if (!marked[adj])
-                searchComponent(adj);
+                dfs(adj);
     }
 
     public boolean connected(int i, int j) {

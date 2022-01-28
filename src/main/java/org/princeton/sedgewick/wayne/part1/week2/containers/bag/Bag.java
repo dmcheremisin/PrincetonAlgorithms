@@ -10,29 +10,6 @@ public class Bag<Item> implements Iterable<Item> {
 
     private Node first;
 
-    public void add(Item item) {
-        Node newFirst = new Node(item);
-        newFirst.next = first;
-        first = newFirst;
-    }
-
-    @Override
-    public String toString() {
-        List<Item> values = new ArrayList<>();
-        Node node = first;
-        while(node != null) {
-            values.add(node.value);
-            node = node.next;
-        }
-        String joinedValues = values.stream().map(Item::toString).collect(Collectors.joining(", "));
-        return String.format("[%s]", joinedValues);
-    }
-
-    @Override
-    public Iterator<Item> iterator() {
-        return new ListStackIterator();
-    }
-
     private class Node {
         Item value;
         Node next;
@@ -40,6 +17,17 @@ public class Bag<Item> implements Iterable<Item> {
         Node(Item value) {
             this.value = value;
         }
+    }
+
+    public void add(Item item) {
+        Node newFirst = new Node(item);
+        newFirst.next = first;
+        first = newFirst;
+    }
+
+    @Override
+    public Iterator<Item> iterator() {
+        return new ListStackIterator();
     }
 
     private class ListStackIterator implements Iterator<Item> {
@@ -61,6 +49,19 @@ public class Bag<Item> implements Iterable<Item> {
             return next;
         }
     }
+
+    @Override
+    public String toString() {
+        List<Item> values = new ArrayList<>();
+        Node node = first;
+        while(node != null) {
+            values.add(node.value);
+            node = node.next;
+        }
+        String joinedValues = values.stream().map(Item::toString).collect(Collectors.joining(", "));
+        return String.format("[%s]", joinedValues);
+    }
+
 }
 
 class TestQueue {

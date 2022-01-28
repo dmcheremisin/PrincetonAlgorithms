@@ -16,7 +16,6 @@ public class DepthFirstSearch {
 
     private void dfs(int s) {
         marked[s] = true;
-        System.out.printf("Visiting vertex: %s \n", s);
         count++;
         for (Integer adj : g.adj(s))
             if (!marked[adj])

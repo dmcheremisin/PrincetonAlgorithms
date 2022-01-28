@@ -6,47 +6,42 @@ import edu.princeton.cs.algs4.IndexMinPQ;
 
 public class PrimEagerMST {
 
-    private final EdgeWeightedGraph graph;
+    private final EdgeWeightedGraph G;
     private final Edge[] edgeTo;
     private final Double[] distTo;
     private final boolean[] marked;
-    private final IndexMinPQ<Double> indexMinPQ;
+    private final IndexMinPQ<Double> pq;
 
-    public PrimEagerMST(EdgeWeightedGraph graph) {
-        this.graph = graph;
-        int vertexes = graph.V();
-        edgeTo = new Edge[vertexes];
-        distTo = new Double[vertexes];
-        marked = new boolean[vertexes];
-        indexMinPQ = new IndexMinPQ<>(vertexes);
+    public PrimEagerMST(EdgeWeightedGraph G) {
+        this.G = G;
+        edgeTo = new Edge[G.V()];
+        marked = new boolean[G.V()];
+        pq = new IndexMinPQ<>(G.V());
 
-        for (int i = 0; i < vertexes; i++)
+        distTo = new Double[G.V()];
+        for (int i = 0; i < G.V(); i++)
             distTo[i] = Double.POSITIVE_INFINITY;
-
-        indexMinPQ.insert(0, 0.0);
-
-        while (!indexMinPQ.isEmpty()) {
-            int v = indexMinPQ.delMin();
-            visit(v);
-        }
+        
+        distTo[0] = 0.0;
+        pq.insert(0, 0.0);
+        while (!pq.isEmpty())
+            visit(pq.delMin());
     }
 
     private void visit(int v) {
         marked[v] = true;
 
-        for (Edge edge : graph.adj(v)) {
+        for (Edge edge : G.adj(v)) {
             int w = edge.other(v);
-            if (marked[w])
-                continue;
+            if (marked[w]) continue;
 
-            double edgeWeight = edge.weight();
-            if (edgeWeight < distTo[w]) {
+            if (edge.weight() < distTo[w]) {
                 edgeTo[w] = edge;
-                distTo[w] = edgeWeight;
-                if (indexMinPQ.contains(w))
-                    indexMinPQ.changeKey(w, edgeWeight);
+                distTo[w] = edge.weight();
+                if (pq.contains(w))
+                    pq.changeKey(w, edge.weight());
                 else
-                    indexMinPQ.insert(w, edgeWeight);
+                    pq.insert(w, edge.weight());
             }
         }
     }
