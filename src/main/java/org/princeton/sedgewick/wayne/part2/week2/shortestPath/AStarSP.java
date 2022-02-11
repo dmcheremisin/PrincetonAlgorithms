@@ -13,21 +13,24 @@ public class AStarSP {
     private DirectedEdge[] edgeTo;
     private double[] gScore; // Cost from start along best known path(distTo in prev algorithms)
     private double[] fScore; // Estimated total cost from start to goal through y(new)
-    private boolean[] closed; // visited vertexes(marked in prev algorithms)
+
+    //private boolean[] closed; // visited vertexes(marked in prev algorithms) - we don't need it
+    //closed array is absent in pseudocode in wikipedia https://en.wikipedia.org/wiki/A*_search_algorithm
+    //we can reach vertex by different ways, alternative way may be better, we will need to update gScore in that case
+
     private IndexMinPQ<Double> openPq;
 
     public AStarSP(EdgeWeightedDigraph G) {
         this.G = G;
         gScore = new double[G.V()];
         fScore = new double[G.V()];
-        closed = new boolean[G.V()];
         edgeTo = new DirectedEdge[G.V()];
+        //closed = new boolean[G.V()];
     }
 
     public Iterable<DirectedEdge> path(int start, int goal) {
         int V = G.V();
-        // sort vertexes based on fScore which means take first most promising vertex
-        openPq = new IndexMinPQ<>(V);
+        openPq = new IndexMinPQ<>(V); // priority queue of graph vertexes with priority based on fScore(weight to goal)
 
         for (int i = 0; i < V; i++) {
             gScore[i] = Double.POSITIVE_INFINITY;
@@ -39,17 +42,13 @@ public class AStarSP {
 
         while (!openPq.isEmpty()) {
             int v = openPq.delMin();
-            //System.out.println("v = " + v);
             if (v == goal)
-                return getPathTo(v); // return path
+                return getPathTo(v); // goal vertex is found, we can return path
 
-            closed[v] = true;
-
+            //closed[v] = true;
             for (DirectedEdge e : G.adj(v)) {
-                //System.out.println("====> " + e);
-                if (closed[e.getTo()])
-                    continue;
-
+                //if (closed[e.getTo()])
+                    //continue;
                 relax(e, goal);
             }
         }
@@ -63,8 +62,6 @@ public class AStarSP {
         if (gScore[w] > gScore[v] + e.getWeight()) {
             gScore[w] = gScore[v] + e.getWeight();
             edgeTo[w] = e;
-            //System.out.println(Arrays.asList(gScore));
-            //System.out.println(Arrays.asList(edgeTo));
 
             fScore[w] = gScore[w] + heuristicCostEstimate(w, goal);
             if (openPq.contains(w))
