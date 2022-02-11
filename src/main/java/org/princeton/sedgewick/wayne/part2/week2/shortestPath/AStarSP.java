@@ -22,14 +22,14 @@ public class AStarSP {
 
     public AStarSP(EdgeWeightedDigraph G) {
         this.G = G;
-        gScore = new double[G.V()];
-        fScore = new double[G.V()];
-        edgeTo = new DirectedEdge[G.V()];
-        //closed = new boolean[G.V()];
     }
 
     public Iterable<DirectedEdge> path(int start, int goal) {
         int V = G.V();
+        gScore = new double[V];
+        fScore = new double[V];
+        //closed = new boolean[V];
+        edgeTo = new DirectedEdge[V];
         openPq = new IndexMinPQ<>(V); // priority queue of graph vertexes with priority based on fScore(weight to goal)
 
         for (int i = 0; i < V; i++) {
@@ -63,7 +63,7 @@ public class AStarSP {
             gScore[w] = gScore[v] + e.getWeight();
             edgeTo[w] = e;
 
-            fScore[w] = gScore[w] + heuristicCostEstimate(w, goal);
+            fScore[w] = gScore[w] + heuristicCost(w, goal);
             if (openPq.contains(w))
                 openPq.decreaseKey(w, fScore[w]);
             else
@@ -72,12 +72,8 @@ public class AStarSP {
     }
 
     // base implementation, should be properly designed to predict roughly cost to get to the target
-    private int heuristicCostEstimate(Integer w, Integer goal) {
+    private int heuristicCost(int w, int goal) {
         return 1;
-    }
-
-    public double distTo(int v) {
-        return gScore[v];
     }
 
     public Iterable<DirectedEdge> getPathTo(int v) {
