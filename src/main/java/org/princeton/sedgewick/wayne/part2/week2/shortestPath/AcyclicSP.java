@@ -9,41 +9,43 @@ public class AcyclicSP {
     private DirectedEdge[] edgeTo;
     private double[] distTo;
 
-    public AcyclicSP(EdgeWeightedDigraph graph, int s) {
-        edgeTo = new DirectedEdge[graph.V()];
-        distTo = new double[graph.V()];
+    public AcyclicSP(EdgeWeightedDigraph G, int s) {
+        edgeTo = new DirectedEdge[G.V()];
+        distTo = new double[G.V()];
 
-        for (int i = 0; i < graph.V(); i++)
-            distTo[i] = Double.POSITIVE_INFINITY;
+        for (int v = 0; v < G.V(); v++)
+            distTo[v] = Double.POSITIVE_INFINITY;
         distTo[s] = 0;
 
-        Topological topological = new Topological(graph);
-        for (Integer v : topological.order())
-            for (DirectedEdge edge : graph.adj(v))
-                relax(edge);
+        Topological topological = new Topological(G);
+        for (int v : topological.order())
+            for (DirectedEdge e : G.adj(v))
+                relax(e);
     }
 
-    private void relax(DirectedEdge edge) {
-        int from = edge.from();
-        int to = edge.to();
-        double weight = distTo[from] + edge.weight();
-        if (distTo[to] > weight) {
-            distTo[to] = weight;
-            edgeTo[to] = edge;
+    private void relax(DirectedEdge e) {
+        int v = e.from();
+        int w = e.to();
+        if (distTo[w] > distTo[v] + e.weight()) {
+            distTo[w] = distTo[v] + e.weight();
+            edgeTo[w] = e;
         }
+    }
+
+    public double distTo(int v) {
+        return distTo[v];
+    }
+
+    public boolean hasPathTo(int v) {
+        return distTo[v] < Double.POSITIVE_INFINITY;
     }
 
     public Iterable<DirectedEdge> getPathTo(int v) {
-        Bag<DirectedEdge> pathToV = new Bag<>();
-        int currentVertex = v;
-        DirectedEdge edgeInPath;
-
-        while ((edgeInPath = edgeTo[currentVertex]) != null) {
-            pathToV.add(edgeInPath);
-            currentVertex = edgeInPath.from();
-        }
-
-        return pathToV;
+        if (!hasPathTo(v)) return null;
+        Stack<DirectedEdge> path = new Stack<>();
+        for (DirectedEdge e = edgeTo[v]; e != null; e = edgeTo[e.from()])
+            path.push(e);
+        return path;
     }
 
     public static void main(String[] args) {
