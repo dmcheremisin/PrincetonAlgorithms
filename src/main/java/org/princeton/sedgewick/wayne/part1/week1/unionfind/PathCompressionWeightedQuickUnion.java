@@ -7,14 +7,14 @@ import java.util.stream.IntStream;
 public class PathCompressionWeightedQuickUnion {
 
     int[] id;
-    int[] sizes;
+    int[] sz;
 
     public PathCompressionWeightedQuickUnion(int N) {
         id = new int[N];
-        sizes = new int[N];
+        sz = new int[N];
         for (int i = 0; i < N; i++) {
             id[i] = i;
-            sizes[i] = 1;
+            sz[i] = 1;
         }
     }
 
@@ -46,12 +46,12 @@ public class PathCompressionWeightedQuickUnion {
             return;
 
         // smaller root should be linked to larger root
-        if (sizes[rootP] < sizes[rootQ]) {
+        if (sz[rootP] < sz[rootQ]) {
             id[rootP] = rootQ;
-            sizes[rootQ] += sizes[rootP];
+            sz[rootQ] += sz[rootP];
         } else {
             id[rootQ] = rootP;
-            sizes[rootP] += sizes[rootQ];
+            sz[rootP] += sz[rootQ];
         }
     }
 }
