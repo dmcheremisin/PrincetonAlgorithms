@@ -17,7 +17,7 @@ public class LZW {
      * them using LZW compression with 12-bit codewords; and writes the results
      * to standard output.
      */
-    public static void compress() { 
+    public static void compress() {
         String input = BinaryStdIn.readString();
         TST<Integer> st = new TST<Integer>();
         for (int i = 0; i < R; i++)
@@ -34,7 +34,7 @@ public class LZW {
         }
         BinaryStdOut.write(R, W);
         BinaryStdOut.close();
-    } 
+    }
 
     /**
      * Reads a sequence of bit encoded using LZW compression with
@@ -51,18 +51,23 @@ public class LZW {
         st[i++] = "";                        // (unused) lookahead for EOF
 
         int codeword = BinaryStdIn.readInt(W);
-        if (codeword == R) return;           // expanded message is empty string
-        String val = st[codeword];
+        if (codeword == R)
+            return;           // expanded message is empty string
 
+        String val = st[codeword];
         while (true) {
             BinaryStdOut.write(val);
             codeword = BinaryStdIn.readInt(W);
-            if (codeword == R) break;
+            if (codeword == R)
+                break;
             String s = st[codeword];
-            if (i == codeword) s = val + val.charAt(0);   // special case hack
-            if (i < L) st[i++] = val + s.charAt(0);
+            if (i == codeword)
+                s = val + val.charAt(0);   // special case hack
+            if (i < L)
+                st[i++] = val + s.charAt(0);
             val = s;
         }
+
         BinaryStdOut.close();
     }
 
