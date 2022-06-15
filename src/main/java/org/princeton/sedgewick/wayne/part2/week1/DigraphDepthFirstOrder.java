@@ -26,6 +26,12 @@ public class DigraphDepthFirstOrder {
                 dfs(v);
     }
 
+    // graph: head - 1 - 2 - 3 - 4 - 5 - tail
+    //                           |
+    //                           6
+    // pre(queue) :  head - 1 - 2 - 3 - 4 - 5 - 6 - tail
+    // post(queue):  head - 5 - 6 - 4 - 3 - 2 - 1 - tail
+    // rev(stack) :  head - 1 - 2 - 3 - 4 - 6 - 5
     private void dfs(int v) {
         pre.enqueue(v);
 
