@@ -19,7 +19,7 @@ public class MergeSort {
     }
 
     private static void sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
-        if (hi <= lo) return;
+        if (lo >= hi) return;
 
         int mid = lo + (hi - lo) / 2;
         sort(a, aux, lo, mid);
@@ -38,10 +38,10 @@ public class MergeSort {
                 a[k] = aux[j++];
             else if (j > hi)
                 a[k] = aux[i++];
-            else if (less(aux[j], aux[i]))
-                a[k] = aux[j++];
-            else
+            else if (less(aux[i], aux[j]))
                 a[k] = aux[i++];
+            else
+                a[k] = aux[j++];
         }
     }
 }

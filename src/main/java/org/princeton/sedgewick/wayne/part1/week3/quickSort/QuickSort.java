@@ -20,7 +20,7 @@ public class QuickSort {
     }
 
     private static void sort(Comparable[] a, int lo, int hi) {
-        if (hi <= lo)
+        if (lo >= hi)
             return;
 
         int j = partition(a, lo, hi);
